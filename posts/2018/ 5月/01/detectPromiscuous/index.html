@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>ARPパケットに対する挙動からネットワーク上の盗聴者を特定する - roki.log</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../../../theme/style.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="../../../../../favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/solid.css" integrity="sha384-TbilV5Lbhlwdyc4RuIV/JhD8NR+BfMrvz4BL5QFa2we1hQu6wvREr3v6XSRfCTRp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/brands.css" integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css" integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../../../../theme/js/css_browser_selector.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="roki" />
+        <link href="../../../../../theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+        <link href="../../../../../theme/typogrify.css" rel="stylesheet">
+    <link href="https://falgon.github.io/roki.log/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="roki.log Full Atom Feed" />
+    <link href="https://falgon.github.io/roki.log/feeds/cpp.rss.xml" type="application/atom+xml" rel="alternate" title="roki.log Categories Atom Feed" />
+
+  </head>
+  <body id="index" class="archive" style="font-family: '游明朝', 'Yu Mincho' , '游明朝体' , 'YuMincho' , 'ヒラギノ明朝 Pro W3' , 'Hiragino Mincho Pro' , 'HiraMinProN-W3', 'HGS明朝E' , 'ＭＳ Ｐ明朝' , 'MS PMincho', serif;">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">👋New blog information / ブログ移転のお知らせ</h4>
+      </div>
+      <div class="modal-body">
+      This blog has been moved to <a href="https://roki.dev/roki.log">new one (roki.dev/roki.log)</a> for 
+      serving you better view. This blog is no longer updated.
+      Thank you for migrating and re-registering your bookmarks.
+      <hr >
+      このブログは, 
+      <a href="https://roki.dev/roki.log">新ブログ (roki.dev/roki.log)</a> 
+      に移転しました。このページの今後の更新はありませんが,
+      移行用, 記録用に残されています。
+      もし宜しければ, 移行, またはブックマークの再登録をよろしくお願いいたします。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+       </div>
+    </div>
+  </div>
+</div>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../../..">roki.log</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li>
+                    <a href="../../../../../pages/about"><i class="fas fa-info-circle" style="margin-right: 4px;"></i>About</a>
+            </li>
+            <li>
+            </li>
+            
+            <li><a href="../../../../../tags.html"><i class="fas fa-tags" style="margin-right: 4px;"></i>Tags</a></li>
+            <li><span>
+                <form class="navbar-search" action="https://falgon.github.io/roki.log/search.html">
+                    <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+    <section id="content" class="article content">
+      <header>
+        <h2 class="entry-title">
+          ARPパケットに対する挙動からネットワーク上の盗聴者を特定する
+        </h2>
+        
+        <div class="text-muted">火 01 5月 2018</div>
+      </header>
+<!-- .entry-content -->
+      <div class="entry-content">
+        <p>通信が暗号化されていればまだ良いが, 自分の送受信しているパケットを同一ネットワーク上の信用できない者/物に
+無断で見られるのはやはり気持ちの良いものではない. 
+本エントリではそのような不届き者の存在を仮定して,&nbsp;その不届き者を比較的簡単に特定するといった試みを行う.</p>
+<h3>お断り</h3>
+<p>一応お断りを明記する. <br>
+本エントリでの試行は当然ながら私個人のローカル <span class="caps">LAN</span> 上で行なっており, 
+同様の試行を公衆回線上などで行うと迷惑/法に抵触する可能性があるのでやめること.
+本エントリに起因する直接的又は間接的な損害に関して, その理由及び原因を問わず著者(Roki)&nbsp;は一切の責任を負わない.</p>
+<h3>ネットワーク盗聴を検出する原理</h3>
+<p><strong>[<i>2018/5/6 追記</i>:</strong><br>
+本セクションの内容に関する追記は、末尾セクション追記にて参照.
+<br><strong><i>&#8212; 追記ここまで</i>]</strong></p>
+<p>ネットワークに接続するためには, 大抵コンピュータに <span class="caps">NIC</span> を装着して <span class="caps">TCP</span>/<span class="caps">IP</span> の設定を済まし, ハブに接続する.
+同プロトコルにおける各コンピュータの通信では, <span class="caps">IP</span> アドレスと <span class="caps">MAC</span> アドレスによる論理情報と物理情報の組み合わせを利用して, 
+目的のコンピュータに対するパケットの送信を実現する. 通常, その過程で <span class="caps">NIC</span> は自分とは無関係であるパケットを破棄する.
+しかし <span class="caps">NIC</span> をプロミスキャスモードにすると, 自分とは無関係であるパケットを破棄せずに取り込むようになる. 
+盗聴者はこれを利用して, 同一ネットワーク上を流れる他人のパケットを取得できる.<br>
+<span class="caps">IP</span> アドレスと <span class="caps">MAC</span> アドレスを関連付けるためには <span class="caps">ARP</span>/<span class="caps">RARP</span> パケットを送信する.
+<span class="caps">ARP</span> パケットは, アドレス解決を必要とするノードによってブロードキャスト送信され, 要求に対応するノードが応答を行う. 
+ブロードキャストは同一セグメント内にしか到達しないため, 他のセグメントと通信する際はルーターに依頼する.
+このとき, 要求に対応しない非プロミスキャスモードであるノードはその <span class="caps">ARP</span> 要求を破棄する.
+これに対して, プロミスキャスモードのノードは, 先に述べた通り全てのパケットを取り込む.
+しかし, プロミスキャスモードであっても, 通常この取り込まれた <span class="caps">ARP</span> 要求に対する応答を返すことはしない. 
+なぜならば <span class="caps">NIC</span> のモードに関わらずソフトウェアによるフィルタが通常 <span class="caps">OS</span> 内部で働いている<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup>からである. <br>
+ただ, このソフトウェアによるフィルタの実装は甘い<u>場合がある</u>. 
+ブロードキャストを判定するときに, 正確には <span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span> の 6 バイトを比較しなければならないところを, 
+最初の 1 バイトだけで判定するなどの実装が<u>有りうる</u>のである.
+例えば, そのような実装となっているソフトウェアを積んだコンピュータが, 同一 <span class="caps">LAN</span> 上にプロミスキャスモードで稼働しているとする.
+宛先を <span class="caps">FF</span>:<u>xx:xx:xx:xx:xx</u> としてそのコンピュータの <span class="caps">MAC</span> アドレスを目的とする<sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup> <span class="caps">ARP</span> パケットを送ると, 
+<span class="caps">NIC</span> が Ethernet の仕様に忠実に従っていた場合, 送られてきた宛先は <span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span> ではないためブロードキャストではないと判断する. よってプロミスキャスモードで稼働していない場合, この <span class="caps">ARP</span> 要求は <span class="caps">NIC</span> によって破棄される. しかし, プロミスキャスモードである場合はこれを取り込む.
+取り込んだ先に待っているのはソフトウェアによるフィルタであるが, これが甘い場合, それをブロードキャストアドレスとして認識し, <span class="caps">ARP</span> 応答を返すのである. ここで重要なのは, <u><span class="caps">NIC</span> とソフトウェアそれぞれでブロードキャストに対する判断が異なっている</u>ということである.
+これにより, プロミスキャスモードとなっているノードのみが, いま送信した <span class="caps">ARP</span> パケットに応答してしまうため,&nbsp;特定ができるかもしれない.</p>
+<h3>試行</h3>
+<p>実験環境は次のとおり.</p>
+<div class="table-responsive">
+<table class="table table-hover">
+<thead>
+<tr>
+<th>/</th>
+<th>盗聴側</th>
+<th>検出側</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="caps">OS</span></td>
+<td>Ubuntu 16.04 <span class="caps">LTS</span> (4.13.0-37-generic)</td>
+<td>Ubuntu 17.04 (4.13.0-37-generic)</td>
+</tr>
+<tr>
+<td><span class="caps">NIC</span></td>
+<td>プロミスキャスモード(enp4s0f2)</td>
+<td>通常モード(enp19s0)</td>
+</tr>
+<tr>
+<td><span class="caps">MAC</span> アドレス</td>
+<td>80:fa:5b:xx:xx:xx</td>
+<td>24:b6:fd:xx:xx:xx</td>
+</tr>
+<tr>
+<td><span class="caps">IP</span> アドレス</td>
+<td>192.168.12.4</td>
+<td>192.168.12.3</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p><br>盗聴側の <span class="caps">MAC</span> アドレスが検出側で得られれば良い. 実験には, 宛先を少し弄って <span class="caps">ARP</span> パケットを送信できるソフトウェアが必要である.
+nping や arping などを少し見て見たが, 宛先 <span class="caps">MAC</span> アドレスを弄れるような機能は特になかった(<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span> でない <span class="caps">ARP</span> パケットを送る用途は殆どないだろうし, 当然だ)ので, 自分で作った. ついでに, 超簡易 <span class="caps">ARP</span> パケットキャプチャも作ってみた. これらは 上記の <span class="caps">OS</span> で動作を確認している. 動作テストには tcpdump を用いた<sup id="fnref-3"><a class="footnote-ref" href="#fn-3">3</a></sup>.</p>
+<p style="text-align: center;">
+<i class="fab fa-github" style="font-size: large; margin-right: 5px;"></i>
+<a href="https://github.com/falgon/arp_experiment"><span class="caps">ARP</span> experiment - This ia project for learning to detect computers operation in promiscuous mode on the same network using <span class="caps">ARP</span> packet and broadcast&nbsp;mechanism</a>
+</p>
+
+<p>特に何も指定せずに<code>make</code>すると, 通常の <span class="caps">ARP</span> パケットを送信するバイナリが<code>/dst/sendarp</code>としてビルドされ, <code>-f Makefile_bogus</code>を指定すると宛先 <span class="caps">MAC</span> アドレスを <span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FE</span> とした <span class="caps">ARP</span> パケットを送信するバイナリが同様にしてビルドされる.<br>
+どちらの場合においても, <code>/dst/dump_arp</code>がビルドされ, これが超簡易 <span class="caps">ARP</span> パケットキャプチャだ.
+コマンドラインオプションに<code>-p</code>を指定すると, <span class="caps">NIC</span> をプロミスキャスモードにして動作する. 
+これを上記で示した環境それぞれでビルドし, その挙動を見てみる. 
+なお本実験では直接盗聴側の <span class="caps">IP</span> アドレスを指定しているが, 実際では総当たりすることになるだろう<sup id="fnref2-2"><a class="footnote-ref" href="#fn-2">2</a></sup>.
+また検出側では自身の本当の <span class="caps">IP</span> アドレスと <span class="caps">MAC</span> アドレスを利用して試行しているが,&nbsp;実際ではこれらを何かしら偽装することも考えられるだろう.</p>
+<p>まずは, 通常通り <span class="caps">ARP</span>&nbsp;を送信してみる.</p>
+<div class="highlight"><pre><span></span>検出側$ sudo ./dst/dump_arp enp19s0 <span class="p">&amp;</span>
+検出側$ sudo ./dst/sendarp enp19s0 <span class="m">192</span>.168.12.4
+ether_header -------------------------
+    <span class="nv">dhost</span> <span class="o">=</span> <span class="m">24</span>:b6:fd:xx:xx:xx
+    <span class="nv">shost</span> <span class="o">=</span> <span class="m">80</span>:fa:5b:xx:xx:xx
+    <span class="nb">type</span> <span class="o">=</span> <span class="m">806</span><span class="o">(</span>ARP<span class="o">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>盗聴側$ sudo ./dst/dump_arp enp4s0f2 <span class="c1"># 非プロミスキャスモード</span>
+    <span class="nv">dhost</span> <span class="o">=</span> ff:ff:ff:ff:ff:ff
+    <span class="nv">shost</span> <span class="o">=</span> <span class="m">24</span>:b6:fd:xx:xx:xx
+    <span class="nb">type</span> <span class="o">=</span> <span class="m">806</span><span class="o">(</span>ARP<span class="o">)</span>
+</pre></div>
+
+
+<p>正常にやりとりができているようだ. 続いて, 盗聴側は非プロミスキャスモードのまま,
+検出側から <span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FE</span> 宛てに <span class="caps">ARP</span>&nbsp;パケットを送信してみる.</p>
+<div class="highlight"><pre><span></span>検出側$ make -f Makefile_bogus
+検出側$ sudo ./dst/dump_arp enp19s0 <span class="p">&amp;</span>
+検出側$ sudo ./dst/sendarp enp19s0 <span class="m">192</span>.168.12.4 <span class="c1"># 宛先 FF:FF:FF:FF:FF:FE の ARP パケット</span>
+<span class="c1"># ... 対応する出力なし</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>盗聴側$ sudo ./dst/dump_arp enp4s0f2 <span class="c1"># 非プロミスキャスモード</span>
+<span class="c1"># ... 対応する出力なし</span>
+</pre></div>
+
+
+<p><span class="caps">NIC</span> のフィルタリングによって, このパケットは省かれるため応答が返ってくることはない. 
+つまり, 192.168.12.4 は盗聴していないということがわかる. 次に, 盗聴側をプロミスキャスモードにして <span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FE</span> 宛てに <span class="caps">ARP</span>&nbsp;パケットを送信してみる.</p>
+<div class="highlight"><pre><span></span>検出側$ sudo ./dst/dump_arp enp19s0 <span class="p">&amp;</span>
+検出側$ sudo ./dst/sendarp enp19s0 <span class="m">192</span>.168.12.4 <span class="c1"># 宛先 FF:FF:FF:FF:FF:FE の ARP パケット</span>
+    <span class="nv">dhost</span> <span class="o">=</span> <span class="m">24</span>:b6:fd:xx:xx:xx
+    <span class="nv">shost</span> <span class="o">=</span> <span class="m">80</span>:fa:5b:xx:xx:xx
+    <span class="nb">type</span> <span class="o">=</span> <span class="m">806</span><span class="o">(</span>ARP<span class="o">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>盗聴側$ sudo ./dst/dump_arp enp4s0f2 -p <span class="c1"># プロミスキャスモード</span>
+    <span class="nv">dhost</span> <span class="o">=</span> ff:ff:ff:ff:ff:fe
+    <span class="nv">shost</span> <span class="o">=</span> <span class="m">24</span>:b6:fd:xx:xx:xx
+    <span class="nb">type</span> <span class="o">=</span> <span class="m">806</span><span class="o">(</span>ARP<span class="o">)</span>
+</pre></div>
+
+
+<p>応答が返ってきた. つまり, 192.168.12.4 はプロミスキャスモードであり, 盗聴している可能性を特定できた.
+当然ながら <span class="caps">OUI</span> を調べればメーカーがわかるので,&nbsp;結果から盗聴者の目星をつけることができる.</p>
+<div class="highlight"><pre><span></span>$ curl -s -D - http://standards-oui.ieee.org/oui.txt <span class="p">|</span> grep 80FA5B -A <span class="m">4</span>
+80FA5B     <span class="o">(</span>base <span class="m">16</span><span class="o">)</span>            CLEVO CO.
+                                NO. <span class="m">129</span>, XINGDE ROAD
+                                New TAIPEI CITY    <span class="m">241</span>
+                                TW
+</pre></div>
+
+
+<h3>追記</h3>
+<p><strong>[<i>2018/5/6 追記</i>:</strong><br>
+<strong>某大学授業のネットワークを専門とする講師にこの件について訪ねたところ, 
+Linux におけるプロトコルスタックの実装に関して詳しい言及が頂けたため, それについてと, 新たにそこから考えられる知見等をここに追記する. 
+情報を提供/ご教示して下さいました先生に, この場を借りて改めて感謝いたします.</strong><br><br>
+上記内容のネットワーク盗聴を検出する原理の中で, <i>取り込んだ先に待っているのはソフトウェアによるフィルタであるが, これが甘い場合, それをブロードキャストアドレスとして認識し, <span class="caps">ARP</span> 応答を返す</i>と述べているが,
+これは厳密に, Linux カーネル v4.13 においては, <strong>マルチキャスト <span class="caps">MAC</span> アドレスと誤認し</strong> <span class="caps">ARP</span> 応答を返す. 
+また, その処理として <strong>6 byte 全てをチェックしていないというわけではない</strong>.<br>
+そもそもブロードキャストアドレスはマルチキャストアドレスの特殊形であるから, Linux の実装においても, それがまず広義のマルチキャストアドレスであるかどうかを判定する<sup id="fnref-4"><a class="footnote-ref" href="#fn-4">4</a></sup>. このとき宛先 <span class="caps">MAC</span> アドレス <span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FF</span>:<span class="caps">FE</span> は広義のマルチキャストアドレスとして認識し, 次にそれがブロードキャストアドレスであるかどうか<u>6 byte 全てをみて判定する</u><sup id="fnref-5"><a class="footnote-ref" href="#fn-5">5</a></sup>. 結果的に, これをブロードキャストアドレスではないと判定し, <a href="https://github.com/torvalds/linux/blob/v4.13/net/ethernet/eth.c#L172">狭議のマルチキャストアドレスとして扱う</a>.<br>
+なお, Linux では以下のように <span class="caps">ARP</span> そのものを無効化することができる. 
+同様の設定であるマシンに対しては,&nbsp;本エントリの方法で検出することはできない.</p>
+<div class="highlight"><pre><span></span>$ sudo ip link <span class="nb">set</span> dev &lt;interface name&gt; arp off
+</pre></div>
+
+
+<p>また, ここまで述べてきたプロトコルスタックによる宛先 <span class="caps">MAC</span> アドレスのフィルタリング処理は, 
+<u>ネットワークインタフェース層で規定されるものである</u>から, Linux におけるプロトコルスタックの実装は, その実装定義の一種であるというように捉えることが最も妥当である.
+<span class="caps">RFC</span> 826 では, 同理由によりプロミスキャスモードによって発生しうるあらゆる振る舞いに関して定義しない<sup id="fnref-6"><a class="footnote-ref" href="#fn-6">6</a></sup>.
+<br><strong><i>&#8212; 追記ここまで</i>]</strong></p>
+<h3>参照</h3>
+<ul>
+<li><a href="http://sonickun.hatenablog.com/entry/2014/07/28/223049">ARPを利用してプロミスキャスモードの盗聴ホストを特定してみた</a></li>
+<li><a href="http://atnetwork.info/ccna2/arp01.html">＠network Cisco・アライド実機で学ぶ&nbsp;◆ARPとは</a></li>
+<li><a href="https://ja.wikipedia.org/wiki/Address_Resolution_Protocol">Address Resolution Protocol -&nbsp;Wikipedia</a></li>
+</ul>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn-1">
+<p><a href="https://github.com/torvalds/linux/blob/v4.13/net/ipv4/arp.c#L940-L944">Linux kernel v4.13 (実験環境と同じ)の場合</a>&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn-2">
+<p>つまり盗聴ノードの <span class="caps">IP</span> アドレスを指定する. 実際の状況では <span class="caps">IP</span> アドレスも当然わかっていないので, 一定範囲内の <span class="caps">IP</span> アドレスに関連する <span class="caps">ARP</span> 要求を総当たりで送ることになるだろう.&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn-3">
+<p><code>-vvv</code> が非常に便利だ.&#160;<a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn-4">
+<p><a href="https://github.com/torvalds/linux/blob/v4.13/net/ethernet/eth.c#L168">net/ethernet/eth.c:168</a>, <a href="https://github.com/torvalds/linux/blob/v4.13/include/linux/etherdevice.h#L112-L144">include/linux/etherdevice.h:112~144</a> がこれに該当する. これを見ると, MACアドレスの先頭 1 オクテットのユニキャスト/マルチキャストフラグをチェックしていることがわかる.&#160;<a class="footnote-backref" href="#fnref-4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn-5">
+<p><a href="https://github.com/torvalds/linux/blob/v4.13/include/linux/etherdevice.h#L333-L361">include/linux/etherdevice.h:309~361</a>&#160;<a class="footnote-backref" href="#fnref-5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn-6">
+<p>というより, プロトコルスイート各種の規定は, その各レイヤーごとの規定を定めるものであって, 各レイヤーごとがどのように連携するかについて規定することが本質ではない.&#160;<a class="footnote-backref" href="#fnref-6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+      </div>
+<!-- /.entry-content -->
+      <footer class="post-info text-muted">
+        <button type="button" class="btn btn-default">          
+          <a href="../../../../../category/cpp.html"><div class="fa fa-lg fa-folder-open"></div> C++</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/security.html"><div class="fa fa-lg fa-tag"></div> Security</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/cpp.html"><div class="fa fa-lg fa-tag"></div> C++</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/networking.html"><div class="fa fa-lg fa-tag"></div> Networking</a>
+        </button>
+      </footer>
+      <!-- /.post-info -->
+    <!-- Comment BEGIN -->
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'roki-log';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <!-- Comment END -->
+    </section>
+    </div>
+<footer class="footer">
+      <div class="container">
+          <p class="footer-text">&copy; <a href="../../../../..">roki.log</a> powered by 
+          <a href="https://getpelican.com/">pelican</a> and 
+          <a href="https://github.com/falgon/nikhil-theme">nikhil-theme (forked)</a><br>
+              <small>  <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>, except where indicated otherwise.
+</small>
+            </p>
+   </div>
+</footer>    <script src="../../../../../theme/js/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-116653080-1', 'auto');
+      ga('send', 'pageview');
+       $('#myModal').modal({show: true});
+
+    </script>
+  </body>
+</html>

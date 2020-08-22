@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>関係 (集合論) - roki.log</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../../../theme/style.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="../../../../../favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/solid.css" integrity="sha384-TbilV5Lbhlwdyc4RuIV/JhD8NR+BfMrvz4BL5QFa2we1hQu6wvREr3v6XSRfCTRp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/brands.css" integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css" integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../../../../theme/js/css_browser_selector.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="roki" />
+        <link href="../../../../../theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+        <link href="../../../../../theme/typogrify.css" rel="stylesheet">
+    <link href="https://falgon.github.io/roki.log/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="roki.log Full Atom Feed" />
+    <link href="https://falgon.github.io/roki.log/feeds/math.rss.xml" type="application/atom+xml" rel="alternate" title="roki.log Categories Atom Feed" />
+
+  </head>
+  <body id="index" class="archive" style="font-family: '游明朝', 'Yu Mincho' , '游明朝体' , 'YuMincho' , 'ヒラギノ明朝 Pro W3' , 'Hiragino Mincho Pro' , 'HiraMinProN-W3', 'HGS明朝E' , 'ＭＳ Ｐ明朝' , 'MS PMincho', serif;">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">👋New blog information / ブログ移転のお知らせ</h4>
+      </div>
+      <div class="modal-body">
+      This blog has been moved to <a href="https://roki.dev/roki.log">new one (roki.dev/roki.log)</a> for 
+      serving you better view. This blog is no longer updated.
+      Thank you for migrating and re-registering your bookmarks.
+      <hr >
+      このブログは, 
+      <a href="https://roki.dev/roki.log">新ブログ (roki.dev/roki.log)</a> 
+      に移転しました。このページの今後の更新はありませんが,
+      移行用, 記録用に残されています。
+      もし宜しければ, 移行, またはブックマークの再登録をよろしくお願いいたします。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+       </div>
+    </div>
+  </div>
+</div>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../../..">roki.log</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li>
+                    <a href="../../../../../pages/about"><i class="fas fa-info-circle" style="margin-right: 4px;"></i>About</a>
+            </li>
+            <li>
+            </li>
+            
+            <li><a href="../../../../../tags.html"><i class="fas fa-tags" style="margin-right: 4px;"></i>Tags</a></li>
+            <li><span>
+                <form class="navbar-search" action="https://falgon.github.io/roki.log/search.html">
+                    <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+    <section id="content" class="article content">
+      <header>
+        <h2 class="entry-title">
+          関係&nbsp;(集合論)
+        </h2>
+        
+        <div class="text-muted">金 15 3月 2019</div>
+      </header>
+<!-- .entry-content -->
+      <div class="entry-content">
+        <p>関係 (集合論)&nbsp;について復習.</p>
+<h3>一般的な関係</h3>
+<p>いま, 二つの要素の順序体を <span class="math">\(\left\lt a, b\right\gt\)</span> と書くこととする.
+他の異なる順序体 \(\left\lt c, b\right\gt\) に対し,&nbsp;以下の通り定義する.</p>
+<div class="math">\begin{eqnarray}
+\left\lt a,b\right\gt=\left\lt c,d\right\gt&amp;:=&amp;a=c, b=d\\\
+{\rm デカルト積} = {\rm 直積} = A\times B&amp;:=&amp;\left\{\left\lt a,b\right\gt\mid a\in A, b\in B\right\}
+\end{eqnarray}</div>
+<p>このとき順序体の要素を \(n\) 個に拡張したものを \(n\)-tuple といい,&nbsp;以下の通り定義する.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="n-tuple" class="disabled">&#92;(n&#92;)-tuple の同値関係と直積</a></div>
+  <div class="panel-body">
+\begin{eqnarray}
+\left\lt a_1,a_2,\cdots,a_n\right\gt=\left\lt b_1,b_2,\cdots,b_n\right\gt&:=&\left(a_1=b_1,a_2=b_2,\cdots,a_n=b_n\right) \label{eq:first}\tag{1} &#92;\
+{\rm デカルト積} =  {\rm直積} = A_1\times A_2\times\cdots\times A_n=\prod_{i=1}^{n}A_i&:=&\left\{\left\lt a_1,a_2,\cdots,a_n\right\gt\mid a_1\in A_1,a_2\in A_2,\cdots,a_n\in A_n\right\} \label{eq:second}\tag{2}
+\end{eqnarray}
+  </div>
+</div>
+
+<p>なお \(\eqref{eq:second}\) より \(A^n:=\left(A_1=A_2=\cdots =A_n\right)\) が自明に導ける.
+いま集合 \(A\) から \(B\) に対する二項関係 \(R\subseteq A\times B\) があって, 
+\(\left\lt a,b\right\gt\in R\) ならば \(a\) と \(b\) は関係 \(R\) にあるといい, 
+\(R\left(a,b\right)\) または \(aRb\)&nbsp;と書く.</p>
+<p>\[R:=\left\{\left\lt a,b\right\gt\mid a\in A,b\in&nbsp;B,aRb\right\}\]</p>
+<p>\(\left(a,b\right)\not\in R\) ならば \(a\) と \(b\) は関係 \(R\) にないといい, 
+\(\overline{R}\left(a,b\right)\) または \(a\overline{R}b\) と書く.
+このとき \(A=B\) ならば二項関係 \(R\subseteq \left(A^2=A\times B\right)\) を \(A\) 上の二項関係という<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup>.</p>
+<p>例えば, 自然数の集合 \(\mathbb{N}\) に対し, その<a href="#equivalence_relation">同値関係</a> &#8220;\(=\)&#8221;&nbsp;を順序体を用いて新たに</p>
+<p>\[R:=\left\{\left\lt n,n\right\gt\mid n\in&nbsp;\mathbb{N}\right\}\subseteq\mathbb{N}^2\]</p>
+<p>と定義すると \(a,b\in \mathbb{N}\) に対して \(a R_=b\Leftrightarrow a=b\) である.
+また, 集合 \(X=\left\{1,2,3\right\}\) に対し, その<a href="#orderd_relation">順序関係</a> \(R_\gt\subseteq X^2\) 
+を大なりの関係 &#8220;\(\gt\)&#8221; とすると \(R_\gt\)&nbsp;は</p>
+<p>\[R_\gt=\left\{\left\lt 2,1\right\gt, \left\lt 3,1\right\gt, \left\lt&nbsp;3,2\right\gt\right\}\]</p>
+<p>となる. ここで, 逆関係を導入する. 関係 \(R\) の逆関係は \(B\) から \(A\) への関係,&nbsp;すなわち</p>
+<p>\[R^{-1}:=\left\{\left\lt b,a\right\gt\mid a\in A, b\in B,&nbsp;aRb\right\}\]</p>
+<p>と定義される. 従って, 例えば集合 \(X\) に対する \(R_\gt\) の逆関係は 
+\(R_\gt^{-1}=\left\{\left\lt 1,2\right\gt, \left\lt 1,3\right\gt, \left\lt 2,3\right\gt\right\}\)&nbsp;である.</p>
+<p>二項関係は,&nbsp;より一般化することができる.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="n-ary_relation" class="disabled">&#92;(n&#92;) 項関係</a></div>
+  <div class="panel-body">
+いま複数の集合の直積の部分集合, すなわち &#92;(n&#92;) 項関係 &#92;(R\subseteq\prod_{i=1}^{n}A_i&#92;) があって,
+&#92;(\left\lt a_1,a_2,\cdots,a_n\right\gt\in R&#92;) ならば &#92;(a_1,a_2,\cdots,a_n&#92;) は 関係
+&#92;(R&#92;) にあるといい, &#92;(R\left(a_1,a_2,\cdots,a_n\right)&#92;) と書く.
+
+&#92;[R:=\left&#92;{\left\lt a_1,a_2,\cdots,a_n\right\gt\mid a_1\in A_1,a_2\in A_2,\cdots,a_n\in A_n, R\left(a_1,a_2,\cdots,a_n\right)\right&#92;}\subseteq\prod_{i=1}^{n}A_i&#92;]
+
+また &#92;(\left\lt a_1,a_2,\cdots,a_n\right\gt\not\subseteq R&#92;) ならば &#92;(a_1,a_2,\cdots,a_n&#92;) は
+関係 &#92;(R&#92;) にないといい, &#92;(\overline{R}\left(a_1,a_2,\cdots,a_n\right)&#92;) と書く.
+  </div>
+</div>
+
+<p>ここで, 本ブログ内で特に断りなく使われる一般的な関係に関する記号の表記,&nbsp;その意図について表明しておく.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="order_symbol" class="disabled">本ブログで使われる一般的な関係に関する記号表記</a></div>
+  <div class="panel-body">
+任意の二項関係 &#92;(\lesssim&#92;) の要素 &#92;(\left\lt a,b\right\gt\in\ \lesssim&#92;) に対し:
+<ul>
+<li>&#92;(\prec\ :=\left&#92;{\left\lt a,b \right\gt\mid \left\lt a, b\right\gt\in\ \lesssim,&nbsp;a\not=b\right&#92;}&#92;)</li>
+<li>
+&#92;(\ll\ :=\left&#92;{\left\lt a,b\right\gt\mid\left\lt a, c\right\gt\not\in\ \lesssim\ {\rm かつ}\ \left\lt c,b\right\gt\not\in\&nbsp;\lesssim\right&#92;}&#92;)
+</li>
+</ul>
+</div>
+</div>
+
+<p>すなわち, \(x\prec y\) は \(x\) は真に \(y\) の前にある, 
+\(x\ll y\) は \(x\) は \(y\)&nbsp;の直前にあることを意味する.</p>
+<h3>主な二項関係の規則</h3>
+<p>主な二項関係における規則を以下に定義する.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="reflexive_relation" class="disabled">反射律</a></div>
+  <div class="panel-body">
+  二項関係 &#92;(R\subseteq A\times B&#92;), また &#92;(x\in A\cap B&#92;) があって, &#92;(\left\lt x,x\right\gt\in R&#92;) が存在するとき 
+  &#92;(R&#92;) は反射律を満たすという.
+  </div>
+</div>
+
+<p>例えば, 実数の集合 \(\mathbb{R}\) をとってみると, 任意の \(^\forall x\in\mathbb{R}\) に対して \(x\leq x\) であるから \(\leq\) は \(\mathbb{R}\) の下で反射律を満たす.
+しかし, \(x\lt x\) は成立しないので, \(\lt\) は \(\mathbb{R}\)&nbsp;の下で反射律を満たさない.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="symmetric_relation" class="disabled">対象律</a></div>
+  <div class="panel-body">
+  二項関係 &#92;(R\subseteq A\times B&#92;), また &#92;(x,y\in A\cap B&#92;) があって, &#92;(\left\lt x,y\right\gt\in R&#92;) ならば
+  &#92;(\left\lt y,x\right\gt \in R&#92;) が存在するとき, &#92;(R&#92;) は対象律を満たすという.
+  </div>
+</div>
+
+<p>例えば, 実数の集合 \(\mathbb{R}\) をとってみると, 自明な例でいえば, 任意の \(^\forall x,y\in\mathbb{R}\) に対して
+\(x=y\) ならば \(y=x\) なので \(=\) は \(\mathbb{R}\) 
+の下で対象律を満たす.
+しかし, \(x\lt y\) ならば \(y\lt x\) ではないので, \(\lt\) は \(\mathbb{R}\) の下で対象律を満たさない.
+また, 別の例として, 例えば平面状のすべての三角形から成る集合 \(A\) と, 相似の関係 \(R\) を組み合わせると \(R\) は
+\(A\) 上で対象律を満たす. 
+\[R=\left\{\left\lt x,y\right\gt\mid x,y\in A,x\ {\rm と}\ y\ {\rm は相似}\right\}\subseteq A^2\]
+なお, これは<a href="#equiv_relation">同値律</a>を満たす.&nbsp;対象律の特徴を挙げると:</p>
+<ul>
+<li>必ずしも \(x=y\)&nbsp;ではない</li>
+<li>真に大きい/小さい関係はあり得ない. \(R\not=\ \prec\) かつ \(R\not=\ \succ\) (すべてのありとあらゆる集合上で \(x\prec y ならば y\not\prec x\)&nbsp;なので)</li>
+</ul>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="antisymmetric_relation" class="disabled">反対象律</a></div>
+  <div class="panel-body">
+  二項関係 &#92;(R\subseteq A\times B&#92;), また &#92;(x,y\in A\cap B&#92;) があって, &#92;(\left\lt x,y\right\gt\in R&#92;) に対し 
+  &#92;(\left\lt y,x\right\gt\in R&#92;) 
+  が存在するならば &#92;(x=y&#92;) のとき, &#92;(R&#92;) は反対象律を満たすという.
+  </div>
+</div>
+
+<p>例えば, 集合 \(A=\left\{a_1,a_2\right\}\) に対して&nbsp;二項関係を:</p>
+<ul>
+<li>\(R=\left\{\left\lt a_1,a_1\right\gt,\left\lt a_2,a_2\right\gt\right\}\) とおくと, \(R\) は \(A\) 上で (<a href="#symmetric_relation">対象律</a>を満たし) 反対象律を満たす.
+なお, これは<a href="#equiv_relation">同値律</a>を満たす.</li>
+<li>\(R=\left\{\left\lt a_1,a_1\right\gt,\left\lt a_1,a_2\right\gt\right\}\) とおくと,
+\(R\) は \(A\) 上で (<a href="#symmetric_relation">対象律</a>を満たさないが)&nbsp;反対象律を満たす.</li>
+<li>\(R=\left\{\left\lt a_1,a_2\right\gt,\left\lt a_2,a_1\right\gt\right\}\) とおくと,
+\(R\) は \(A\) 上で (<a href="#symmetric_relation">対象律</a>を満たすが)&nbsp;反対象律を満たさない.</li>
+</ul>
+<p>反対象律の特徴を挙げると:</p>
+<ul>
+<li>対象的な二項関係が存在するとき, 必ず&nbsp;\(x=y\)</li>
+</ul>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="transitive_relation" class="disabled">推移律</a></div>
+  <div class="panel-body">
+  二項関係 &#92;(R\subseteq A\times B&#92;), また &#92;(x,y,z\in A\cap B&#92;) があって, &#92;(\left\lt x,y\right\gt,\left\lt y,z\right\gt\in R&#92;) ならば 
+  &#92;(\left\lt x,z\right\gt \in R&#92;) が存在するとき, &#92;(R&#92;) は推移律を満たすという.
+</div>
+</div>
+
+<p>例えば, 実数の集合 \(\mathbb{R}\) をとってみると, 任意の \(^\forall x,y,z\in\mathbb{R}\) に対して \(x\leq y\) かつ \(y\leq z\) ならば \(x\leq z\) なので 
+\(\leq\) は \(\mathbb{R}\) の下で推移律を満たす.
+しかし, 例えば自然数の集合 \(\mathbb{N}\)&nbsp;に対して
+</p>
+<div class="math">$$R=\left\{\left\lt a, b\right\gt\mid a,b,c\in\mathbb{N}, a=b^2\ {\rm かつ}\ b=c^2\ {\rm ならば}\ a=c^2\ {\rm を満たす}\right\}\subseteq\mathbb{N}^2$$</div>
+<p> としたとき,
+任意の \(x,y\in A\) に対し必ずしも \(\left\lt x,y\right\gt\in R\) が存在するとは限らない (反例: \(16=4^2\) かつ \(4=2^2\) だが \(16\not=2^2\)) ので,
+\(R\) は \(\mathbb{N}\)&nbsp;の下で推移律を満たさない.</p>
+<h3>主な二項関係</h3>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="previous_order" class="disabled">前順序</a></div>
+  <div class="panel-body">
+  二項関係 &#92;(R&#92;) が集合 &#92;(A&#92;) 上で<a href="#reflexive_relation">反射律</a>, <a href="#transitive_relation">推移律</a>を同時に満たすとき, &#92;(R&#92;) は &#92;(A&#92;) 上の前順序関係という.
+</div>
+</div>
+
+<p>これは要するに, じゃんけんのような, 3 すくみ,
+すなわち グー \(\lesssim\) パー \(\lesssim\) チョキ \(\lesssim\) 
+グー \(\lesssim\cdots\) といった循環関係がないこと,&nbsp;グラフで表したときに有向非巡回グラフとなることを要請している.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="equiv_relation" class="disabled">同値</a></div>
+  <div class="panel-body">
+  <a href="#previous_order">前順序関係</a> &#92;(R&#92;) が集合 &#92;(A&#92;) 上で<a href="#symmetric_relation">対象律</a>を満たすとき, 
+  &#92;(R&#92;) は &#92;(A&#92;) 上で同値律を満たすという.
+  また:
+  <ul>
+  <li>&#92;(\left&#92;{y\in X\mid xRy\right&#92;}&#92;) を &#92;(x&#92;) の同値類といい, &#92;(\left[x\right]_R&#92;) や &#92;(\left[x\right]&#92;) と書く.
+  このときの &#92;(x&#92;) は, 同値類 &#92;(\left[x\right]&#92;)&nbsp;の代表元という</li>
+  <li>集合 &#92;(A&#92;) 上の同値関係 &#92;(R&#92;) の同値類全体から成る集合 &#92;(\left&#92;{[a]\mid a\in A\right&#92;}&#92;) を商集合といい, 
+  &#92;(A/R&#92;)&nbsp;と書く</li>
+  </ul>
+</div>
+</div>
+
+<p>まず自明な例でいえば, <span class="math">\(=\)</span> は, 空でない任意の集合上で同値関係にあるといえる.
+ほかに, 例えば, 整数の集合 \(\mathbb{Z}\) について \(R\) を整数 \(p\in\mathbb{Z}\) を法とする合同関係 \(\equiv_p\) とおくと, \(R\) は \(\mathbb{Z}\) 上の同値関係となる.
+\[R=\equiv_p=\left\{\left\lt m,n\right\gt\mid m,n\in\mathbb{Z}, m {\rm と}\ n\ {\rm は}\ p\ {\rm で割ったときの余りが等しい}\right\}\subseteq\mathbb{Z}^2\]&nbsp;一つ一つ確認してみると</p>
+<ul>
+<li>反射律: 任意の \(m\in\mathbb{Z}\) に対して \(m-m=0\cdot p\) なので \(m\equiv_p&nbsp;m\)</li>
+<li>推移律: 任意の \(m,n,k\in\mathbb{Z}\) に対して \(m\equiv_p n\) かつ \(n\equiv_p k\) と仮定すると, ある \(d,d&#8217;\in\mathbb{Z}\) に対して \(m-n=d\cdot p\) かつ \(n-k=d&#8217;\cdot p\) で,
+このとき \(m-k=\left(m-n\right)+\left(n-k\right)=\left(d+d&#8217;\right)\cdot p\) である. \(d+d&#8217;\in\mathbb{Z}\) なので, \(m\equiv_p&nbsp;k\)</li>
+<li>対象律: 任意の \(m,n\in\mathbb{Z}\) に対して \(m\equiv_p n\) と仮定すると, ある \(d\in\mathbb{Z}\) に対して \(m-n=d\cdot p\) だから \(n-m=(-d)\cdot p\) で,
+\(-d\in\mathbb{Z}\) だから \(n\equiv_p&nbsp;m\)</li>
+</ul>
+<p>と同値律を満たすことがわかる.</p>
+<p>同値類や商集合の例として, 集合 \(X=\left\{1,3,6,10,11,15,16\right\}\subseteq \mathbb{N}\) の要素 \(1\) を代表元とし, 
+いまその同値関係を \(5\) を法とした合同<sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup>で考えると, \(1\) の同値類
+\(\left[1\right]_R=\left\{x\mid 1\equiv x\pmod{5}\right\}\) は
+\(\left[1\right]_R=\left\{1,6,11,16\right\}\) である<sup id="fnref-3"><a class="footnote-ref" href="#fn-3">3</a></sup>.&nbsp;また,</p>
+<div class="math">\begin{eqnarray}
+\left[1\right]_R&amp;=&amp;\left\{1,6,11,16\right\}\\\
+\left[3\right]_R&amp;=&amp;\left\{3\right\}\\\
+\left[6\right]_R&amp;=&amp;\left\{1,6,11,16\right\}\\\
+\left[10\right]_R&amp;=&amp;\left\{10,15\right\}\\\
+\left[11\right]_R&amp;=&amp;\left\{1,6,11,16\right\}\\\
+\left[15\right]_R&amp;=&amp;\left\{10,15\right\}\\\
+\left[16\right]_R&amp;=&amp;\left\{1,6,11,16\right\}
+\end{eqnarray}</div>
+<p>であるので, \(X/R=\left\{\left\{1,6,11,16\right\},\left\{10,15\right\},\left\{3\right\}\right\}\)&nbsp;である.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="ordered_relation" class="disabled">半順序</a></div>
+  <div class="panel-body">
+  <a href="#previous_order">前順序関係</a> &#92;(R&#92;) が集合 &#92;(A&#92;) 
+  上で<a href="#antisymmetric_relation">反対象律</a>を満たすとき, &#92;(R&#92;) は &#92;(A&#92;) 上の半順序関係という.
+  </div>
+</div>
+
+<p>例えば, 集合族上の包含関係 \(\subset\)&nbsp;は以下の通り半順序である.</p>
+<div class="math">\begin{eqnarray}
+\begin{array}{l}
+A\subset A\\
+A\subset B{\rm\ かつ}\ B\subset A{\rm\ ならば}\ A=B\\
+A\subset B{\rm\ かつ}\ B\subset C{\rm\ ならば}\ A\subset C
+\end{array}
+\end{eqnarray}</div>
+<p>半順序集合が定義できれば, (最(大|小),&nbsp;極(大|小))(要素|元)が定義できる.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def">
+  <a name="extremum" class="disabled">(最(大|小)|極(大|小))(要素|元)</a></div>
+  <div class="panel-body">
+半順序集合 &#92;(A&#92;) の要素 &#92;(a_0\in A&#92;) について
+
+<ul>
+<li>&#92;(^\exists a\in A\ {\rm s.t.}\ a_0\lesssim a&#92;) なる &#92;(a&#92;) が存在しないとき 
+&#92;(a_0&#92;) を &#92;(A&#92;) の最大(要素|元)といい, &#92;(\max A&#92;) と書く.
+とくに &#92;(A&#92;) が複素数の部分集合 &#92;(A\subseteq\mathbb{C}&#92;) ならば, &#92;(\max A&#92;)&nbsp;を最大値という</li>
+<li>&#92;(^\exists a\in A\ {\rm s.t.}\ a\lesssim a_0&#92;) なる &#92;(a&#92;) が存在しないとき 
+&#92;(a_0&#92;) を &#92;(A&#92;) の最小(要素|元)といい, &#92;(\min A&#92;) と書く.
+とくに &#92;(A&#92;) が複素数の部分集合 &#92;(A\subseteq\mathbb{C}&#92;) ならば, &#92;(\min A&#92;)&nbsp;を最小値という</li>
+</ul>
+
+また &#92;(a\in A&#92;) に対し
+
+<ul>
+<li>&#92;(a\gtrsim a_0&#92;) ならば &#92;(a=a_0&#92;) のとき &#92;(a_0&#92;) を &#92;(A&#92;)&nbsp;の極大(要素|元)という</li>
+<li>&#92;(a\lesssim a_0&#92;) ならば &#92;(a=a_0&#92;) のとき &#92;(a_0&#92;) を &#92;(A&#92;)&nbsp;の極小(要素|元)という</li>
+</ul>
+  </div>
+</div>
+
+<p>なお最大値, 最小値あるいは極大値, 極小値を総じて extremum という (<a href="#ref1">参考文献 1</a>, <a href="#ref2">参考文献 2</a>).
+例えば, 自然数全体の集合 \(\mathbb{N}\) の最小要素は \(0\) であるが, 最大要素は存在しない. 
+実数全体の集合 \(\mathbb{R}\) には最(大|小)要素が存在しない<sup id="fnref-5"><a class="footnote-ref" href="#fn-5">4</a></sup>.
+集合 \(X=\left\{x_1,x_2,x_3\right\}\) に対して順序集合 
+\(\left(\wp\left(X\right)-\left\{\emptyset,X\right\},\leq\right)\)<sup id="fnref-6"><a class="footnote-ref" href="#fn-6">5</a></sup> の極大要素は
+\(\left\{x_1,x_2\right\},\left\{x_1,x_3\right\},\left\{x_2,x_3\right\}\), 
+また極小要素は \(\left\{x_1\right\},\left\{x_2\right\},\left\{x_3\right\}\)&nbsp;である.</p>
+<p>半順序集合が定義できれば,&nbsp;(上|下)(界|限)が定義できる.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="upper_least_bound" class="disabled">(上|下)(界|限)</a></div>
+  <div class="panel-body">
+半順序集合 &#92;(\left(\wp\left(X\right),\leq\right)&#92;) の空でない部分集合 &#92;(A\not =\emptyset&#92;) 
+の任意の要素 &#92;(a\in A&#92;) に対し,
+<ul>
+<li>&#92;(^\exists x\in X\ {\rm s.t.}\ a\lesssim x&#92;) なる &#92;(x&#92;) が存在するならば &#92;(A&#92;) は上に有界であるといい, 
+&#92;(x&#92;) を &#92;(A&#92;)&nbsp;の上界という.</li>
+<li>&#92;(^\exists x\in X\ {\rm s.t.}\ x\gtrsim a&#92;) なる &#92;(x&#92;) が存在するならば &#92;(A&#92;) は下に有界であるといい, 
+&#92;(x&#92;) を &#92;(A&#92;)&nbsp;の下界という.</li>
+<li>&#92;(A&#92;) の上界全体の集合 &#92;(B=\left&#92;{x\in X | a\lesssim x\right&#92;}&#92;) の最小要素 &#92;(\min B&#92;) を &#92;(A&#92;) の上限, 
+または最小上界といい, &#92;(\sup A&#92;)&nbsp;と書く.</li>
+<li>&#92;(A&#92;) の下界全体の集合 &#92;(B=\left&#92;{x\in X | x\lesssim a\right&#92;}&#92;) の最大要素 &#92;(\max B&#92;) を &#92;(A&#92;) の下限, 
+または最大下限といい, &#92;(\inf A&#92;)&nbsp;と書く.</li>
+</ul>
+  </div>
+</div>
+
+<p>例えば, 集合 \(X=\left\{1,\frac{1}{2},\frac{1}{3},\frac{1}{4},\cdots\right\}\) について, 
+上界および最大値は \(\sup A=\max A=1\), 下界は \(\inf A=0\), 最小値は存在しないといえる.
+また, 実数全体の集合 \(R\) の空でない部分集合が(上|下)に有界ならば, その(上|下)限が必ず存在する. 
+これは,&nbsp;ワイエルストラスの定理といわれる.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="directed_set_def" class="disabled">有向 (directed) 集合</a></div>
+  <div class="panel-body">
+集合 &#92;(A\not=\emptyset&#92;) と<a href="#previous_order">前順序関係</a> &#92;(R&#92;) との組 &#92;(\left(A,R\right)&#92;) に対し, 
+&#92;(A&#92;) の任意の有限部分集合 &#92;(X\subseteq A&#92;) の上界 &#92;(\sup X\in A&#92;)
+が存在するとき, &#92;(A&#92;) を有向 (directed) 集合という.
+</div>
+</div>
+
+<p>有向集合は, <a href="#antisymmetric_relation">反対象律</a>を要請されていないので,
+必ずしも<a href="#ordered_relation">半順序</a>集合とはならないことに注意.
+例えば, 集合 \(A=\left\{a_1,a_2,a_3\right\}\) と関係 
+\(R=\left\{\left\lt a_1,a_1\right\gt,\left\lt a_1,a_2\right\gt,\left\lt a_1,a_3\right\gt,
+\left\lt a_2,a_2\right\gt,\left\lt a_3,a_3\right\gt,\left\lt a_3,a_1\right\gt,\left\lt a_3,a_2\right\gt\right\}\)
+の組は, 半順序でない有向集合である
+(\(\left\lt a_1,a_3\right\gt,\left\lt a_3,a_1\right\gt\in R\) だが, \(a_1=a_3\)&nbsp;は要請していない).</p>
+<figure style="text-align:center;" id="directed_but_not_poset_fig">
+<img src="../../../../../images/2019/Mar/15/directed_but_not_poset.svg" />
+<figcaption>図 1:  集合 &#92;(A=\left&#92;{a_1,a_2,a_3\right&#92;}&#92;) と関係 
+&#92;(R=\left&#92;{\left\lt a_1,a_1\right\gt,
+\left\lt a_1,a_2\right\gt,\left\lt a_1,a_3\right\gt,
+\left\lt a_2,a_2\right\gt,\left\lt a_3,a_3\right\gt,
+\left\lt a_3,a_1\right\gt,\left\lt a_3,a_2\right\gt\right&#92;}&#92;) の有向グラフによる図示</figcaption>
+</figure>
+
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="upper_least_bound" class="disabled">全順序</a></div>
+  <div class="panel-body">
+<a href="#ordered_relation">半順序関係</a> &#92;(R&#92;) が集合 &#92;(A&#92;) 上の任意の要素に対して比較可能であるとき, &#92;(R&#92;) は &#92;(A&#92;) 上の全順序関係という.
+</div>
+</div>
+
+<p>任意の全順序集合は有向集合である.
+その他, 例えば, 大小関係 \(\leq\) 
+は自然数の集合 \(\mathbb{N}\)&nbsp;上で全順序関係である.</p>
+<h3>ハッセ図</h3>
+<p>主に半順序集合の図示の方法としてよく使われるハッセ図について,&nbsp;以下にいくつかの例を示す.</p>
+<p>まずは, 入門書でよく見る例題に習い, 自然数全体の集合 \(\mathbb{N}\) の任意の要素 \(m,n\in\mathbb{N}\) について,
+\(m\) が \(n\) を割り切ることを
+\(m\mid n\) と書くとき<sup id="fnref-7"><a class="footnote-ref" href="#fn-7">6</a></sup>, 整除関係 \(\mid\) は \(\mathbb{N}\)&nbsp;上の半順序であることに関して考察しよう.</p>
+<div class="math">\begin{eqnarray}
+\begin{array}{l}
+x\mid x\\
+x\mid y{\rm\ かつ}\ y\mid x{\rm\ ならば}\ x=y\\
+x\mid y{\rm\ かつ}\ y\mid z{\rm\ ならば}\ x\mid z
+\end{array}
+\end{eqnarray}</div>
+<p>さて, このような一つの有限半順序集合上の関係は, <a href="#directed_but_not_poset_fig">図 1</a>
+と同様にして, 以下のように有向グラフにより表現できる.
+いま, 集合 \(X=\left\{n\mid n\in\mathbb{N}, 1\leq n\leq 10\right\}\) に対する整除関係による順序を \(\ll\) で考えると,
+\(x\mid y\) なら \(y\) は必ず \(x\) の後に存在する (\(x\lesssim y\)) ので, 次のような有向非巡回グラフが書ける<sup id="fnref-8"><a class="footnote-ref" href="#fn-8">7</a></sup>.</p>
+<figure style="text-align:center;"><img src="../../../../../images/2019/Mar/15/graph.svg" />
+<figcaption>図2: 整除の下で &#92;(\ll&#92;) の関係における &#92;(X&#92;) の有限グラフによる図示</figcaption>
+</figure>
+
+<p>これをハッセ図では次のように書く.</p>
+<figure style="text-align:center;" id="hasse1"><img src="../../../../../images/2019/Mar/15/hasse1.svg" />
+<figcaption>図3: 整除の下で &#92;(\ll&#92;) の関係における &#92;(X&#92;) のハッセ図による図示</figcaption>
+</figure>
+
+<p>有向グラフが \(x\to y\) というように矢印で順序を表しているのに対して,
+ハッセ図では \(y\) を \(x\) よりも高い位置に置いて, それぞれを線で結ぶ.
+このときの最小値および下限は \(1\) であり, 上界は \(10,8,6,9\) だが \(10,8,6,9\) を比較不可能であるため,&nbsp;上限は存在しない.</p>
+<p>別の例として, <span class="math">\(X=\left\{a, b, c, d\right\}\)</span> とおいたとき, <span class="math">\(a\lesssim c, a\lesssim d, b\lesssim c, b\lesssim d\)</span>
+という半順序関係にある集合 \(\left(X,\lesssim\right)\) 
+を考えると,&nbsp;以下のように示せる.</p>
+<figure style="text-align:center;" id="hasse3"><img src="../../../../../images/2019/Mar/15/nonsup.svg" />
+<figcaption>図4: 半順序関係 &#92;(a\lesssim c, a\lesssim d, b\lesssim c, b\lesssim d&#92;) のハッセ図による図示</figcaption>
+</figure>
+
+<p>このときの下界は \(a,b\), 上界は \(c,d\) である.
+最小元, 最大元, 下限, 上限は \(a,b\) および \(c,d\)&nbsp;が比較不可能であるため存在しない.</p>
+<p>最後にもう 1 つ, 半順序集合 \(\left(\wp\left(\left\{x_1,x_2,x_3\right\}\right), \subset\right)\) について考えてみる.
+先にも示したように, 集合族上の包含関係 \(\subset\) は半順序である. 
+\(\emptyset\subset\left\{x_1\right\},\left\{x_1\right\}\subset\left\{x_1,x_2\right\},\cdots\) と考えていくと,&nbsp;ハッセ図は次のようになる.</p>
+<figure style="text-align:center;" id="hasse2"><img src="../../../../../images/2019/Mar/15/hasse4.svg" />
+<figcaption>図5: 半順序集合 &#92;(\left(\wp\left(\left&#92;{x_1,x_2,x_3\right&#92;}\right), \subset\right)&#92;) 
+のハッセ図による図示</figcaption>
+</figure>
+
+<p>このときの最小元および下限は \(\emptyset\) であり, 最大元および上限は \(\left\{x_1,x_2,x_3\right\}\)&nbsp;である.</p>
+<h3>半順序集合の拡張</h3>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="directet_partial_set_def" class="disabled">
+  有向半順序 (directed partial order) 集合</a></div>
+  <div class="panel-body">
+  <a href="#ordered_relation">半順序関係</a> &#92;(R&#92;) と<a href="#directed_set_def">有向集合</a> &#92;(A&#92;) の組 
+  &#92;(\left(A, R\right)&#92;) に対し &#92;(A&#92;) を有向半順序 dpo (directed partial order) 集合という.
+</div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="dcpo_def" class="disabled">
+  有向完備半順序 (directed complete partial order) 集合</a></div>
+  <div class="panel-body">
+  <a href="#ordered_relation">半順序</a>集合 &#92;(A&#92;) の任意の有向部分集合 &#92;(X\subseteq A&#92;) について, 
+&#92;(X&#92;) の上限 &#92;(\sup X\in A&#92;) が存在するとき, &#92;(A&#92;) を有向完備半順序
+dcpo (directed complete partial order) 集合という.
+</div>
+</div>
+
+<p>いま \(X\subseteq A\) を有限有向部分集合としたとき, 
+有限半順序集合 \(A\) の部分集合 \(X\) は, \(A\) の半順序関係により必ず有向部分集合となる.
+つまり, 有限半順序集合は有向完備半順序集合になる.
+従って, <a href="#hasse1">図 3</a>, <a href="#hasse3">図 4</a>, <a href="#hasse2">図 5</a> で示される集合は
+dcpo 集合である
+(上記の定義のニュアンスとして, 
+たまに任意の部分集合が有向部分集合でなければならないと捉えられる場合があるが,
+そうではなく,&nbsp;あくまで有向部分集合として構成可能な部分集合のうちという意味合いである).</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="cpo_def" class="disabled">完備半順序 (complete partial order) 集合</a></div>
+  <div class="panel-body">
+次の 2 つの条件を満たす半順序集合 &#92;(A&#92;) を完備半順序集合 cpo (complete partial order) という.
+<ol>
+<li>&#92;(A&#92;) は <a href="#dcpo_def">dcpo</a>&nbsp;集合</li>
+<li>&#92;(A&#92;)&nbsp;は最小元をもつ</li>
+</ol>
+</div>
+</div>
+
+<p>以下にいくつかの例を示す.</p>
+<ul>
+<li><a href="#hasse1">図 3</a> および <a href="#hasse2">図 5</a> で示される集合は dcpo でありかつ最小元をもつため cpo だが,
+<a href="#hasse4">図 4</a> は最小元をもたないため, cpo&nbsp;ではない</li>
+<li>\(\left(\mathbb{N}, \leq\right)\) は, 有向集合として \(\mathbb{N}\subseteq\mathbb{N}\) が取れるが, 
+その上限は存在しないので, cpo ではない. 
+ここで, \(\infty = \max \mathbb{N}\) となるように拡張した
+\(\left(\mathbb{N}\cup\left\{\infty\right\},\leq\right)\) で考えると, cpo&nbsp;になる.</li>
+</ul>
+<p>なお, cpo は上限をもつ <span class="math">\(\omega\)</span>&nbsp;鎖と定義することもできる.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="lattice_def" class="disabled">束</a></div>
+  <div class="panel-body">
+二項演算子 &#92;(\land,\lor&#92;)<sup id="fnref-9"><a class="footnote-ref" href="#fn-9">9</a></sup>
+のもとで閉じている空でない集合 &#92;(L&#92;) の任意の要素 &#92;(x,y,z\in L&#92;) に対して, 次の三つの束の公理
+<ol>
+<li id="lattice1">可換律:&#92;(x\land y=y\land x, x\lor y=y\lor&nbsp;x&#92;)</li>
+<li id="lattice2">結合律:&#92;(\left(x\land y\right)\land z=x\land\left(y\land z\right), 
+\left(x\lor y\right)\lor z=x\lor\left(y\lor&nbsp;z\right)&#92;)</li>
+<li id="lattice3">吸収律:&#92;(x\land\left(x\lor y\right)=x,x\lor\left(x\land&nbsp;y\right)=x&#92;)</li>
+</ol>
+を満たすとき, 集合 &#92;(L&#92;) は束であるといい, &#92;(\left(L,\land,\lor\right)&#92;) と表す. 
+ここで &#92;(\lor,\land&#92;) はそれぞれ, 結び, 交わりと言われる.
+いま半順序集合 &#92;(S&#92;) の任意の要素 &#92;(a,b&#92;) について, 
+上限を &#92;[\sup\left\{a,b\right\}:=\left\{x\mid ^\forall m\in M\left(x\lesssim m\right),x\in M\right\}, 
+M=\left\{m\mid a,b\lesssim m,m\in S\right\}&#92;]
+下限を &#92;[\inf\left&#92;{a,b\right&#92;}:=\left\{x\mid ^\forall m\in M\left(x\gtrsim m\right),x\in M\right\},
+M=\left\{m\mid a,b\gtrsim m,m\in S\right\}&#92;] と書くこととすると,
+&#92;(\sup\left&#92;{a,b\right&#92;},\inf\left&#92;{a,b\right&#92;}&#92;) はそれぞれ &#92;(a\lor b,a\land b&#92;) と同値である.
+すなわち, 束とは, &#92;(x, y&#92;) 
+について上限と下限が存在する半順序集合のことである<sup id="fnref-10"><a class="footnote-ref" href="#fn-10">10</a></sup>.
+また,
+
+<ul>
+<li>束 &#92;(L&#92;) の任意の部分集合が上限と下限をもつとき, 束 &#92;(L&#92;)&nbsp;をとくに完備束</li>
+<li>束の部分集合が束であるとき,&nbsp;その束をとくに部分束</li>
+<li>束 &#92;(L&#92;) の任意の要素 &#92;(^\forall x,y\in L&#92;) について 
+&#92;(f\left(x\land y\right)=f\left(x\right)\land f\left(y\right), 
+f\left(x\lor y\right)=f\left(x\right)\lor f\left(y\right)&#92;) を満足する単射 
+&#92;(f: L_1\to L_2&#92;) が存在するとき束 &#92;(L_1,L_2&#92;)&nbsp;は同型</li>
+<li>束の任意の要素 &#92;(x,y,z&#92;) について &#92;(x\lor\left(y\land z\right)=\left(x\lor y\right)\land\left(x\lor z\right), 
+x\land\left(y\lor z\right)=\left(x\land y\right)\lor\left(x\land z\right)&#92;)&nbsp;を満たす束をとくに分配束</li>
+</ul>
+
+という.
+</div>
+</div>
+
+<p>例えば, <a href="#hasse2">先の例</a>でも挙げた \(\left(\wp\left(\left\{x_1,x_2,x_3\right\}\right), \subset\right)\) は束である.
+任意の要素として \(\left\{x_1\right\},\left\{x_2\right\}\) をとってみると, 
+その上限 \(\sup\left\{\left\{x_1\right\},\left\{x_2\right\}\right\}\) は 
+\(\left\{x_1\right\}\subset\left\{x_1,x_2\right\},\left\{x_2\right\}\subset\left\{x_1,x_2\right\}\)
+なので, \(\sup\left\{\left\{x_1\right\},\left\{x_2\right\}\right\}=\left\{x_1,x_2\right\}\)&nbsp;である.</p>
+<figure style="text-align:center;" id="hasse3"><img src="../../../../../images/2019/Mar/15/hasse3.svg" />
+<figcaption>図6:  半順序集合 &#92;(\left(\wp\left(\left&#92;{x_1,x_2,x_3\right&#92;}\right), \subset\right)&#92;) のハッセ図による図示, 
+&#92;(\sup\left\{\left\{x_1\right\},\left\{x_2\right\}\right\}&#92;) を強調</figcaption></figure>
+
+<p>ハッセ図で考えると, 上方向に辺を辿っていったとき, 各ノードそれぞれが順序比較可能でありかつ最小であるものが上限となる.
+同様に,&nbsp;例えば </p>
+<div class="math">\begin{eqnarray}
+\sup\left\{\left\{x_1,x_2\right\},\left\{x_2,x_3\right\}\right\}&amp;=&amp;\left\{x_1,x_2,x_3\right\}\\
+\sup\left\{\left\{x_1\right\},\left\{x_2,x_3\right\}\right\}&amp;=&amp;\left\{x_1,x_2,x_3\right\}\\
+\sup\left\{\emptyset,\left\{x_1,x_2\right\}\right\}&amp;=&amp;\left\{x_1,x_2\right\}\\
+\sup\left\{\emptyset,\emptyset\right\}&amp;=&amp;\emptyset\label{eq:nineth}\tag{9}
+\end{eqnarray}</div>
+<p>となる. 最後の \(\eqref{eq:nineth}\) はすべての束の任意の要素について言えることである. 
+すなわち任意の束 \(L\) の任意の要素 \(x\in L\) に対して \(\sup\left\{x,x\right\}=x\) である.
+これは, 束の公理から導ける,&nbsp;一般にべき等律といわれる定理である.</p>
+<p><strong><a name="proof1" class="disabled">証明</a></strong>:</p>
+<p>\(x,y\in L,z=\left(x\lor y\right)\)&nbsp;に対して</p>
+<div class="math">\begin{eqnarray}
+\sup\left\{x,x\right\}\leftrightarrow x\lor x&amp;=&amp;x\lor\left(x\land\left(x\lor y\right)\right) &amp; \left(\because {\rm \href{#lattice3}{公理3}: 吸収律}\right)\\
+&amp;=&amp;x\lor \left(x\land z\right)&amp;\left(\because {\rm \href{#lattice3}{公理3}: 吸収律}\right)\\
+&amp;=&amp;x&amp;\left(\because {\rm \href{#lattice3}{公理3}: 吸収律}\right)
+\end{eqnarray}</div>
+<p>
+\(\square\)</p>
+<p>ここで一度,&nbsp;上の定理に加えて考察できるいくつかの事項を羅列する.</p>
+<ul>
+<li>下限は, 上限の逆順序で定義されるものである. 例えば, \(\inf\left\{\left\{x_1\right\},\left\{x_2\right\}\right\}=\emptyset\)&nbsp;である</li>
+<li><a name="necessarily_exists_extremum" class="disabled">完備束</a> <span class="math">\(\left(L,\land,\lor\right)\)</span> の任意の部分集合 <span class="math">\(S\subseteq L\)</span> に対して <span class="math">\(S=\emptyset\)</span> ならば <span class="math">\(\sup S=\min L\)</span>, <span class="math">\(S=L\)</span> ならば <span class="math">\(\sup S=\max D\)</span>&nbsp;である</li>
+</ul>
+<p>いま, 分配束 \(L\) の最大元, 最小元をそれぞれ \(1,0\) と書くこととする. 束 \(L\) の任意の要素 \(x,y\in L\) について \(x\lor y=1,x\land y=0\) を満足するとき,
+\(x\) は \(y\) の補元といい, \(x&#8217;\) または \(\bar{x}\) と書く.
+元 \(1,0\) はそれぞれ単位元, 零元である. このときの \(L\) の補元は,&nbsp;唯一に定まる.</p>
+<p><strong>証明</strong>:</p>
+<p>\(x,y\in L\) が \(a\in L\)&nbsp;の二つの補元だと仮定する.</p>
+<div class="math">\begin{eqnarray}
+x&amp;=&amp;x\lor 0\\
+&amp;=&amp;x\lor\left(a\land y\right)\\
+&amp;=&amp;\left(x\lor a\right)\land\left(x\lor y\right)\\
+&amp;=&amp;1\land\left(x\lor y\right)\\
+&amp;=&amp;x\land y
+\end{eqnarray}</div>
+<p>同様に \(y=x\lor y\) となるから \(x=y\).&nbsp;\(\square\)</p>
+<p>束 \(L\) のすべての元が補元をもつとき, \(L\) は可補束, または相補束という.
+可補分配束は一般に<a href="https://falgon.github.io/roki.log/posts/2019/%205%E6%9C%88/29/BooleanAlgebra/">ブール代数</a>である<sup id="fnref-11"><a class="footnote-ref" href="#fn-11">10</a></sup>.</p>
+<h3>参考文献</h3>
+<ol>
+<li><a id="ref1" href="http://mathworld.wolfram.com/Extremum.html">Extremum - Wolfram MathWorld</a> 2019/3/15&nbsp;アクセス.</li>
+<li><a id="ref2" href="https://www.encyclopediaofmath.org/index.php?title=Maximum_and_minimum_of_a_function">Maximum and minimum of a function - Encyclopedia of Mathematics</a> 2019/3/15&nbsp;アクセス.</li>
+<li>赤間世紀, 長田康敬, 玉城史朗 (2006)『<a id="ref3" class="disabled">情報数学入門</a>』共立出版. <span class="caps">ISBN</span>-13:&nbsp;978-4320018143</li>
+<li><span class="dquo">&#8220;</span>Directed complete partial orders&#8221;, <a href="http://math.chapman.edu/~jipsen/structures/doku.php/directed_complete_partial_orders">http://math.chapman.edu/~jipsen/structures/doku.php/directed_complete_partial_orders</a> 2020/7/9&nbsp;アクセス.</li>
+</ol>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn-1">
+<p>例えば \(xy\) 座標平面を \(\mathbb{R}^2\) と書くのは, それが実数二つのペアの集合と考えられるからである.&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn-2">
+<p>任意の整数 \(a,b,c,n\in \mathbb{N}\) に対して <div class="math">\begin{eqnarray}a\equiv b \pmod n\\\ a\equiv b\pmod n&amp;\rightarrow&amp; b\equiv a\pmod n\\\ a\equiv b, b\equiv c\pmod n &amp;\rightarrow&amp; a\equiv c\pmod n\end{eqnarray}</div> であることを容易に確かめられる. 従って, 合同は同値関係である.&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn-3">
+<p>これをとくに剰余類という. <span class="caps">FYI</span>: <a href="https://falgon.github.io/roki.log/posts/2018/%207%E6%9C%88/13/elgamalEncryption/">エルガマル暗号, ガロア体のセクションを参照</a>.&#160;<a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn-5">
+<p>関連: <a href="https://falgon.github.io/roki.log/posts/2018/10%E6%9C%88/04/jacobian/#epsilonDelta-definitionOfLimit">\(\epsilon-\delta\) 論法</a>&#160;<a class="footnote-backref" href="#fnref-5" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn-6">
+<p>ここで, \(\wp\left(A\right)\) は \(\wp\left(A\right):=\left\{Y\mid Y\subseteq A\right\}\) であり, \(A\) の冪集合という. すなわち \(A=\left\{a,b\right\}\) とすると \(\wp\left(A\right)=\left\{\emptyset,\left\{a\right\},\left\{b\right\},\left\{a,b\right\}\right\}\) となる. いまその要素の個数を \(\left|\wp\left(A\right)\right|\) と書くとすると, \(\left|\wp\left(A\right)\right|\) は集合 \(A\) の全要素の全組み合わせであるので \(\left|\wp\left(A\right)\right|={}_3C_0+{}_3C_1+{}_3C_2=7\) となる. 従って, ここで取り上げた例題について丁寧に書き出してみると, \[\wp\left(X\right)-\left\{\emptyset,X\right\}=\left\{X,\left\{x_1,x_2\right\},\left\{x_1,x_3\right\},\left\{x_2,x_3\right\},\left\{x_1\right\},\left\{x_2\right\},\left\{x_3\right\},\emptyset\right\}-\left\{\emptyset,X\right\}\] ということ.&#160;<a class="footnote-backref" href="#fnref-6" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn-7">
+<p>\(\mid\) は整数論の界隈で普遍的な記述である. 「割り切れない」も同様にして \(\not\mid\) と書いたりする. <span class="caps">FYI</span>: <a href="https://falgon.github.io/roki.log/posts/2018/%207%E6%9C%88/13/elgamalEncryption/">エルガマル暗号</a>&#160;<a class="footnote-backref" href="#fnref-7" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn-8">
+<p>\(1\) と自分自身以外の数で割り切れるかを考える. \(1\) は始点なので, \(1\) のノードへ向けられる辺はないだろう. \(2\) について考えてみると, \(1\mid 2,3\) なら \(1\mid 3\) であるが, \(4\) は \(1\mid 2\mid 4\) である. これを全要素について適用していくと図のようになる.&#160;<a class="footnote-backref" href="#fnref-8" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+<li id="fn-9">
+<p>論理記号とは無関係であることに注意.&#160;<a class="footnote-backref" href="#fnref-9" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+</li>
+<li id="fn-10">
+<p>半順序集合 \(S\) の任意の要素 \(x, y\) に対して \(\sup\left\{x,y\right\},\inf\left\{x,y\right\}\) が存在すれば, \(x, y\) と順序関係のある \(z\in S\) に対して
+<div class="math">\begin{eqnarray}\sup\left\{x,y\right\}&amp;=&amp;\sup\left\{y,x\right\}\\ \sup\left\{\sup\left\{x,y\right\},z\right\}&amp;=&amp;\sup\left\{x,\sup\left\{y,z\right\}\right\}\\ \sup\left\{x,\inf\left\{x,y\right\}\right\}&amp;=&amp;x\end{eqnarray}</div> より束の公理を満たす. 双対の原理より双対についても成り立つ.&#160;<a class="footnote-backref" href="#fnref-10" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+</li>
+<li id="fn-11">
+<p>可補束ついて次の性質が成り立つ. <div class="math">\begin{eqnarray}x''&amp;=&amp;x\\ 0'&amp;=&amp;1\\ 1'&amp;=&amp;0\\ x\lor 0&amp;=&amp;x\\ x\land 0&amp;=&amp;0\\ x\lor 1&amp;=&amp;1\\ x\land 1&amp;=&amp;x\\ \left(x\land y\right)'&amp;=&amp;x'\lor y'\\ \left(x\lor y\right)'&amp;=&amp;x'\land y'\\ x\leq y&amp;\leftrightarrow&amp; y'\leq x'\end{eqnarray}</div> 面倒なので証明略. <a href="https://falgon.github.io/roki.log/posts/2019/%205%E6%9C%88/29/BooleanAlgebra/">ブール代数</a>のエントリにて分配律を用いずに証明しているものがあるので, それで代用できるかと.&#160;<a class="footnote-backref" href="#fnref-11" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js','color.js','enclose.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: false," +
+        "    messageStyle: 'None'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+      </div>
+<!-- /.entry-content -->
+      <footer class="post-info text-muted">
+        <button type="button" class="btn btn-default">          
+          <a href="../../../../../category/math.html"><div class="fa fa-lg fa-folder-open"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/math.html"><div class="fa fa-lg fa-tag"></div> math</a>
+        </button>
+      </footer>
+      <!-- /.post-info -->
+    <!-- Comment BEGIN -->
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'roki-log';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <!-- Comment END -->
+    </section>
+    </div>
+<footer class="footer">
+      <div class="container">
+          <p class="footer-text">&copy; <a href="../../../../..">roki.log</a> powered by 
+          <a href="https://getpelican.com/">pelican</a> and 
+          <a href="https://github.com/falgon/nikhil-theme">nikhil-theme (forked)</a><br>
+              <small>  <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>, except where indicated otherwise.
+</small>
+            </p>
+   </div>
+</footer>    <script src="../../../../../theme/js/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-116653080-1', 'auto');
+      ga('send', 'pageview');
+       $('#myModal').modal({show: true});
+
+    </script>
+  </body>
+</html>

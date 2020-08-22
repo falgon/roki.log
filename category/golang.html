@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>roki.log - golang</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../theme/style.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="../favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/solid.css" integrity="sha384-TbilV5Lbhlwdyc4RuIV/JhD8NR+BfMrvz4BL5QFa2we1hQu6wvREr3v6XSRfCTRp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/brands.css" integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css" integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../theme/js/css_browser_selector.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="roki" />
+        <link href="../theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+        <link href="../theme/typogrify.css" rel="stylesheet">
+    <link href="https://falgon.github.io/roki.log/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="roki.log Full Atom Feed" />
+    <link href="https://falgon.github.io/roki.log/feeds/golang.rss.xml" type="application/atom+xml" rel="alternate" title="roki.log Categories Atom Feed" />
+
+  </head>
+  <body id="index" class="archive" style="font-family: '游明朝', 'Yu Mincho' , '游明朝体' , 'YuMincho' , 'ヒラギノ明朝 Pro W3' , 'Hiragino Mincho Pro' , 'HiraMinProN-W3', 'HGS明朝E' , 'ＭＳ Ｐ明朝' , 'MS PMincho', serif;">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">👋New blog information / ブログ移転のお知らせ</h4>
+      </div>
+      <div class="modal-body">
+      This blog has been moved to <a href="https://roki.dev/roki.log">new one (roki.dev/roki.log)</a> for 
+      serving you better view. This blog is no longer updated.
+      Thank you for migrating and re-registering your bookmarks.
+      <hr >
+      このブログは, 
+      <a href="https://roki.dev/roki.log">新ブログ (roki.dev/roki.log)</a> 
+      に移転しました。このページの今後の更新はありませんが,
+      移行用, 記録用に残されています。
+      もし宜しければ, 移行, またはブックマークの再登録をよろしくお願いいたします。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+       </div>
+    </div>
+  </div>
+</div>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="..">roki.log</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li>
+                    <a href="../pages/about"><i class="fas fa-info-circle" style="margin-right: 4px;"></i>About</a>
+            </li>
+            <li>
+            </li>
+            
+            <li class="active"><a href="../tags.html"><i class="fas fa-tags" style="margin-right: 4px;"></i>Tags</a></li>
+            <li><span>
+                <form class="navbar-search" action="https://falgon.github.io/roki.log/search.html">
+                    <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+    <section id="content" class="content">
+      <ol class="breadcrumb">
+        <li><a href=".."><div class="fa fa-lg fa-home"></div><span class="hidden-xs"> Home</span></a></li>
+        <li><a href="../categories.html"><div class="fa fa-lg fa-folder-open"></div> Categories <span class="badge">6</span></a></li>
+        <li class="active"><div class="fa fa-lg fa-folder-open"></div> golang <span class="badge">5</span></li>
+      </ol>
+      <div class="row">
+        <div class="col-sm-3">
+          <span class="text-muted">水 15 8月 2018</span>
+        </div>
+        <div class="col-sm-9">
+          <p>
+            <a href="../posts/2018/ 8月/15/aws_ec2_distcc/" rel="bookmark" title="Permalink to AWS EC2 の各種環境を自動構築して distcc による分散コンパイルを実行する">AWS EC2 の各種環境を自動構築して distcc による分散コンパイルを実行する</a>
+            <br/>
+            軽い気持ちでクラウド上の分散コンパイル環境の自動構築から実行の仕組みをつくった記録
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+          <span class="text-muted">水 01 8月 2018</span>
+        </div>
+        <div class="col-sm-9">
+          <p>
+            <a href="../posts/2018/ 8月/01/aws_sns_s3_ec2/" rel="bookmark" title="Permalink to AWS SNS + S3 でバケット内の状態を即座に EC2 に反映するまで">AWS SNS + S3 でバケット内の状態を即座に EC2 に反映するまで</a>
+            <br/>
+            AWS SNS による HTTP リクエストをトリガーに, S3 バケットの状態を EC2 上のコンテンツへ即座に反映するための構造と簡単な実装
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+          <span class="text-muted">月 23 7月 2018</span>
+        </div>
+        <div class="col-sm-9">
+          <p>
+            <a href="../posts/2018/ 7月/23/ec2failover/" rel="bookmark" title="Permalink to VRRP on AWS VPC-EC2">VRRP on AWS VPC-EC2</a>
+            <br/>
+            EC2 で VRRP するときのメモ及びユーティリティツールの実装
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+          <span class="text-muted">日 08 7月 2018</span>
+        </div>
+        <div class="col-sm-9">
+          <p>
+            <a href="../posts/2018/ 7月/08/awsec2tag/" rel="bookmark" title="Permalink to EC2 のタグを SDK で操作">EC2 のタグを SDK で操作</a>
+            <br/>
+            AWS SDK for go で AWS EC2 のタグを色々と操作する
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+          <span class="text-muted">日 17 6月 2018</span>
+        </div>
+        <div class="col-sm-9">
+          <p>
+            <a href="../posts/2018/ 6月/17/golangtrial/" rel="bookmark" title="Permalink to golang 始めたてメモ">golang 始めたてメモ</a>
+            <br/>
+            golang 始めたてほやほや
+          </p>
+        </div>
+      </div>
+      <div>
+        <ul class="pager">
+          <!--- <li class="previous disabled"><a>&larr; Previous</a></li> -->
+          <!--- <li class="next disabled"><a>Next &rarr;</a></li> -->
+        </ul>
+      </div>
+    </section>
+    <!-- content -->
+    </div>
+<footer class="footer">
+      <div class="container">
+          <p class="footer-text">&copy; <a href="..">roki.log</a> powered by 
+          <a href="https://getpelican.com/">pelican</a> and 
+          <a href="https://github.com/falgon/nikhil-theme">nikhil-theme (forked)</a><br>
+              <small>  <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>, except where indicated otherwise.
+</small>
+            </p>
+   </div>
+</footer>    <script src="../theme/js/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-116653080-1', 'auto');
+      ga('send', 'pageview');
+       $('#myModal').modal({show: true});
+
+    </script>
+  </body>
+</html>

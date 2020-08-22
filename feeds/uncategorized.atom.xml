@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>roki.log - Uncategorized</title><link href="https://falgon.github.io/roki.log/" rel="alternate"></link><link href="https://falgon.github.io/roki.log/feeds/uncategorized.atom.xml" rel="self"></link><id>https://falgon.github.io/roki.log/</id><updated>2018-03-23T08:00:00+09:00</updated><entry><title>ハローワールド</title><link href="https://falgon.github.io/roki.log/posts/2018/%203%E6%9C%88/22/my_first_post/" rel="alternate"></link><published>2018-03-22T16:50:00+09:00</published><updated>2018-03-23T08:00:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2018-03-22:/roki.log/posts/2018/ 3月/22/my_first_post/</id><summary type="html">&lt;p&gt;ブログ移転してきた&lt;/p&gt;</summary><content type="html">&lt;h3&gt;ブログを移転した&lt;/h3&gt;
+&lt;script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"&gt;&lt;/script&gt;
+
+&lt;p&gt;これまでは約二年ほど &lt;a href="https://roki.hateblo.jp/"&gt;はてブロ&lt;/a&gt;に, メモや学習ログなどを投稿し, 利用させて頂いていたが,
+&lt;span class="math"&gt;\({\rm\LaTeX}\)&lt;/span&gt; の記述においてはてブロ固有の独特な記法を必要とされることがあり, これらの点で
+少し不便に感じていたので, 新たにブログを立ち上げこちらに移転することとした. 
+このブログは github pages でホスティングされており, &lt;a href="https://github.com/getpelican"&gt;Pelican&lt;/a&gt; という Static site generator によって成り立っている. またテーマは, &lt;a href="https://github.com/gunchu/nikhil-theme"&gt;nikhil-theme&lt;/a&gt; を&lt;a href="https://github.com/falgon/nikhil-theme"&gt;フォークして&lt;/a&gt;利用させて頂いている.&lt;/p&gt;
+&lt;h3&gt;移転で行った作業&lt;/h3&gt;
+&lt;p&gt;流れとしては, 通常通り, &lt;code&gt;pip&lt;/code&gt; で Pelican を導入し, &lt;code&gt;pelican-quickstart&lt;/code&gt; によって必要なディレクトリ階層と, 最低限のファイル構成を得て, そこから諸々の設定を行った. Pelican + github pages でブログを管理する事例はとても多く, また&lt;a href="http://docs.getpelican.com/"&gt;ドキュメント&lt;/a&gt;も充実しており, 特別困ることはなかったが, いくつかテーマの修正, 機能追加などを行った. 
+&lt;strong&gt;本ブログ構造や管理に関する変更の記録は, 本エントリにて随時更新している&lt;/strong&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class="caps"&gt;HTTP&lt;/span&gt; コンテンツが入り混じっていたため, これを&lt;a href="https://github.com/falgon/nikhil-theme/commit/c9e2b23e1a46ac35f66f5178cb16e1d5ea3f8a16"&gt;修正した&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://docs.getpelican.com/en/stable/changelog.html#id2"&gt;Pelican の 3.7.0 から &lt;code&gt;PAGES&lt;/code&gt; という context variable が &lt;code&gt;pages&lt;/code&gt; に変更されており&lt;/a&gt;, そのままでは正常にレンダリングされないためこれを&lt;a href="https://github.com/falgon/nikhil-theme/commit/5bdb0be4eea2636963caed081a8909822eaab297"&gt;修正した&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;favicon の生成を ImageMagick で行い, これを &lt;a href="https://github.com/getpelican/pelican/wiki/Tips-n-Tricks#second-solution-using-static_paths"&gt;Wiki&lt;/a&gt;&amp;nbsp;通りに設定した. &lt;/li&gt;
+&lt;li&gt;コメント機能となる &lt;span class="caps"&gt;DISQUS&lt;/span&gt;&amp;nbsp;を追加した.&lt;/li&gt;
+&lt;li&gt;&lt;span class="caps"&gt;CC&lt;/span&gt;&amp;nbsp;ライセンスを追加した.&lt;/li&gt;
+&lt;li&gt;検索機能を追加した.&lt;/li&gt;
+&lt;li&gt;404&amp;nbsp;ページを追加した.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/falgon/pelican_dynamic"&gt;pelican_dynamic プラグインを fork&lt;/a&gt; し, 少し修正して導入して d3.js&amp;nbsp;が動くようにした.&lt;/li&gt;
+&lt;li&gt;テーマ内臓のシンタックスハイライトのスタイルシートが Mathjax の利用するスタイルシートと衝突しており(&lt;a href="https://github.com/SimonEnsemble/SimonEnsemble.github.io/blob/d41a60d001fb2c18cb123894bd9afbe76fadada1/_sass/_syntax.scss#L44-L45"&gt;該当部分&lt;/a&gt;), 数式が緑色でレンダリングされてしまっていた. これを, ワークアラウンドとして &lt;a href="https://github.com/falgon/nikhil-theme/commit/466dce1d0e17b8b48c506cef7a7e75321e61c162"&gt;Mathjax の使うクラスに対して&lt;code&gt;color: inherit;&lt;/code&gt;を指定&lt;/a&gt;し, 修正した&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://livereload.readthedocs.io/en/latest/"&gt;python-livereload&lt;/a&gt; を用いて記事のライブビューができるようにした. バックグラウンドで立ち上がって欲しいので, それら諸々をシェルスクリプトで書いた(以下の gist&amp;nbsp;をサブモジュールとしてマスターブランチに登録している).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="p-3"&gt;
+&lt;ul class="nav nav-tabs"&gt;
+  &lt;li class="nav-item active"&gt;
+    &lt;a href="#tab1" class="nav-link active" data-toggle="tab"&gt;live_preview.py&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a href="#tab2" class="nav-link active" data-toggle="tab"&gt;live_preview.sh&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;/div&gt;
+
+&lt;div class="tab-content" style="max-height: 400px; overflow-y: scroll;"&gt;
+  &lt;div id="tab1" class="tab-pane active"&gt;
+    &lt;script src="https://gist.github.com/falgon/5d3fe6838e7f6cb4090823df417680e5.js?file=live_preview.py" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+  &lt;div id="tab2" class="tab-pane"&gt;
+    &lt;script src="https://gist.github.com/falgon/5d3fe6838e7f6cb4090823df417680e5.js?file=live_preview.sh" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;ローカルマシンでのサイト生成をやめ, 特定ブランチへのプッシュをトリガーに Bitbucket Pipeline によってサイト生成,&amp;nbsp;デプロイを行うこととした.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;構造&lt;/h3&gt;
+&lt;p&gt;フォークしたテーマと &lt;a href="https://github.com/getpelican/pelican-plugins"&gt;pelican-plugins&lt;/a&gt; をマスターブランチのサブモジュールとして置いた.
+マスターブランチには, ブログ記事の下書きなども貯めようと思っていたため, 特別これを公開する意味はない.
+そこで, マスターブランチは private リポジトリとして bitbucket に, gh-pages ブランチは github にホスティングして頂くこととした&lt;sup id="fnref-2"&gt;&lt;a class="footnote-ref" href="#fn-2"&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://bitbucket.org/r0ki/roki.log"&gt;master&lt;/a&gt;&amp;nbsp;(非公開なのでここに貼っても特別意味はないが)&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/falgon/roki.log"&gt;gh-pages&lt;/a&gt; &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;gh-pages への反映は, ghp-import を利用している. 
+記事を公開しようとするたびに毎度ブランチをチェックアウトするのは面倒なので,
+Makefile にコマンドを書いておき,
+そのコマンド一発で記事の生成と gh-pages へのプッシュを行えるようにした. 
+また, bitbucket には標準搭載の &lt;span class="caps"&gt;CI&lt;/span&gt; (bitbucket Pipelines) があるので,
+master ブランチへのプッシュをトリガーに,&amp;nbsp;自動で記事の生成テストを行うようにしている.&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;おそらく &lt;a href="https://github.com/getpelican/pelican-plugins/issues/349"&gt;#349&lt;/a&gt; の問題も, この関係なのではないかと思われる.&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-2"&gt;
+&lt;p&gt;2019/1/7, &lt;a href="https://github.blog/2019-01-07-new-year-new-github/"&gt;The GitHub Blog&lt;/a&gt; でアナウンスされた通り, マイクロソフトに買収された GitHub はプライベートリポジトリの機能を一般ユーザへ無償で公開した. 従って, プライベートリポジトリの機能を使うために, GitHub 以外のサービスを用いるということの必然性はなくなったわけであるが, なんとなくベンダーロックインしてしまうことに抵抗があるので, この構成で運用を続けていく予定.&amp;#160;&lt;a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js','color.js','enclose.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: false," +
+        "    messageStyle: 'None'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="Uncategorized"></category></entry></feed>

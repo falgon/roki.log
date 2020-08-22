@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>三角関数の公式の導出 - roki.log</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../../../theme/style.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="../../../../../favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/solid.css" integrity="sha384-TbilV5Lbhlwdyc4RuIV/JhD8NR+BfMrvz4BL5QFa2we1hQu6wvREr3v6XSRfCTRp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/brands.css" integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css" integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../../../../theme/js/css_browser_selector.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="roki" />
+        <link href="../../../../../theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+        <link href="../../../../../theme/typogrify.css" rel="stylesheet">
+    <link href="https://falgon.github.io/roki.log/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="roki.log Full Atom Feed" />
+    <link href="https://falgon.github.io/roki.log/feeds/math.rss.xml" type="application/atom+xml" rel="alternate" title="roki.log Categories Atom Feed" />
+
+  </head>
+  <body id="index" class="archive" style="font-family: '游明朝', 'Yu Mincho' , '游明朝体' , 'YuMincho' , 'ヒラギノ明朝 Pro W3' , 'Hiragino Mincho Pro' , 'HiraMinProN-W3', 'HGS明朝E' , 'ＭＳ Ｐ明朝' , 'MS PMincho', serif;">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">👋New blog information / ブログ移転のお知らせ</h4>
+      </div>
+      <div class="modal-body">
+      This blog has been moved to <a href="https://roki.dev/roki.log">new one (roki.dev/roki.log)</a> for 
+      serving you better view. This blog is no longer updated.
+      Thank you for migrating and re-registering your bookmarks.
+      <hr >
+      このブログは, 
+      <a href="https://roki.dev/roki.log">新ブログ (roki.dev/roki.log)</a> 
+      に移転しました。このページの今後の更新はありませんが,
+      移行用, 記録用に残されています。
+      もし宜しければ, 移行, またはブックマークの再登録をよろしくお願いいたします。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+       </div>
+    </div>
+  </div>
+</div>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../../..">roki.log</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li>
+                    <a href="../../../../../pages/about"><i class="fas fa-info-circle" style="margin-right: 4px;"></i>About</a>
+            </li>
+            <li>
+            </li>
+            
+            <li><a href="../../../../../tags.html"><i class="fas fa-tags" style="margin-right: 4px;"></i>Tags</a></li>
+            <li><span>
+                <form class="navbar-search" action="https://falgon.github.io/roki.log/search.html">
+                    <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+    <section id="content" class="article content">
+      <header>
+        <h2 class="entry-title">
+          三角関数の公式の導出
+        </h2>
+        
+        <div class="text-muted">木 06 9月 2018</div>
+      </header>
+<!-- .entry-content -->
+      <div class="entry-content">
+        <p><a href="#ref1">参考文献 1</a> では, 高木貞治氏の書いた<a href="#ref2">解析概論</a>の緒言として示されている三角関数の古典的な導入法の問題点と,
+それに対する合理的な導入, 定義に関する記述があり, 興味深かったので読んでいたのだが, 
+ふと高校数学 Ⅲ  の「普通な」加法定理や積和, 和積の公式, 導関数の導出などが頭から抜けていたので, 復習がてら書くことにした.
+一応, このエントリで言う三角関数 \(\cos\theta,\sin\theta\) の定義は高校数学の範囲で言われる定義と同様であり,&nbsp;次のとおりである.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def">
+  <a name="hs_trignometric" class="disabled">高校数学における &#92;(\cos\theta,\sin\theta&#92;) の定義</a></div>
+  <div class="panel-body">
+直行座標平面上の原点 &#92;(O\left(0,0\right)&#92;) を中心とする半径 &#92;(1&#92;) の円 &#92;(C&#92;) の &#92;(x\geq 0,y\geq 0&#92;) の部分を &#92;(C_{+}&#92;) としたとき,
+弧度法によると, 点 &#92;(A\left(1,0\right)&#92;), &#92;(C_{+}&#92;) 上の点 &#92;(P\left(x,y\right)&#92;) を角 &#92;(A O P&#92;) が &#92;(\theta\ \left(0\lt\theta\leq\frac{\pi}{2}\right)&#92;) となるようにとれば,
+孤 &#92;(A P&#92;) の長さは 角 &#92;(A O P&#92;) そのもの, すなわち &#92;(\theta&#92;) である. このとき &#92;(x=\cos\theta,y=\sin\theta&#92;) である.
+</div>
+</div>
+
+<p>よくよく考えてみれば, <a href="#hs_trignometric">この定義</a>では,
+孤 \(A P\) の長さおよび実数 \(0\lt\theta\leq\frac{\pi}{2}\) に対し孤 \(A P\) の長さが \(\theta\) となる \(C_{+}\) 上の点 
+\(P\) が存在することについて, 特に説明しておらず, 定義としては不十分な点があることが考えられる.
+<a href="#ref1">参考文献 1</a> にはこの問題に対する考察が綴られており, 読みやすい文体で書かれているので興味があれば読んでみることを勧める.
+本エントリはそのような意味で, 特に面白みもなくただ単に高校数学 Ⅲ までの三角関数の内容を復習しているだけのものとなっているので,&nbsp;その点は悪しからず.</p>
+<h3>加法定理</h3>
+<p>この間で余弦定理を暗に認めたものとして利用する.</p>
+<div style="text-align:center;">
+<a title="三村周平 [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:%E5%8A%A0%E6%B3%95%E5%AE%9A%E7%90%86.png"><img width="330" alt="加法定理" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/%E5%8A%A0%E6%B3%95%E5%AE%9A%E7%90%86.png/512px-%E5%8A%A0%E6%B3%95%E5%AE%9A%E7%90%86.png"></a>
+</div>
+
+<p>単位円上の二点 \(P\left(\cos p,\sin p\right),Q\left(\cos q,\sin q\right)\) がある.
+上図のように, 原点 \(O\) に対し, \(O P\) と \(x\) 軸の成す角を \(p\), 
+\(O Q\) と \(x\) 軸の成す角を \(q\) とする. 線分 \(P Q\)&nbsp;の長さを座標成分で表すと, 
+</p>
+<div class="math">\begin{eqnarray}
+P Q^2&amp;=&amp;\left(\cos q-\cos p\right)^2+\left(\sin q-\sin p\right)^2\\\
+&amp;=&amp;\cos^2 q-2\cos q\cos p+\cos^2 p+\sin^2 q-2\sin q\sin p+\sin^2 p\\\
+&amp;=&amp;\left(\sin^2 p+\cos^2 p\right)+\left(\sin^2 q+\cos^2 q\right)-2\cos q\cos p-2\sin q\sin p\\\
+&amp;=&amp;2-2\left(\sin p\sin q+\cos p\cos q\right)\label{eq:first}\tag{1}
+\end{eqnarray}</div>
+<p>
+また,&nbsp;余弦定理より
+</p>
+<div class="math">\begin{eqnarray}
+P Q^2&amp;=&amp;O P^2+O Q^2-2 O P\cdot O Q\cos\left(p-q\right)\\
+&amp;=&amp;1^2+1^2-2\cdot 1\cdot 1\cdot \cos\left(p-q\right)\\
+&amp;=&amp;2-2\cos\left(p-q\right)\label{eq:second}\tag{2}
+\end{eqnarray}</div>
+<p>
+\(\eqref{eq:first},\eqref{eq:second}\) より
+\[2-2\cos\left(p-q\right)=2-2\left(\cos p\cos q+\sin p\sin q\right)\leftrightarrow \cos\left(p-q\right)=\cos p\cos q+\sin p\sin q\label{eq:third}\tag{3}\]
+ここで, \(\eqref{eq:third}\) の \(q\) を \(q+\frac{\pi}{2}\) とすると, 三角関数の定義より
+\[
+\cos\left\{p-\left(q+\frac{\pi}{2}\right)\right\}=\cos p\cos\left(q+\frac{\pi}{2}\right)+\sin p\sin\left(q+\frac{\pi}{2}\right)\leftrightarrow\sin\left(p-q\right)=\sin p\cos q-\cos p\sin q
+\]
+\(q=-q\) とおくと \[\sin\left(p+q\right)=\sin p\cos q+\cos p\sin q\label{eq:fourth}\tag{4}\]&nbsp;\(\square\)</p>
+<h3>三角関数の導関数</h3>
+<p>まず \(f(x)=\sin x\) の導関数 \(f&#8217;(x)\) について,&nbsp;導関数の定義より
+</p>
+<div class="math">\begin{eqnarray}
+f'(x)&amp;=&amp;\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}\\
+&amp;=&amp;\lim_{h\to 0}\frac{\sin(x+h)-\sin x}{h}\\
+&amp;=&amp;\lim_{h\to 0}\frac{\sin x\cos h+\cos x\sin h-\sin x}{h}\ \because{\rm 加法定理}\ \eqref{eq:fourth}\ {\rm より}\label{eq:sixth}\tag{5}\\
+&amp;=&amp;\lim_{h\to 0}\frac{\sin x\left(\cos h-1\right)+\cos x\sin h}{h}\\
+&amp;=&amp;\lim_{h\to 0}\left\{\frac{\sin x\left(\cos h-1\right)}{h}+\frac{\cos x\sin h}{h}\right\}\\ 
+&amp;=&amp;\lim_{h\to 0}\left(\sin x\underbrace{\frac{\cos h - 1}{h}}_{A}+\cos x\frac{\sin h}{h}\right)\label{eq:fifth}\tag{6}
+\end{eqnarray}</div>
+<p>項 \(A\)&nbsp;について</p>
+<div class="math">\begin{eqnarray}
+\frac{\cos h-1}{h}\cdot\frac{\cos h+1}{\cos h+1}&amp;=&amp;\frac{\cos^2h-1}{h\left(\cos h+1\right)}\\
+&amp;=&amp;\frac{-\sin^2 h}{h\left(\cos h+1\right)}\ \because\sin^2+\cos^2=1\\
+&amp;=&amp;\frac{-\sin h\cdot\sin h}{h\left(\cos h+1\right)}\cdot\frac{h}{h}\\
+&amp;=&amp;-\frac{\sin h}{h}\cdot\frac{\sin h}{h}\cdot\frac{h}{\cos h+1}
+\end{eqnarray}</div>
+<p>ここで, \(\displaystyle\lim_{h\to 0}-\frac{\sin h}{h}\cdot\frac{\sin h}{h}\cdot\frac{h}{\cos h+1}=0\) だから,
+\(\eqref{eq:fifth}\) より \[f&#8217;(x)=\sin x\cdot 0+\cos x\cdot 1=\cos x\label{eq:tenth}\tag{7}\]
+次に \(f(x)=\cos x\) の導関数 \(f&#8217;(x)\) について,&nbsp;導関数の定義より</p>
+<div class="math">\begin{eqnarray}
+f'(x)&amp;=&amp;\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}\\
+&amp;=&amp;\lim_{h\to 0}\frac{\cos(x+h)-\cos x}{h}\\
+&amp;=&amp;\lim_{h\to 0}\frac{\cos x\cos h-\sin x\sin h-\cos x}{h}\ \because{\rm 加法定理}\ \eqref{eq:third}\ {\rm より}\label{eq:ninth}\tag{8}\\
+&amp;=&amp;\lim_{h\to 0}\frac{\cos x\left(\cos h-1\right)-\sin x\sin h}{h}\\
+&amp;=&amp;\lim_{h\to 0}\left\{\frac{\cos x\left(\cos h-1\right)}{h}-\frac{\sin x\sin h}{h}\right\}\\ 
+&amp;=&amp;\lim_{h\to 0}\left(\cos x\frac{\cos h - 1}{h}-\sin x\frac{\sin h}{h}\right)\\
+&amp;=&amp;\cos x\cdot 0-\sin x\cdot 1\\
+&amp;=&amp;-\sin x\label{eq:eleventh}\tag{9}
+\end{eqnarray}</div>
+<p>次に \(f(x)=\tan x\) の導関数 \(f&#8217;(x)\) について,
+これは \(f&#8217;(x)=\left(\tan x\right)&#8217;=\left(\frac{\sin x}{\cos x}\right)&#8217;\)&nbsp;だから
+</p>
+<div class="math">\begin{eqnarray}
+f'(x)&amp;=&amp;\left(\frac{\sin x}{\cos x}\right)'\\
+&amp;=&amp;\frac{\left(\sin x\right)'\cos x-\sin x\left(\cos x\right)'}{\cos^2 x}\\
+&amp;=&amp;\frac{\cos x\cos x-\sin x\left(-\sin x\right)}{\cos^2 x}\ \because\eqref{eq:tenth},\eqref{eq:eleventh}\ {\rm より}\\
+&amp;=&amp;\frac{\cos^2 x+\sin^2 x}{\cos^2 x}\\
+&amp;=&amp;\frac{1}{\cos^2 x}
+\end{eqnarray}</div>
+<p>最後に \(f(x)=\frac{1}{\tan x}\) の導関数 \(f&#8217;(x)\) について,
+これは \(f&#8217;(x)=\frac{1}{\tan x}=\left(\frac{\cos x}{\sin x}\right)&#8217;\)&nbsp;だから
+</p>
+<div class="math">\begin{eqnarray}
+f'(x)&amp;=&amp;\left(\frac{\cos x}{\sin x}\right)'\\
+&amp;=&amp;\frac{\left(\cos x\right)'\sin x-\cos x\left(\sin x\right)'}{\sin^2 x}\\
+&amp;=&amp;\frac{-\sin x\sin x-\cos x\cos x}{\sin^2 x}\ \because\eqref{eq:tenth},\eqref{eq:eleventh}\ {\rm より}\\
+&amp;=&amp;-\frac{\sin^2x+\cos^2x}{\sin^2x}\\
+&amp;=&amp;-\frac{1}{\sin^2x}
+\end{eqnarray}</div>
+<h3>和積の公式を用いた方法</h3>
+<p>\(\eqref{eq:sixth},\eqref{eq:ninth}\) の部分では加法定理を用いたが, 加法定理より導出できる和積の公式を用いても同様にして導出できる.
+\(\eqref{eq:fourth}\)&nbsp;より
+</p>
+<div class="math">\begin{eqnarray}
+\sin\left(p+q\right)&amp;=&amp;\sin p\sin q+\cos p\sin q\label{eq:seventh}\tag{10}\\
+\sin\left(p-q\right)&amp;=&amp;\sin p\sin q-\cos p\sin q\label{eq:eightth}\tag{11}
+\end{eqnarray}</div>
+<p>
+\(\eqref{eq:seventh}+\eqref{eq:eightth}\) より \[\sin\left(p+q\right)+\sin\left(p-q\right)=2\sin p\cos q\leftrightarrow \sin p\cos q=\frac{\sin\left(p+q\right)+\sin\left(p-q\right)}{2}\label{eq:thirteenth}\tag{12}\]
+また, \(\eqref{eq:third}\)&nbsp;より
+</p>
+<div class="math">\begin{eqnarray}
+\cos\left(p+q\right)&amp;=&amp;\cos p\cos q-\sin p\sin q\label{eq:fifteenth}\tag{13}\\
+\cos\left(p-q\right)&amp;=&amp;\cos p\cos q+\sin p\sin q\label{eq:sixteenth}\tag{14}
+\end{eqnarray}</div>
+<p>
+\(\eqref{eq:fifteenth}-\eqref{eq:sixteenth}\) より 
+\[\cos\left(p+q\right)-\cos\left(p-q\right)=-2\sin p\sin q\leftrightarrow \sin p\sin&nbsp;q=-\frac{\cos\left(p+q\right)-\cos\left(p-q\right)}{2}\label{eq:seventeenth}\tag{15}\]</p>
+<p>\(\eqref{eq:thirteenth},\eqref{eq:seventeenth}\) は積和の公式といわれる (あともう 1 つ積和の公式と言われるものがあるが, 今回は利用しないので省略). 
+ここで, \(\eqref{eq:thirteenth}\) に対し \(p=\frac{x-y}{2},q=\frac{x+y}{2}\)&nbsp;とすると,
+</p>
+<div class="math">\begin{eqnarray}
+\sin\frac{x-y}{2}\cos\frac{x+y}{2}&amp;=&amp;\frac{\sin\left(\frac{x-y}{2}+\frac{x+y}{2}\right)+\sin\left(\frac{x-y}{2}-\frac{x+y}{2}\right)}{2}\\
+&amp;=&amp;\frac{\sin x-\sin y}{2}
+\end{eqnarray}</div>
+<p>
+ゆえに
+\[\sin x-\sin y=2\cos\frac{x+y}{2}\sin\frac{x-y}{2}\label{eq:twelvth}\tag{16}\]
+また \(\eqref{eq:seventeenth}\) に対し \(p=\frac{x+y}{2},q=\frac{x-y}{2}\)&nbsp;とすると,
+</p>
+<div class="math">\begin{eqnarray}
+\sin\frac{x+y}{2}\sin\frac{x-y}{2}&amp;=&amp;-\frac{\cos\left(\frac{x+y}{2}+\frac{x-y}{2}\right)-\cos\left(\frac{x+y}{2}-\frac{x-y}{2}\right)}{2}\\
+&amp;=&amp;-\frac{\cos x-\cos y}{2}
+\end{eqnarray}</div>
+<p>
+ゆえに
+\[\cos x-\cos y=-2\sin\frac{x+y}{2}\sin\frac{x-y}{2}\label{eq:fourteenth}\tag{17}\]
+\(\eqref{eq:twelvth},\eqref{eq:fourteenth}\) が和積の公式である (あともう 2 つ和積の公式と言われるものがあるが, 今回は利用しないので省略).
+\(\eqref{eq:twelvth}\) をつかって \(\displaystyle f&#8217;(x)=\lim_{h\to 0}\frac{\sin\left(x+h\right)-\sin x}{h}\)&nbsp;を変形すると,
+</p>
+<div class="math">\begin{eqnarray}
+f'(x)&amp;=&amp;\lim_{h\to 0}\frac{\sin\left(x+h\right)-\sin x}{h}\\
+&amp;=&amp;\lim_{h\to 0}\frac{2\cos\left(\frac{2x+h}{2}\right)\sin\frac{h}{2}}{h}\ \because\eqref{eq:twelvth}\\
+&amp;=&amp;\lim_{h\to 0}\frac{\cos\left(\frac{2x+h}{2}\right)\sin\frac{h}{2}}{\frac{h}{2}}\\
+&amp;=&amp;\cos\left(\frac{2x}{2}\right)\\
+&amp;=&amp;\cos x
+\end{eqnarray}</div>
+<p>
+と \(\eqref{eq:tenth}\) と同様の結果が得られる. 
+また, \(\eqref{eq:fourteenth}\) をつかって \(\displaystyle f&#8217;(x)=\lim_{h\to 0}\frac{\cos\left(x+h\right)-\cos x}{h}\)&nbsp;を変形すると,
+</p>
+<div class="math">\begin{eqnarray}
+f'(x)&amp;=&amp;\lim_{h\to 0}\frac{\cos\left(x+h\right)-\cos x}{h}\\
+&amp;=&amp;\lim_{h\to 0}\frac{-2\sin\left(\frac{2x+h}{2}\right)\sin\frac{h}{2}}{h}\ \because\eqref{eq:fourteenth}\\
+&amp;=&amp;\lim_{h\to 0}-\frac{\sin\left(\frac{2x+h}{2}\right)\sin\frac{h}{2}}{\frac{h}{2}}\\
+&amp;=&amp;-\sin\left(\frac{2x}{2}\right)\\
+&amp;=&amp;-\sin x
+\end{eqnarray}</div>
+<p>
+と \(\eqref{eq:eleventh}\)&nbsp;と同様の結果が得られる.</p>
+<h3>参考文献</h3>
+<ol>
+<li>『<a name="ref1" href="http://www.ms.u-tokyo.ac.jp/~t-saito/jd/%E4%B8%89%E8%A7%92%E9%96%A2%E6%95%B0.pdf">三角関数とは何か</a>』2018 年 9 月 6&nbsp;日アクセス.</li>
+<li><a name="ref2" class="disabled">高木貞治 (1983)&nbsp;『解析概論』岩波書店</a></li>
+</ol>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js','color.js','enclose.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: false," +
+        "    messageStyle: 'None'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+      </div>
+<!-- /.entry-content -->
+      <footer class="post-info text-muted">
+        <button type="button" class="btn btn-default">          
+          <a href="../../../../../category/math.html"><div class="fa fa-lg fa-folder-open"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/math.html"><div class="fa fa-lg fa-tag"></div> math</a>
+        </button>
+      </footer>
+      <!-- /.post-info -->
+    <!-- Comment BEGIN -->
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'roki-log';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <!-- Comment END -->
+    </section>
+    </div>
+<footer class="footer">
+      <div class="container">
+          <p class="footer-text">&copy; <a href="../../../../..">roki.log</a> powered by 
+          <a href="https://getpelican.com/">pelican</a> and 
+          <a href="https://github.com/falgon/nikhil-theme">nikhil-theme (forked)</a><br>
+              <small>  <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>, except where indicated otherwise.
+</small>
+            </p>
+   </div>
+</footer>    <script src="../../../../../theme/js/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-116653080-1', 'auto');
+      ga('send', 'pageview');
+       $('#myModal').modal({show: true});
+
+    </script>
+  </body>
+</html>

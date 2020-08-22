@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>roki.log - Haskell</title><link href="https://falgon.github.io/roki.log/" rel="alternate"></link><link href="https://falgon.github.io/roki.log/feeds/haskell.rss.xml" rel="self"></link><id>https://falgon.github.io/roki.log/</id><updated>2020-03-18T00:00:00+09:00</updated><entry><title>Haskell で C コンパイラを作ってみた</title><link href="https://falgon.github.io/roki.log/posts/2020/%203%E6%9C%88/18/SelfMadeCCompiler/" rel="alternate"></link><published>2020-03-18T00:00:00+09:00</published><updated>2020-03-18T00:00:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2020-03-18:/roki.log/posts/2020/ 3月/18/SelfMadeCCompiler/</id><summary type="html">&lt;p&gt;スクラッチから Haskell で x86-64 向け C&amp;nbsp;コンパイラを作ってみた記録&lt;/p&gt;</summary><content type="html">&lt;p&gt;本エントリ投稿の 2, 3 ヶ月前に Haskell でスクラッチから x86-64 向けの C コンパイラを作った.
+本エントリは,&amp;nbsp;その記録である.&lt;/p&gt;
+&lt;h3&gt;動機/背景&lt;/h3&gt;
+&lt;p&gt;動機としては, 私は 2020 年度の新卒として,
+とある会社に技術者として入社することとなっており,
+コンパイラの自作は, 社会人になる前に,
+前々から一度はやっておきたいと思っていた事柄の一つであったこと,
+また関数プログラミングとの関係性について探求したかったこと,
+さらに, 一部には, 関数プログラミングはコンパイラ開発を容易にする&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;という認識があるが,
+数学的構造の実用化の一つとも言える関数プログラミングに関する考察においては,
+圏論的な理由付けによりその有用性を言うことができるはずであろうという,
+私の中での何となくの予想が本当であるのかどうか, 確認したかったことから,
+実際に Haskell で C コンパイラを作るに至った.
+なお, 圏論の話題は再度別のエントリとしてまとめ, その後,
+さらに別のエントリにそれと関連付いた話題としてまとめようと考えているため,
+本エントリでは特に立ち入らず, 
+あくまでも, 
+Haskell で C&amp;nbsp;コンパイラを作ってみたという単なる取り組みへの記録程度に止める.&lt;/p&gt;
+&lt;h3&gt;成果&lt;/h3&gt;
+&lt;p&gt;プロジェクトは,&amp;nbsp;次のリポジトリにて管理している.&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;
+&lt;i class="fab fa-github" style="font-size: large; margin-right: 5px;"&gt;&lt;/i&gt;
+&lt;a href="https://github.com/falgon/htcc"&gt;falgon/htcc - A tiny C language compiler (x86-64) (&lt;span class="caps"&gt;WIP&lt;/span&gt;)&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;執筆時最新のコミット 
+&lt;a href="https://github.com/falgon/htcc/tree/230137475bf08265db9bd31ea65e2d867b1207fc"&gt;2301374&lt;/a&gt; 
+におけるコンパイル可能なコードは構文は, テストコードに記されている通りである. 
+より実用的な (コンパイル可能な) サンプルコードは example 配下にある
+(ナップザック問題, 連結リストのマージソート, Fisher–Yates シャッフルとクイックソート,&amp;nbsp;ライフゲームシミュレータ等).&lt;/p&gt;
+&lt;p&gt;htcc は標準 C 言語&lt;sup id="fnref-2"&gt;&lt;a class="footnote-ref" href="#fn-2"&gt;2&lt;/a&gt;&lt;/sup&gt;の構文の他に, 一部の &lt;span class="caps"&gt;GNU&lt;/span&gt; 拡張の構文を実装している. 
+例えば, &lt;a href="https://gcc.gnu.org/onlinedocs/gcc/Statement-Exprs.html"&gt;Statement Expression&lt;/a&gt; はそのうちの一つである. 
+近年, Rust のような多くの&amp;#8221;現代的な&amp;#8221;言語は, 
+文の構文を式として捉えている&lt;sup id="fnref-3"&gt;&lt;a class="footnote-ref" href="#fn-3"&gt;3&lt;/a&gt;&lt;/sup&gt;が, Statement Expression はそれと同様の機能, 
+すなわち, C の compound-statement を式として捉える機能を提供する.
+また, &lt;a href="https://gcc.gnu.org/onlinedocs/gcc/Conditionals.html"&gt;Conditionals with Omitted Operands&lt;/a&gt;
+もそのうちの一つである.
+条件演算子は N1570&amp;nbsp;において次のように定義されているが&lt;/p&gt;
+&lt;div class="math"&gt;\begin{array}{llllll}
+\text{conditional-expression}:\\
+&amp;amp;\text{logical-OR-expression}\\
+&amp;amp;\text{logical-OR-expression}&amp;amp;?&amp;amp;\text{expression}&amp;amp;:&amp;amp;\text{conditional-expression}
+\end{array}&lt;/div&gt;
+&lt;p&gt;この expression&amp;nbsp;オペランドが省略された次の構文&lt;/p&gt;
+&lt;div class="math"&gt;\begin{array}{lll}
+\text{logical-OR-expression}&amp;amp;?:&amp;amp;\text{conditional-expression}
+\end{array}&lt;/div&gt;
+&lt;p&gt;をサポートする.&lt;/p&gt;
+&lt;p&gt;htcc の機能そのものの説明は, 基本的に上記リポジトリの &lt;span class="caps"&gt;README&lt;/span&gt;.md に書かれている通りであるが, 
+ここにコミット 
+&lt;a href="https://github.com/falgon/htcc/tree/230137475bf08265db9bd31ea65e2d867b1207fc"&gt;2301374&lt;/a&gt;&amp;nbsp;時点での説明を再掲することとする.&lt;/p&gt;
+&lt;figure&gt;
+&lt;img class="img-responsive img-rounded center-block figure-img" src="https://raw.githubusercontent.com/falgon/htcc/230137475bf08265db9bd31ea65e2d867b1207fc/assets/some_operation.gif" /&gt;
+&lt;figcaption class="figure-caption text-center"&gt;htcc の実行イメージ&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;コマンドラインオプションは次のようになっている.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ stack &lt;span class="nb"&gt;exec&lt;/span&gt; htcc -- -h
+Usage: htcc &lt;span class="o"&gt;[&lt;/span&gt;--visualize-ast&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;--img-resolution RESOLUTION&lt;span class="o"&gt;]&lt;/span&gt; file &lt;span class="o"&gt;[&lt;/span&gt;-o&lt;span class="p"&gt;|&lt;/span&gt;--out file&lt;span class="o"&gt;]&lt;/span&gt;
+            &lt;span class="o"&gt;[&lt;/span&gt;-w&lt;span class="p"&gt;|&lt;/span&gt;--supress-warns&lt;span class="o"&gt;]&lt;/span&gt;
+
+Available options:
+  -h,--help                Show this &lt;span class="nb"&gt;help&lt;/span&gt; text
+  --visualize-ast          Visualize an AST built from &lt;span class="nb"&gt;source&lt;/span&gt; code
+  --img-resolution RESOLUTION
+                           Specify the resolution of the AST graph to be
+                           generated &lt;span class="o"&gt;(&lt;/span&gt;default: 640x480&lt;span class="o"&gt;)&lt;/span&gt;
+  file                     Specify the input file name
+  -o,--out file            Specify the output destination file name, supported
+                           only svg &lt;span class="o"&gt;(&lt;/span&gt;default: ./out.svg&lt;span class="o"&gt;)&lt;/span&gt;
+  -w,--supress-warns       Disable all warning messages
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;例えば, 標準出力に &lt;code&gt;hello world&lt;/code&gt; を出力する C ソースコードのコンパイルは,&amp;nbsp;次のように実行できる.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;int printf(); int main() { printf(&amp;quot;hello world!\n&amp;quot;); }&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; stack &lt;span class="nb"&gt;exec&lt;/span&gt; htcc -- /dev/stdin &lt;span class="p"&gt;|&lt;/span&gt; gcc -xassembler -no-pie -o out -  
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;htcc には, 内部で構築した構文木をベクタ画像として視覚化し,
+出力する機能を実装してある&lt;sup id="fnref-4"&gt;&lt;a class="footnote-ref" href="#fn-4"&gt;4&lt;/a&gt;&lt;/sup&gt;.
+次の表は,&amp;nbsp;実行されるコマンドと出力されるベクタ画像の対応を示したものである.&lt;/p&gt;
+&lt;div class="table-responsive"&gt;
+&lt;table class="table table-bordered table-hover"&gt;
+&lt;thead&gt;&lt;tr&gt;&lt;th style="text-align: center;"&gt;コマンド&lt;/th&gt;&lt;th style="text-align: center;"&gt;出力画像&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;caption id="karnaugh1" style="caption-side: bottom"&gt;htcc の構築した構文木のベクタ画像出力例&lt;/caption&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;pre&gt;$ echo 'int main() { return 1 * 2 + 4; }' |\
+    stack exec htcc -- /dev/stdin\
+        --visualize-ast\
+        --img-resolution 640x480\
+        --out calc.svg
+&lt;/pre&gt;
+&lt;/td&gt;
+&lt;td&gt;&lt;img width="250px" class="img-responsive" src="https://raw.githubusercontent.com/falgon/htcc/230137475bf08265db9bd31ea65e2d867b1207fc/assets/example_ast/calc.png" alt="ast_graph"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;
+&lt;pre&gt;$ echo 'int printf();
+void fizzbuzz(int n) { 
+    for (int i = 1; i &amp;lt; n; ++i) { 
+        if (!(i % 15)) printf("fizzbuzz\n"); 
+        else if (!(i % 3)) printf("fizz\n"); 
+        else if (!(i % 5)) printf("buzz\n"); 
+        else printf("%d\n", i); 
+    } 
+} 
+int main() { fizzbuzz(50); }' |\
+    stack exec htcc -- /dev/stdin\
+        --visualize-ast\
+        --img-resolution 1280x720\
+        --out fizzbuzz.svg
+&lt;/pre&gt;
+&lt;/td&gt;
+&lt;td&gt;&lt;img width="250px" class="img-responsive" src="https://raw.githubusercontent.com/falgon/htcc/230137475bf08265db9bd31ea65e2d867b1207fc/assets/example_ast/fizzbuzz.png" alt="ast_graph"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;h3&gt;開発様相&lt;/h3&gt;
+&lt;p&gt;コンパイラの開発には, 
+『&lt;a href="https://www.sigbus.info/compilerbook"&gt;低レイヤを知りたい人のためのCコンパイラ作成入門&lt;/a&gt;』を参考とさせて頂いており, 
+この内容から習うようにして, インクリメンタルなテスト駆動開発の手段をとることとした.
+今回は, 動機に示された理由により, 
+とくに Haskell での実装を進めたかったため, 
+セルフホストコンパイラの開発という目的には一致していなかったが, 
+同文書は, 具体的な開発順序や手段の詳細に関する, 多くの知見を与えてくださった.
+同書の他に, コンパイラの構成には &lt;a href="https://github.com/falgon/htcc/tree/230137475bf08265db9bd31ea65e2d867b1207fc#references"&gt;References&lt;/a&gt;-4 を参考とした. 
+言語仕様は同書同様 N1570 に従い, 
+&lt;span class="caps"&gt;ABI&lt;/span&gt; 等の仕様確認には &lt;a href="https://github.com/falgon/htcc/tree/230137475bf08265db9bd31ea65e2d867b1207fc#references"&gt;References&lt;/a&gt;-1 を用いた. また,&amp;nbsp;より理論的な参考としては,&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Benjamin C. Pierce. (2002). &lt;em&gt;Types and Programming Languages&lt;/em&gt;. The &lt;span class="caps"&gt;MIT&lt;/span&gt;&amp;nbsp;Press&lt;/li&gt;
+&lt;li&gt;中田育男. (2009). &lt;em&gt;コンパイラの構成と最適化&lt;/em&gt;.&amp;nbsp;朝倉書店&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;が挙げられる.
+また, 今回は, &lt;a href="https://gitmoji.carloscuesta.me/"&gt;gitmoji&lt;/a&gt; のガイドラインに従って, 
+コミットメッセージに絵文字を含めてみた.
+これに大した理由はないが, やってみた結果としては, 後にコミットを見返した際に,
+視覚的な印象により,&amp;nbsp;多少はその概要をより素早く見直すことができるような気はした.&lt;/p&gt;
+&lt;h3&gt;まとめ&lt;/h3&gt;
+&lt;p&gt;これは, 字句解析器や構文解析器の自動生成ツールを用いずに x86-64 アセンブラを出力する
+C コンパイラを作ってみるという目的の他, 私自身が関数プログラミングと圏論の関係性を学び, 
+それをコンパイラ開発という一つの用途にあてはめたときに発見できる明確な有用性について,
+私自身が議論できるようになる, 
+という目的で行った取り組みであったが, 
+C コンパイラはそれなりに動くところまで作れ, またモナドを利用した言語内 &lt;span class="caps"&gt;DSL&lt;/span&gt; による文脈の強制は,
+コンパイラ開発の場面でも強力な機能であり,
+その結果として, 生成されるコードの安全性を保証するに至るということも身を以て分かり,
+新たな興味や疑問も多く湧いたので,&amp;nbsp;私自身にとっては非常に有意義な取り組みであった.&lt;/p&gt;
+&lt;p&gt;今後は, 生成コードの最適化, 質の良いエラーと警告情報の提供,
+アドレスサニタイザに関して深掘りしていきたい.
+また, いわゆるプログラム論理として言われる分野の応用による,
+マルチステージプログラミング&lt;sup id="fnref-5"&gt;&lt;a class="footnote-ref" href="#fn-5"&gt;5&lt;/a&gt;&lt;/sup&gt;や, 定理証明支援等の分野には非常に興味があるため,&amp;nbsp;そのような方向へ広げていきたい.&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;&lt;a href="https://stackoverflow.com/questions/2906064/why-is-writing-a-compiler-in-a-functional-language-easier"&gt;Why is writing a compiler in a functional language easier? - stack overflow&lt;/a&gt; より. なお, 同質問は &lt;a href="https://stackoverflow.com/help/closed-questions"&gt;opnion-based&lt;/a&gt; とされているため文中ではこれを一部の認識としている.&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-2"&gt;
+&lt;p&gt;本エントリでいう C 言語とは厳密に言えば C11 の最終ドラフトである N1570 のことを指す.&amp;#160;&lt;a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-3"&gt;
+&lt;p&gt;例えば, C の &lt;code&gt;if&lt;/code&gt;, &lt;code&gt;else&lt;/code&gt; は文であるが, Rust では三項式である. また, C の \(\text{compound-statement}\) は, Rust において &lt;code&gt;;&lt;/code&gt; で区切られた一連の式に対応する.&amp;#160;&lt;a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-4"&gt;
+&lt;p&gt;Special thanks to &lt;a href="https://hackage.haskell.org/package/diagrams-lib"&gt;diagrams-lib&lt;/a&gt;, &lt;a href="https://hackage.haskell.org/package/diagrams-svg"&gt;diagrams-svg&lt;/a&gt; and &lt;a href="https://hackage.haskell.org/package/diagrams-contrib"&gt;diagrams-contrib&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-4" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-5"&gt;
+&lt;p&gt;マルチステージプログラミングに関する記事は別途記述予定. 著者の興味としてまず目を引いたものとしては, Oleg Kiselyov. (2014). “&lt;em&gt;The Design and Imple-mentation of &lt;span class="caps"&gt;BER&lt;/span&gt; MetaOCaml System Descrip-tion&lt;/em&gt;”, &lt;span class="caps"&gt;FLOPS&lt;/span&gt; 2014 であった. これは, 単刀直入に言えば, C++14 でマルチステージプログラミングを可能とするための言語拡張に関する研究である. 論文にはその理論のほかに, clang (というか &lt;span class="caps"&gt;LLVM&lt;/span&gt; コンパイラインフラストラクチャ) を用いた処理系の実装までもが示されているが, この実装に対して著者は以前&lt;a href="https://github.com/meta-cpp/clang/pull/1"&gt;ほんの軽微なコントリビュート&lt;/a&gt;をした.&amp;#160;&lt;a class="footnote-backref" href="#fnref-5" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js','color.js','enclose.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: false," +
+        "    messageStyle: 'None'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="Haskell"></category><category term="Compiler"></category></entry><entry><title>Haskell でリンクレイヤーにおける ICMP パケットの構築, 送受信および解析による ping の実装</title><link href="https://falgon.github.io/roki.log/posts/2018/%209%E6%9C%88/15/scratchPacket/" rel="alternate"></link><published>2018-09-15T00:00:00+09:00</published><updated>2018-09-15T00:00:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2018-09-15:/roki.log/posts/2018/ 9月/15/scratchPacket/</id><summary type="html">&lt;p&gt;Haskell&amp;nbsp;でリンクレイヤーからパケットを自作して送受信してみた記録&lt;/p&gt;</summary><content type="html">&lt;p&gt;Haskell で低レイヤーのネットワークプログラミングをそういえばしたことがなかったので, 
+何か実装してみたかったのだが特別ネタも思いつかないので,
+とりあえずイーサヘッダ, &lt;span class="caps"&gt;IP&lt;/span&gt; ヘッダ等を含む, 生の &lt;span class="caps"&gt;ICMP&lt;/span&gt; Echo/Reply&amp;nbsp;パケットを扱ってみることとした.&lt;/p&gt;
+&lt;p&gt;&lt;span class="caps"&gt;ICMP&lt;/span&gt; パケットは &lt;span class="caps"&gt;IP&lt;/span&gt; パケットであるので, 
+通常は &lt;span class="caps"&gt;ICMP&lt;/span&gt; パケット部分のみを構築して&lt;code&gt;PF_INET&lt;/code&gt;等で開いたソケットに送りつけたり,
+&lt;code&gt;recv&lt;/code&gt; 等すれば送受信においては必要十分であるが, 
+これではあまり面白みがないので,&amp;nbsp;リンクレイヤーから扱うこととした.&lt;/p&gt;
+&lt;p&gt;生の &lt;span class="caps"&gt;ICMP&lt;/span&gt; パケットを扱うということは, &lt;span class="caps"&gt;ICMP&lt;/span&gt; データの自作はもちろん, イーサヘッダ, &lt;span class="caps"&gt;IP&lt;/span&gt; ヘッダの自作が必要となる.
+またイーサヘッダを自作するということは, &lt;span class="caps"&gt;MAC&lt;/span&gt; アドレスを解決しなければならないので,
+最低限 &lt;span class="caps"&gt;ARP&lt;/span&gt; パケットの送受信および解析機能の自作が必要となることを意味する.
+&lt;span class="caps"&gt;ARP&lt;/span&gt; パケットの自作を要するということは, デフォルトゲートウェイやサブネット環境などを取得する機能も必要である.&amp;nbsp;これらを自作してみた.&lt;/p&gt;
+&lt;h3&gt;環境&lt;/h3&gt;
+&lt;p&gt;環境は, 本エントリ末尾に記載のリポジトリ内にある 
+&lt;a href="https://github.com/falgon/network-basal/blob/8ba27abae4fa69652756ef7941f6377d46b54eff/testenv/Vagrantfile"&gt;Vagrantfile&lt;/a&gt; 
+の通りで, ごく普通の Ubuntu 18.04 仮想マシンである.
+テスト用途として, 同一プライベートネットワーク上にもう 1 つ同 &lt;span class="caps"&gt;OS&lt;/span&gt;&amp;nbsp;のノードを用意している.&lt;/p&gt;
+&lt;h3&gt;&lt;span class="caps"&gt;ARP&lt;/span&gt;&lt;/h3&gt;
+&lt;p&gt;まずは冒頭で述べた理由より, &lt;span class="caps"&gt;ARP&lt;/span&gt; パケットの作成, 送受信および解析の機能を実装する必要がある.
+&lt;span class="caps"&gt;ARP&lt;/span&gt; に関しては, &lt;span class="caps"&gt;RFC&lt;/span&gt; 826 を再確認しつつ実装した.
+これは&lt;a href="https://falgon.github.io/roki.log/posts/2018/%205月/01/detectPromiscuous/"&gt;以前 C++ で実装した&lt;/a&gt;ことがあったので,
+とくに困ることはなかったが, Haskell では, とくにリンクレイヤにおいては, 
+その肝心なパケットの送受信の手段があまり充実していないようで, それには少々戸惑った.
+たとえば, 本エントリ執筆時点で, 同レイヤーのパケット送受信を
+&lt;a href="http://hackage.Haskell.org/package/network-2.8.0.0"&gt;Network.Socket&lt;/a&gt;&amp;nbsp;モジュール等で実行することは不可能である.&lt;/p&gt;
+&lt;p&gt;当初は単に&lt;code&gt;PF_PACKET&lt;/code&gt;, &lt;code&gt;SOCK_RAW&lt;/code&gt;等で開いたソケットに書き込もうと思っていたので,
+これは &lt;span class="caps"&gt;FFI&lt;/span&gt; で呼び出すしかないかと思ったが, ふと libpcap の Haskell ラッパーである
+&lt;a href="http://hackage.Haskell.org/package/pcap"&gt;pcap&lt;/a&gt; モジュールの存在を知り,&amp;nbsp;これを利用させて頂くこととした.&lt;/p&gt;
+&lt;p&gt;今回簡単のため, &lt;span class="caps"&gt;ARP&lt;/span&gt; キャッシュを単に /proc/net/arp を読むことで済ませており, この点で手抜き仕様となっているので,
+今後自前で &lt;span class="caps"&gt;ARP&lt;/span&gt; キャッシュを実装するか, /proc/net/arp&amp;nbsp;との共和の良い方法を検討するかしたい.&lt;/p&gt;
+&lt;p&gt;この実装による副産物として, 
+同一ネットワーク上の &lt;span class="caps"&gt;IP&lt;/span&gt; アドレスを指定すると, その &lt;span class="caps"&gt;MAC&lt;/span&gt; アドレスが得られる arp-exe&amp;nbsp;という小さなアプリケーションができた.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo stack --allow-different-user &lt;span class="nb"&gt;exec&lt;/span&gt; arp-exe -- eth2 &lt;span class="m"&gt;192&lt;/span&gt;.168.33.12 &lt;span class="c1"&gt;# リポジトリ内記載の vagrant 環境上で&lt;/span&gt;
+Just &lt;span class="m"&gt;08&lt;/span&gt;:00:27:8b:b4:ae
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;サブネットの判定とデフォルトゲートウェイの取得&lt;/h3&gt;
+&lt;p&gt;目的対象ノードの &lt;span class="caps"&gt;MAC&lt;/span&gt; アドレスを取得する必要性は先に述べた通りで,
+いまそれが同一ネットワーク上にあるならば, 単にそのノードを指定して &lt;span class="caps"&gt;ARP&lt;/span&gt; を送出すればよいのであるが,
+そうでない場合, デフォルトゲートウェイに委託しなければならない&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;.
+よって, まず実行ホストの &lt;span class="caps"&gt;NIC&lt;/span&gt; に対応するデフォルトゲートウェイをルーティングテーブル等から知る必要がある.
+今回は Linux 上での動作を前提としているので, /proc/net/route&amp;nbsp;を読めばよい.&lt;/p&gt;
+&lt;p&gt;次に, 目的対象ノードが到達範囲内にあるかどうかを判定するために, 
+自身のサブネットを取得する必要がある. 
+Linux 上でこれを行う方法としては, &lt;code&gt;getifaddrs&lt;/code&gt;等を呼び出すことが考えられるが, 
+既存のモジュール等でこれを自由に扱う手立てはどうにもないようであった.
+これは仕方がないので, &lt;span class="caps"&gt;FFI&lt;/span&gt; を利用して&lt;code&gt;getifaddrs&lt;/code&gt;を呼び出し,&amp;nbsp;取得することとした.&lt;/p&gt;
+&lt;h3&gt;その他&lt;/h3&gt;
+&lt;p&gt;その他はざっくりいえば, &lt;span class="caps"&gt;IP&lt;/span&gt; ヘッダ, &lt;span class="caps"&gt;ICMP&lt;/span&gt; データをそれぞれ &lt;span class="caps"&gt;RFC&lt;/span&gt; に記述のとおり並べたり, 読んだりすればよい.
+結局,&amp;nbsp;詳細は下記リポジトリを参照されたい.&lt;/p&gt;
+&lt;h3&gt;実装&lt;/h3&gt;
+&lt;p&gt;実装は, 次のリポジトリで管理している. 
+冒頭でも述べた通り, リポジトリ内にある Vagrantfile&amp;nbsp;の環境上で動作を確認している.&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;
+&lt;i class="fab fa-github" style="font-size: large; margin-right: 5px;"&gt;&lt;/i&gt;
+&lt;a href="https://github.com/falgon/network-basal"&gt;falgon/network-basal - Low layer network packet&amp;nbsp;utilities&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;これには先に述べた arp-exe のほかに, 実行可能なアプリケーションとして,
+ping-exe と ping-exe2 が含まれている. ping-exe2 が本エントリで述べたように,
+イーサネットフレームを丸々扱い, &lt;span class="caps"&gt;ICMP&lt;/span&gt; Echo の送出および &lt;span class="caps"&gt;ICMP&lt;/span&gt; Echo Reply&amp;nbsp;の受信を行う.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo stack --allow-different-user &lt;span class="nb"&gt;exec&lt;/span&gt; ping-exe2 -- --help
+usage: ping-exe &lt;span class="o"&gt;[&lt;/span&gt;-c count&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;-t timeout&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;-i wait&lt;span class="o"&gt;]&lt;/span&gt; host
+$ sudo stack --allow-different-user &lt;span class="nb"&gt;exec&lt;/span&gt; ping-exe2 -- -c &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="m"&gt;8&lt;/span&gt;.8.8.8
+PING &lt;span class="m"&gt;8&lt;/span&gt;.8.8.8: &lt;span class="m"&gt;56&lt;/span&gt; data bytes
+&lt;span class="m"&gt;64&lt;/span&gt; bytes from google-public-dns-a.google.com: &lt;span class="nv"&gt;icmp_seq&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="nv"&gt;ttl&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;63&lt;/span&gt; &lt;span class="nv"&gt;time&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;11&lt;/span&gt;.432482s
+
+--- ping statics ---
+&lt;span class="m"&gt;1&lt;/span&gt; packets transmitted, &lt;span class="m"&gt;1&lt;/span&gt; received, &lt;span class="m"&gt;0&lt;/span&gt;% packet loss
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;一方, ping-exe は&lt;code&gt;PF_INET&lt;/code&gt;で開いたソケットを利用して, 
+つまり &lt;span class="caps"&gt;ICMP&lt;/span&gt; データのみを構築して &lt;span class="caps"&gt;ICMP&lt;/span&gt; Echo の送出および &lt;span class="caps"&gt;ICMP&lt;/span&gt; Echo Reply の受信を行う.
+冒頭で述べたような立場からすれば, これの実装に対しては特に意味はないのであるが,
+一応,&amp;nbsp;同様にして動くということをみるために作ってみた.&lt;/p&gt;
+&lt;h3&gt;感想&lt;/h3&gt;
+&lt;p&gt;Haskell でまとまったプログラムを書いたことは, 今回と&lt;a href="https://falgon.github.io/roki.log/posts/2018/%207月/13/elgamalEncryption/"&gt;エルガマル暗号の実装&lt;/a&gt;以外ではあまりなかったため, 
+学びがあった. ネットワークに関しても, やはり実装することでかなり整理がついたように思える.
+リンクレイヤーも慣れてきた感じがあるので, 気が向き次第,&amp;nbsp;今度はルーターとかを作れればよいな等と思っている.&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;これに関するコンパクトで的を得た回答: &lt;a href="https://networkengineering.stackexchange.com/a/6854"&gt;&lt;span class="caps"&gt;ARP&lt;/span&gt; request outside of &lt;span class="caps"&gt;LAN&lt;/span&gt;; Target machine or router response? - Stack Exchange&lt;/a&gt; 2018 年 9 月 3 日アクセス.&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="Haskell"></category><category term="Networking"></category></entry><entry><title>Haskell で D-Bus から systemd unit を制御する</title><link href="https://falgon.github.io/roki.log/posts/2018/%208%E6%9C%88/17/controlSystemdByDBusAndHaskell/" rel="alternate"></link><published>2018-08-17T00:00:00+09:00</published><updated>2018-08-17T00:00:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2018-08-17:/roki.log/posts/2018/ 8月/17/controlSystemdByDBusAndHaskell/</id><summary type="html">&lt;p&gt;Haskell で systemd の D-Bus &lt;span class="caps"&gt;API&lt;/span&gt; を呼び出して systemd unit の制御,&amp;nbsp;ステータス確認等を行うメモ&lt;/p&gt;</summary><content type="html">&lt;p&gt;D-Bus とはメッセージバスシステムであり, アプリケーション間で互いにやりとりを行うためのプロセス間通信実装の 1 つである.
+システムデーモン(新しいハードウェアデバイスの追加やプリンタキューの変更などのイベント等)と,
+ユーザー単位のログインセッションデーモン(ユーザーアプリケーション間の一般的なIPC)を提供する&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;現代的な Linux カーネルの init プロセスにて起動される systemd デーモンおよびその補助デーモンは,
+D-Bus にいくつかの &lt;span class="caps"&gt;API&lt;/span&gt; を公開している. 
+私の観測範囲内において, C や Python, Go 等でこれらを利用する例はそこそこ見たことがあるのだが, 
+Haskell での取り組みは一切見たことがなかったので,&amp;nbsp;少々これらで遊んで見た日記として本エントリに記す.&lt;/p&gt;
+&lt;h3&gt;D-Bus &lt;span class="caps"&gt;API&lt;/span&gt;&amp;nbsp;の確認&lt;/h3&gt;
+&lt;p&gt;実行環境は,&amp;nbsp;次の通りである.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ uname -a
+Linux vagrant &lt;span class="m"&gt;4&lt;/span&gt;.15.0-20-generic &lt;span class="c1"&gt;#21-Ubuntu SMP Tue Apr 24 06:16:15 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux&lt;/span&gt;
+$ systemd --version
+systemd &lt;span class="m"&gt;237&lt;/span&gt;
++PAM +AUDIT +SELINUX +IMA +APPARMOR +SMACK +SYSVINIT +UTMP +LIBCRYPTSETUP +GCRYPT +GNUTLS +ACL +XZ +LZ4 +SECCOMP +BLKID +ELFUTILS +KMOD -IDN2 +IDN -PCRE2 default-hierarchy&lt;span class="o"&gt;=&lt;/span&gt;hybrid
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;D-Bus に公開されている &lt;span class="caps"&gt;API&lt;/span&gt; を利用する際は, 
+とくに高度なラッパーライブラリを用いないような場合においては,
+&lt;code&gt;dbus-send&lt;/code&gt;あるいは&lt;code&gt;gdbus&lt;/code&gt;等で全体の構造, 
+インタフェース,&amp;nbsp;メソッドおよびフィールドメンバーを確認するとよい.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="k"&gt;function&lt;/span&gt; syst&lt;span class="o"&gt;(){&lt;/span&gt; &lt;span class="nv"&gt;r&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;gdbus introspect --system --dest org.freedesktop.systemd1 --object-path /org/freedesktop/systemd1&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;r&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; head -n &lt;span class="nv"&gt;$1&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;More than&amp;quot;&lt;/span&gt; &lt;span class="k"&gt;$(($(&lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;r&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; wc -l&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="k"&gt;))&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;lines...&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="o"&gt;}&lt;/span&gt;
+$ syst &lt;span class="m"&gt;10&lt;/span&gt;
+node /org/freedesktop/systemd1 &lt;span class="o"&gt;{&lt;/span&gt;
+  interface org.freedesktop.DBus.Peer &lt;span class="o"&gt;{&lt;/span&gt;
+    methods:
+      Ping&lt;span class="o"&gt;()&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      GetMachineId&lt;span class="o"&gt;(&lt;/span&gt;out s machine_uuid&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    signals:
+    properties:
+  &lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  interface org.freedesktop.DBus.Introspectable &lt;span class="o"&gt;{&lt;/span&gt;
+    methods:
+More than &lt;span class="m"&gt;397&lt;/span&gt; lines...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;このインタフェース表記の意味するところに関する詳細は,
+D-bus 仕様の Type System セクション&lt;sup id="fnref-2"&gt;&lt;a class="footnote-ref" href="#fn-2"&gt;2&lt;/a&gt;&lt;/sup&gt;に記載されている.&lt;/p&gt;
+&lt;h3&gt;D-Bus の Haskell&amp;nbsp;バインドの利用&lt;/h3&gt;
+&lt;p&gt;&lt;a href="http://hackage.Haskell.org/package/dbus"&gt;dbus&lt;/a&gt; が利用できる.
+例えば, 以下に示す&lt;code&gt;StartUnit&lt;/code&gt;, &lt;code&gt;StopUnit&lt;/code&gt;は,&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ gdbus introspect --system --dest org.freedesktop.systemd1 --object-path /org/freedesktop/systemd1 &lt;span class="p"&gt;|&lt;/span&gt; grep -e StartUnit -e StopUnit -w -A &lt;span class="m"&gt;2&lt;/span&gt;
+      StartUnit&lt;span class="o"&gt;(&lt;/span&gt;in  s arg_0,
+                in  s arg_1,
+                out o arg_2&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+--
+      StopUnit&lt;span class="o"&gt;(&lt;/span&gt;in  s arg_0,
+               in  s arg_1,
+               out o arg_2&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;次のようにして呼び出せる.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cm"&gt;{-# LANGUAGE OverloadedStrings #-}&lt;/span&gt;
+
+&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;DBus&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;DBus.Client&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;Data.Int&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;Int32&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="kr"&gt;type&lt;/span&gt; &lt;span class="kt"&gt;Unit&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;String&lt;/span&gt;
+&lt;span class="kr"&gt;type&lt;/span&gt; &lt;span class="kt"&gt;Mode&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;String&lt;/span&gt;
+&lt;span class="kr"&gt;type&lt;/span&gt; &lt;span class="kt"&gt;SignalNum&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;Int32&lt;/span&gt;
+
+&lt;span class="nf"&gt;systemdObjectPath&lt;/span&gt; &lt;span class="ow"&gt;::&lt;/span&gt; &lt;span class="kt"&gt;ObjectPath&lt;/span&gt;
+&lt;span class="nf"&gt;systemdObjectPath&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="n"&gt;objectPath_&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;/org/freedesktop/systemd1&amp;quot;&lt;/span&gt;
+
+&lt;span class="nf"&gt;systemdInterfaceName&lt;/span&gt; &lt;span class="ow"&gt;::&lt;/span&gt; &lt;span class="kt"&gt;InterfaceName&lt;/span&gt;
+&lt;span class="nf"&gt;systemdInterfaceName&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="n"&gt;interfaceName_&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;org.freedesktop.systemd1.Manager&amp;quot;&lt;/span&gt;
+
+&lt;span class="nf"&gt;systemdDestination&lt;/span&gt; &lt;span class="ow"&gt;::&lt;/span&gt; &lt;span class="kt"&gt;BusName&lt;/span&gt;
+&lt;span class="nf"&gt;systemdDestination&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="n"&gt;busName_&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;org.freedesktop.systemd1&amp;quot;&lt;/span&gt;
+
+&lt;span class="nf"&gt;methodSub&lt;/span&gt; &lt;span class="ow"&gt;::&lt;/span&gt; &lt;span class="kt"&gt;String&lt;/span&gt; &lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;MethodCall&lt;/span&gt;
+&lt;span class="nf"&gt;methodSub&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="n"&gt;methodCall&lt;/span&gt; &lt;span class="n"&gt;systemdObjectPath&lt;/span&gt; &lt;span class="n"&gt;systemdInterfaceName&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;memberName_&lt;/span&gt;
+
+&lt;span class="nf"&gt;systemdCall&lt;/span&gt; &lt;span class="ow"&gt;::&lt;/span&gt; &lt;span class="kt"&gt;Client&lt;/span&gt; &lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;MethodCall&lt;/span&gt; &lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;IO&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;Variant&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="nf"&gt;systemdCall&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fmap&lt;/span&gt; &lt;span class="n"&gt;methodReturnBody&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;call_&lt;/span&gt;
+
+&lt;span class="nf"&gt;controlUnit&lt;/span&gt; &lt;span class="ow"&gt;::&lt;/span&gt; &lt;span class="kt"&gt;String&lt;/span&gt; &lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;Client&lt;/span&gt; &lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;Unit&lt;/span&gt; &lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;Mode&lt;/span&gt; &lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;IO&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;Variant&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="nf"&gt;controlUnit&lt;/span&gt; &lt;span class="n"&gt;med&lt;/span&gt; &lt;span class="n"&gt;cli&lt;/span&gt; &lt;span class="n"&gt;unit&lt;/span&gt; &lt;span class="n"&gt;mode&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="n"&gt;systemdCall&lt;/span&gt; &lt;span class="n"&gt;cli&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;methodSub&lt;/span&gt; &lt;span class="n"&gt;med&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;methodCallDestination&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;Just&lt;/span&gt; &lt;span class="n"&gt;systemdDestination&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;methodCallBody&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="n"&gt;map&lt;/span&gt; &lt;span class="n"&gt;toVariant&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;unit&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mode&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="nf"&gt;startUnit&lt;/span&gt; &lt;span class="ow"&gt;::&lt;/span&gt; &lt;span class="kt"&gt;Client&lt;/span&gt; &lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;Unit&lt;/span&gt; &lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;Mode&lt;/span&gt; &lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;IO&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;Variant&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="nf"&gt;startUnit&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="n"&gt;controlUnit&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;StartUnit&amp;quot;&lt;/span&gt;
+
+&lt;span class="nf"&gt;stopUnit&lt;/span&gt; &lt;span class="ow"&gt;::&lt;/span&gt; &lt;span class="kt"&gt;Client&lt;/span&gt; &lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;Unit&lt;/span&gt; &lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;Mode&lt;/span&gt; &lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;IO&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;Variant&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="nf"&gt;stopUnit&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="n"&gt;controlUnit&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;StopUnit&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;以下に示す&lt;code&gt;ListUnitsByNames&lt;/code&gt;&lt;sup id="fnref-3"&gt;&lt;a class="footnote-ref" href="#fn-3"&gt;3&lt;/a&gt;&lt;/sup&gt;は,&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ gdbus introspect --system --dest org.freedesktop.systemd1 --object-path /org/freedesktop/systemd1 &lt;span class="p"&gt;|&lt;/span&gt; grep ListUnitsByNames -w -A &lt;span class="m"&gt;1&lt;/span&gt;
+      ListUnitsByNames&lt;span class="o"&gt;(&lt;/span&gt;in  as arg_0,
+                       out a&lt;span class="o"&gt;(&lt;/span&gt;ssssssouso&lt;span class="o"&gt;)&lt;/span&gt; arg_1&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;次のようにして呼び出せる.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nf"&gt;listUnitsByNames&lt;/span&gt; &lt;span class="ow"&gt;::&lt;/span&gt; &lt;span class="kt"&gt;IsValue&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="ow"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;Client&lt;/span&gt; &lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;IO&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;Variant&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="nf"&gt;listUnitsByNames&lt;/span&gt; &lt;span class="n"&gt;cli&lt;/span&gt; &lt;span class="n"&gt;var&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="n"&gt;systemdCall&lt;/span&gt; &lt;span class="n"&gt;cli&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;methodSub&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;ListUnitsByNames&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;methodCallDestination&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;Just&lt;/span&gt; &lt;span class="n"&gt;systemdDestination&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;methodCallBody&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;toVariant&lt;/span&gt; &lt;span class="n"&gt;var&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;動作確認のためのユニットを適当に置いておく&lt;sup id="fnref-4"&gt;&lt;a class="footnote-ref" href="#fn-4"&gt;4&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ mkdir -p /opt/writehello/bin
+$ sudo sh -c &lt;span class="s2"&gt;&amp;quot;echo \&amp;quot;#\!/bin/bash\nwhile :\ndo\n\tsleep 3\n\techo \&amp;quot;hello\&amp;quot;\ndone\&amp;quot;&amp;quot;&lt;/span&gt; &amp;gt; writehello.sh
+$ sudo chmod +x /opt/writehello/bin/writehello.sh
+$ sudo sh -c &lt;span class="s2"&gt;&amp;quot;echo \&amp;quot;[Unit]\nDescription = hello daemon\nConditionPathExists = /opt/writehello/bin/writehello.sh\n\n[Service]\nExecStart = /opt/writehello/bin/writehello.sh\nRestart = always\nType = simple\n\n[Install]\nWantedBy = multi-user.target\&amp;quot;&amp;quot;&lt;/span&gt; &amp;gt; /etc/systemd/system/writehello.service
+$ sudo chmod -x /etc/systemd/system/writehello.service
+$ sudo chmod o-w /etc/systemd/system/writehello.service
+$ sudo systemd-analyze verify /etc/systemd/system/writehello.service
+Attempted to remove disk file system, and we can&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;t allow that.
+$ sudo systemctl daemon-reload
+$ sudo systemctl start writehello.service &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; journalctl -f -u writehello.service &lt;span class="p"&gt;&amp;amp;&lt;/span&gt; sleep &lt;span class="m"&gt;10&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo &lt;span class="nb"&gt;kill&lt;/span&gt; &lt;span class="nv"&gt;$!&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo systemctl stop writehello.service
+&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="m"&gt;2001&lt;/span&gt;
+-- Logs begin at Fri &lt;span class="m"&gt;2018&lt;/span&gt;-08-17 &lt;span class="m"&gt;16&lt;/span&gt;:19:05 UTC. --
+Aug &lt;span class="m"&gt;17&lt;/span&gt; &lt;span class="m"&gt;16&lt;/span&gt;:19:13 vagrant systemd&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;: Started hello daemon.
+Aug &lt;span class="m"&gt;17&lt;/span&gt; &lt;span class="m"&gt;16&lt;/span&gt;:19:16 vagrant writehello.sh&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1989&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;: hello
+Aug &lt;span class="m"&gt;17&lt;/span&gt; &lt;span class="m"&gt;16&lt;/span&gt;:19:19 vagrant writehello.sh&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1989&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;: hello
+Aug &lt;span class="m"&gt;17&lt;/span&gt; &lt;span class="m"&gt;16&lt;/span&gt;:19:22 vagrant writehello.sh&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1989&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;: hello
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;先の関数らから writehello.service&amp;nbsp;ユニットを制御する.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kr"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Main&lt;/span&gt; &lt;span class="kr"&gt;where&lt;/span&gt;
+
+&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;DBus.Client&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;connectSystem&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;System.Environment&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;getArgs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;Control.Monad&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;mapM_&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;=&amp;lt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="nf"&gt;main&lt;/span&gt; &lt;span class="ow"&gt;::&lt;/span&gt; &lt;span class="kt"&gt;IO&lt;/span&gt; &lt;span class="nb"&gt;()&lt;/span&gt;
+&lt;span class="nf"&gt;main&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="ow"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;connectSystem&lt;/span&gt;
+    &lt;span class="n"&gt;args&lt;/span&gt; &lt;span class="ow"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;getArgs&lt;/span&gt;
+    &lt;span class="n"&gt;mapM_&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;flip&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;startUnit&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;replace&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;
+    &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="o"&gt;=&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;listUnitsByNames&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;引数に writehello.service を指定してスーパーユーザで実行すると,&amp;nbsp;次のような出力が得られる.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;Variant &lt;span class="o"&gt;(&lt;/span&gt;ObjectPath &lt;span class="s2"&gt;&amp;quot;/org/freedesktop/systemd1/job/1053&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)]&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;Variant &lt;span class="o"&gt;[(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;writehello.service&amp;quot;&lt;/span&gt;, &lt;span class="s2"&gt;&amp;quot;hello daemon&amp;quot;&lt;/span&gt;, &lt;span class="s2"&gt;&amp;quot;loaded&amp;quot;&lt;/span&gt;, &lt;span class="s2"&gt;&amp;quot;active&amp;quot;&lt;/span&gt;, &lt;span class="s2"&gt;&amp;quot;running&amp;quot;&lt;/span&gt;, &lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;, ObjectPath &lt;span class="s2"&gt;&amp;quot;/org/freedesktop/systemd1/unit/writehello_2eservice&amp;quot;&lt;/span&gt;, &lt;span class="m"&gt;0&lt;/span&gt;, &lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;, ObjectPath &lt;span class="s2"&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)]]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;停止も忘れずに.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nf"&gt;mapM_&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;flip&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;stopUnit&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;replace&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt; 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;なお, 本エントリにおける一連の実装とその他の 
+systemd D-Bus &lt;span class="caps"&gt;API&lt;/span&gt; を利用したいくつかの snippets を, 下記リポジトリにて管理している.&amp;nbsp;もしよければ.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://bitbucket.org/r0ki/systemdplhs/src/master/"&gt;r0ki/systemdplhs - Snippets collection that controls systemd from D-Bus with&amp;nbsp;Haskell.&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;説明は&lt;a href="https://www.freedesktop.org/wiki/Software/dbus/#index1h1"&gt;公式ページ&lt;/a&gt;から.&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-2"&gt;
+&lt;p&gt;&lt;span class="dquo"&gt;&amp;#8220;&lt;/span&gt;D-Bus Specification&amp;#8221;, &lt;a href="https://dbus.freedesktop.org/doc/dbus-specification.html#type-system"&gt;https://dbus.freedesktop.org/doc/dbus-specification.html#type-system&lt;/a&gt; 2018 年 8 月 17 日アクセス.&amp;#160;&lt;a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-3"&gt;
+&lt;p&gt;Note: &lt;code&gt;ListUnitsByName&lt;/code&gt; は systemd v230 以上を要する.&amp;#160;&lt;a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-4"&gt;
+&lt;p&gt;&lt;code&gt;systemd-analyze verify&lt;/code&gt;の結果で, &lt;code&gt;Attempted to remove disk file system, and we can't allow that.&lt;/code&gt;というメッセージが出力されているが, これは systemd 237-4 および 238 でのバグ(&lt;a href="https://github.com/systemd/systemd/issues/8592"&gt;#8592&lt;/a&gt;)との報告がある.&amp;#160;&lt;a class="footnote-backref" href="#fnref-4" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="Haskell"></category></entry><entry><title>amazonka で EC2 インスタンスの操作</title><link href="https://falgon.github.io/roki.log/posts/2018/%206%E6%9C%88/24/amazonka/" rel="alternate"></link><published>2018-06-24T10:45:00+09:00</published><updated>2018-06-24T10:45:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2018-06-24:/roki.log/posts/2018/ 6月/24/amazonka/</id><summary type="html">&lt;p&gt;amazonka&amp;nbsp;についての忘備録&lt;/p&gt;</summary><content type="html">&lt;p&gt;以前のエントリ&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;では, &lt;span class="caps"&gt;AWS&lt;/span&gt; の &lt;span class="caps"&gt;API&lt;/span&gt; を golang から叩くために golang の言語機能を一通り触った.
+自分は元々よく C++ を書いていたので golang で叩く前にまず C++ から適当に叩いてみていたのだが,
+ふと Haskell 用の &lt;span class="caps"&gt;AWS&lt;/span&gt; のライブラリの存在を知り, ひとまず触ってみたので, 記録と紹介を兼ねて書き残してみる.
+執筆時現時点では, 公式が提供する &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;SDK&lt;/span&gt; は awscli を除き
+C++, Go, Java, javascript, .&lt;span class="caps"&gt;NET&lt;/span&gt;, &lt;span class="caps"&gt;PHP&lt;/span&gt;, Python, Ruby &lt;sup id="fnref-2"&gt;&lt;a class="footnote-ref" href="#fn-2"&gt;2&lt;/a&gt;&lt;/sup&gt;となっており, 
+amazonka&lt;sup id="fnref-3"&gt;&lt;a class="footnote-ref" href="#fn-3"&gt;3&lt;/a&gt;&lt;/sup&gt; は非公式の Haskell 用 &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;SDK&lt;/span&gt; である.
+基本的には, まず amazonka を導入した後, 必要となる &lt;span class="caps"&gt;AWS&lt;/span&gt; サービスに該当する amazonka-** を導入する. 今回は, ec2 インスタンスの立ち上げ, 停止を行なったので, amazonka-ec2&lt;sup id="fnref-4"&gt;&lt;a class="footnote-ref" href="#fn-4"&gt;4&lt;/a&gt;&lt;/sup&gt; を利用した.
+amazonka は全体のデータのやり取りに Lens を多様しており,&amp;nbsp;利用者はこの恩恵を傍受できる.&lt;/p&gt;
+&lt;p&gt;早速であるが, くだらないサンプルを次に示す.
+とくにいま ec2 インスタンス上で何かしたいことはないので, 
+東京リージョンでインスタンスを立ち上げて, その直後に落とすこととする&lt;sup id="fnref-5"&gt;&lt;a class="footnote-ref" href="#fn-5"&gt;5&lt;/a&gt;&lt;/sup&gt;. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kr"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Main&lt;/span&gt; &lt;span class="kr"&gt;where&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="k"&gt;qualified&lt;/span&gt; &lt;span class="nn"&gt;Network.AWS&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;AWS&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="k"&gt;qualified&lt;/span&gt; &lt;span class="nn"&gt;Network.AWS.Data&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;AWSD&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="k"&gt;qualified&lt;/span&gt; &lt;span class="nn"&gt;Network.AWS.EC2&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;EC2&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;System.IO&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;stdout&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;Control.Lens&lt;/span&gt;
+
+&lt;span class="nf"&gt;instanceIds&lt;/span&gt; &lt;span class="ow"&gt;::&lt;/span&gt; &lt;span class="kt"&gt;String&lt;/span&gt;
+&lt;span class="nf"&gt;instanceIds&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;i-********&amp;quot;&lt;/span&gt;
+
+&lt;span class="nf"&gt;main&lt;/span&gt; &lt;span class="ow"&gt;::&lt;/span&gt; &lt;span class="kt"&gt;IO&lt;/span&gt; &lt;span class="nb"&gt;()&lt;/span&gt;
+&lt;span class="nf"&gt;main&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;do&lt;/span&gt;
+    &lt;span class="kr"&gt;let&lt;/span&gt; &lt;span class="n"&gt;t0&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;EC2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;startInstances&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="kt"&gt;EC2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sInstanceIds&lt;/span&gt; &lt;span class="o"&gt;.~&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;AWSD&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;toText&lt;/span&gt; &lt;span class="n"&gt;instanceIds&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="kr"&gt;let&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="ow"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;EC2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stopInstances&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="kt"&gt;EC2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;siInstanceIds&lt;/span&gt; &lt;span class="o"&gt;.~&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;AWSD&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;toText&lt;/span&gt; &lt;span class="n"&gt;instanceIds&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;env&lt;/span&gt; &lt;span class="ow"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;newEnv&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;FromFile&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;AWSD&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;toText&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;default&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;/path/to/credentials&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;lgr&lt;/span&gt; &lt;span class="ow"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;newLogger&lt;/span&gt; &lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;Debug&lt;/span&gt; &lt;span class="n"&gt;stdout&lt;/span&gt;
+    &lt;span class="n"&gt;res0&lt;/span&gt; &lt;span class="ow"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;runResourceT&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt; &lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;runAWS&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envLogger&lt;/span&gt; &lt;span class="o"&gt;.~&lt;/span&gt; &lt;span class="n"&gt;lgr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt; &lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;within&lt;/span&gt; &lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;Tokyo&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt; &lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;send&lt;/span&gt; &lt;span class="n"&gt;t0&lt;/span&gt;
+    &lt;span class="n"&gt;res1&lt;/span&gt; &lt;span class="ow"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;runResourceT&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt; &lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;runAWS&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envLogger&lt;/span&gt; &lt;span class="o"&gt;.~&lt;/span&gt; &lt;span class="n"&gt;lgr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt; &lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;within&lt;/span&gt; &lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;Tokyo&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt; &lt;span class="kt"&gt;AWS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;send&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt;
+    &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;res0&lt;/span&gt;
+    &lt;span class="n"&gt;print&lt;/span&gt; &lt;span class="n"&gt;res1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;本家の各 &lt;span class="caps"&gt;SDK&lt;/span&gt; と同じように, 必要なサービスごとにライブラリがそれぞれ独立しているので,
+基本的にまずは &lt;a href="https://docs.aws.amazon.com/ja_jp/cli/latest/index.html"&gt;&lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;CLI&lt;/span&gt; Command Reference&lt;/a&gt; をみてから, その操作を行うのに必要とするライブラリを amazonka から選んで導入することで,&amp;nbsp;実際に動くまでを円滑に進めることができるだろう.&lt;/p&gt;
+&lt;h3&gt;参照&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a name="ref1"&gt;&lt;span class="dquo"&gt;&amp;#8220;&lt;/span&gt;amazonka: Comprehensive Amazon Web Services &lt;span class="caps"&gt;SDK&lt;/span&gt;.&amp;#8221;&lt;/a&gt; &lt;a href="http://hackage.Haskell.org/package/amazonka"&gt;http://hackage.Haskell.org/package/amazonka&lt;/a&gt; 2018 年 6 月 24&amp;nbsp;日アクセス.&lt;/li&gt;
+&lt;li&gt;&lt;a name="ref2"&gt;&lt;span class="dquo"&gt;&amp;#8220;&lt;/span&gt;amazonka-ec2: Amazon Elastic Compute Cloud &lt;span class="caps"&gt;SDK&lt;/span&gt;.&amp;#8221;&lt;/a&gt; &lt;a href="http://hackage.Haskell.org/package/amazonka-ec2-1.6.0"&gt;http://hackage.Haskell.org/package/amazonka-ec2-1.6.0&lt;/a&gt; 2018 年 6 月 24&amp;nbsp;日アクセス.&lt;/li&gt;
+&lt;li&gt;&lt;span class="dquo"&gt;&amp;#8220;&lt;/span&gt;Network.&lt;span class="caps"&gt;AWS&lt;/span&gt;&amp;#8221; &lt;a href="http://hackage.Haskell.org/package/amazonka-1.6.0/docs/Network-AWS.html"&gt;http://hackage.Haskell.org/package/amazonka-1.6.0/docs/Network-&lt;span class="caps"&gt;AWS&lt;/span&gt;.html&lt;/a&gt; 2018 年 6 月 24&amp;nbsp;日アクセス&lt;/li&gt;
+&lt;li&gt;&lt;span class="dquo"&gt;&amp;#8220;&lt;/span&gt;Network.&lt;span class="caps"&gt;AWS&lt;/span&gt;.&lt;span class="caps"&gt;EC2&lt;/span&gt;&amp;#8221; &lt;a href="http://hackage.Haskell.org/package/amazonka-ec2-1.6.0/docs/Network-AWS-EC2.html"&gt;http://hackage.Haskell.org/package/amazonka-ec2-1.6.0/docs/Network-&lt;span class="caps"&gt;AWS&lt;/span&gt;-&lt;span class="caps"&gt;EC2&lt;/span&gt;.html&lt;/a&gt; 2018 年 6 月 24&amp;nbsp;日アクセス&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;roki (2018)「golang 始めたてメモ」&lt;a href="https://falgon.github.io/roki.log/posts/2018/%206月/17/golangtrial/"&gt;https://falgon.github.io/roki.log/posts/2018/%206月/17/golangtrial/&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-2"&gt;
+&lt;p&gt;「&lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;SDK&lt;/span&gt; とツール」&lt;a href="https://aws.amazon.com/en/getting-started/tools-sdks/"&gt;https://aws.amazon.com/en/getting-started/tools-sdks/&lt;/a&gt; 2018 年 6 月 24 日アクセス.&amp;#160;&lt;a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-3"&gt;
+&lt;p&gt;&lt;a href="#ref1"&gt;参照&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-4"&gt;
+&lt;p&gt;&lt;a href="#ref2"&gt;参照&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref-4" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-5"&gt;
+&lt;p&gt;前提として, &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;IAM&lt;/span&gt; の設定およびアクセスキーの設定が済んでいること.&amp;#160;&lt;a class="footnote-backref" href="#fnref-5" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="Haskell"></category><category term="Networking"></category></entry><entry><title>ghc パターンマッチの時間計算量</title><link href="https://falgon.github.io/roki.log/posts/2018/%204%E6%9C%88/07/hs_pattern_match_complexity/" rel="alternate"></link><published>2018-04-07T16:50:00+09:00</published><updated>2018-04-07T16:50:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2018-04-07:/roki.log/posts/2018/ 4月/07/hs_pattern_match_complexity/</id><summary type="html">&lt;p&gt;ghc&amp;nbsp;のパターンマッチの時間計算量についてメモ&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a href="https://www.reddit.com/r/Haskell/comments/8aaqr2/how_does_Haskell_work_with_multiequation_functions/?ref=share&amp;amp;ref_source=link"&gt;reddit&lt;/a&gt; で見かけて, ふと気になったのでメモ.
+&lt;span class="caps"&gt;GCC&lt;/span&gt; で C/C++ コードの&lt;code&gt;switch&lt;/code&gt;文および&lt;code&gt;case&lt;/code&gt;節をコンパイルするとき, &lt;code&gt;case&lt;/code&gt;節の数が一定以上を超えると, ジャンプテーブルを利用したアセンブリが吐き出される&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;.
+同様にして, ghc はパターンマッチで&lt;a href="https://github.com/ghc/ghc/blob/7ff6023537fdef32bbe9b4c357012d705d9b931f/compiler/cmm/CmmSwitch.hs"&gt;ジャンプテーブルが用いられる場合がある&lt;/a&gt;. &lt;br&gt;
+以下, メーリングリスト&lt;sup id="fnref-2"&gt;&lt;a class="footnote-ref" href="#fn-2"&gt;2&lt;/a&gt;&lt;/sup&gt;から,&amp;nbsp;パターンマッチの時間計算量に関する言及について一部引用.&lt;/p&gt;
+&lt;blockquote&gt;
+(snip) 
+&lt;strong&gt;To answer you question, O(1) for simple patterns, but it really depends on
+the complexity of the pattern-matching expression and the Core-to-Core
+transformations that &lt;span class="caps"&gt;GHC&lt;/span&gt; applies.&lt;/strong&gt; To truly understand the complexity, you
+need take a look at the Core/&lt;span class="caps"&gt;STG&lt;/span&gt; dump (I prefer &lt;span class="caps"&gt;STG&lt;/span&gt; since it&amp;#8217;s simple). 
+If you have any particular code samples you&amp;#8217;d like me to help you analyze, I&amp;#8217;d be happy to do so.&lt;br&gt;
+A basic example:
+&lt;pre&gt;
+data Color = Red | Blue | Green
+isRed Red = True
+isRed _ = False
+&lt;/pre&gt;
+&lt;span class="caps"&gt;GHC&lt;/span&gt; will transform this to
+&lt;pre&gt;
+isRed x = case x of { Red -True; DEFAULT -False }
+&lt;/pre&gt;
+You can think of a case as a switch expression in your standard imperative
+languages. A case expression will evaluate the thunk &amp;#8216;x&amp;#8217; and perform a
+switch on the tag of the result. Each data constructor has an integer tag
+associated with it which will be the target of the switch. &lt;strong&gt;So the time
+complexity of `isRed` will be the time complexity of thunk evaluation which
+is impossible to predict because a thunk can be incredibly complex. Lazy
+evaluation is not so easy to analyze. It is highly context-sensitive.&lt;/strong&gt;(snip)&lt;br&gt;
+The way you&amp;#8217;re measuring algorithmic complexity does carry over to &lt;strong&gt;the lazy
+setting provided it&amp;#8217;s single-threaded because the order of execution is
+purely determined by the &lt;span class="caps"&gt;STG&lt;/span&gt; Code. In the concurrent lazy setting, it&amp;#8217;s a
+bit trickier since lightweight locking mechanisms occur when multiple
+threads evaluate the same thunk, making it non-deterministic.&lt;/strong&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;関連URL:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.kotha.net/hperf/ghc.html"&gt;GHCのこと&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://pdfs.semanticscholar.org/c0d6/f0225c5140d1528f35d187f070d415f33ed6.pdf"&gt;A Term Pattern-Match Compiler Inspired by Finite Automata&amp;nbsp;Theory&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://ghc.Haskell.org/trac/ghc/wiki/SemiTagging"&gt;&lt;span class="caps"&gt;OLD&lt;/span&gt; &lt;span class="caps"&gt;DESIGN&lt;/span&gt; &lt;span class="caps"&gt;DOCUMENT&lt;/span&gt;: The semi-tagging&amp;nbsp;optimisation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.microsoft.com/en-us/research/publication/implementing-lazy-functional-languages-on-stock-hardware-the-spineless-tagless-g-machine/?from=http%3A%2F%2Fresearch.microsoft.com%2Fapps%2Fpubs%2Fdefault.aspx%3Fid%3D67083"&gt;Implementing Lazy Functional Languages on Stock Hardware: The Spineless Tagless&amp;nbsp;G-machine&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://link.springer.com/chapter/10.1007%2F3-540-15975-4_48"&gt;Compiling pattern matching&amp;nbsp;(有料)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;&lt;a href="https://godbolt.org/g/7N34EF"&gt;godbolt&lt;/a&gt;, &lt;a href="https://github.com/gcc-mirror/gcc/blob/47f1fd04f7e813fbfe041d7bde9edeadbef35f9d/gcc/params.def#L1099-L1107"&gt;gcc-mirror&lt;/a&gt;, &lt;a href="https://github.com/gcc-mirror/gcc/blob/c4b26cae233b9462ce32aa14464e916c43332c2d/gcc/tree-switch-conversion.c#L1701-L1710"&gt;gcc-mirror&lt;/a&gt;,&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-2"&gt;
+&lt;p&gt;&lt;a href="https://mail.Haskell.org/pipermail/beginners/2016-July/017010.html"&gt;time complexity of pattern matching - mail.Haskell&lt;/a&gt;, &lt;a href="https://mail.Haskell.org/pipermail/beginners/2016-July/017012.html"&gt;time complexity of pattern matching - mail.Haskell&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="Haskell"></category></entry></feed>

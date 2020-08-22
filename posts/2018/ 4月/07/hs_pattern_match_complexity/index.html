@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>ghc パターンマッチの時間計算量 - roki.log</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../../../theme/style.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="../../../../../favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/solid.css" integrity="sha384-TbilV5Lbhlwdyc4RuIV/JhD8NR+BfMrvz4BL5QFa2we1hQu6wvREr3v6XSRfCTRp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/brands.css" integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css" integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../../../../theme/js/css_browser_selector.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="roki" />
+        <link href="../../../../../theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+        <link href="../../../../../theme/typogrify.css" rel="stylesheet">
+    <link href="https://falgon.github.io/roki.log/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="roki.log Full Atom Feed" />
+    <link href="https://falgon.github.io/roki.log/feeds/haskell.rss.xml" type="application/atom+xml" rel="alternate" title="roki.log Categories Atom Feed" />
+
+  </head>
+  <body id="index" class="archive" style="font-family: '游明朝', 'Yu Mincho' , '游明朝体' , 'YuMincho' , 'ヒラギノ明朝 Pro W3' , 'Hiragino Mincho Pro' , 'HiraMinProN-W3', 'HGS明朝E' , 'ＭＳ Ｐ明朝' , 'MS PMincho', serif;">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">👋New blog information / ブログ移転のお知らせ</h4>
+      </div>
+      <div class="modal-body">
+      This blog has been moved to <a href="https://roki.dev/roki.log">new one (roki.dev/roki.log)</a> for 
+      serving you better view. This blog is no longer updated.
+      Thank you for migrating and re-registering your bookmarks.
+      <hr >
+      このブログは, 
+      <a href="https://roki.dev/roki.log">新ブログ (roki.dev/roki.log)</a> 
+      に移転しました。このページの今後の更新はありませんが,
+      移行用, 記録用に残されています。
+      もし宜しければ, 移行, またはブックマークの再登録をよろしくお願いいたします。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+       </div>
+    </div>
+  </div>
+</div>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../../..">roki.log</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li>
+                    <a href="../../../../../pages/about"><i class="fas fa-info-circle" style="margin-right: 4px;"></i>About</a>
+            </li>
+            <li>
+            </li>
+            
+            <li><a href="../../../../../tags.html"><i class="fas fa-tags" style="margin-right: 4px;"></i>Tags</a></li>
+            <li><span>
+                <form class="navbar-search" action="https://falgon.github.io/roki.log/search.html">
+                    <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+    <section id="content" class="article content">
+      <header>
+        <h2 class="entry-title">
+          ghc&nbsp;パターンマッチの時間計算量
+        </h2>
+        
+        <div class="text-muted">土 07 4月 2018</div>
+      </header>
+<!-- .entry-content -->
+      <div class="entry-content">
+        <p><a href="https://www.reddit.com/r/Haskell/comments/8aaqr2/how_does_Haskell_work_with_multiequation_functions/?ref=share&amp;ref_source=link">reddit</a> で見かけて, ふと気になったのでメモ.
+<span class="caps">GCC</span> で C/C++ コードの<code>switch</code>文および<code>case</code>節をコンパイルするとき, <code>case</code>節の数が一定以上を超えると, ジャンプテーブルを利用したアセンブリが吐き出される<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup>.
+同様にして, ghc はパターンマッチで<a href="https://github.com/ghc/ghc/blob/7ff6023537fdef32bbe9b4c357012d705d9b931f/compiler/cmm/CmmSwitch.hs">ジャンプテーブルが用いられる場合がある</a>. <br>
+以下, メーリングリスト<sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup>から,&nbsp;パターンマッチの時間計算量に関する言及について一部引用.</p>
+<blockquote>
+(snip) 
+<strong>To answer you question, O(1) for simple patterns, but it really depends on
+the complexity of the pattern-matching expression and the Core-to-Core
+transformations that <span class="caps">GHC</span> applies.</strong> To truly understand the complexity, you
+need take a look at the Core/<span class="caps">STG</span> dump (I prefer <span class="caps">STG</span> since it&#8217;s simple). 
+If you have any particular code samples you&#8217;d like me to help you analyze, I&#8217;d be happy to do so.<br>
+A basic example:
+<pre>
+data Color = Red | Blue | Green
+isRed Red = True
+isRed _ = False
+</pre>
+<span class="caps">GHC</span> will transform this to
+<pre>
+isRed x = case x of { Red -True; DEFAULT -False }
+</pre>
+You can think of a case as a switch expression in your standard imperative
+languages. A case expression will evaluate the thunk &#8216;x&#8217; and perform a
+switch on the tag of the result. Each data constructor has an integer tag
+associated with it which will be the target of the switch. <strong>So the time
+complexity of `isRed` will be the time complexity of thunk evaluation which
+is impossible to predict because a thunk can be incredibly complex. Lazy
+evaluation is not so easy to analyze. It is highly context-sensitive.</strong>(snip)<br>
+The way you&#8217;re measuring algorithmic complexity does carry over to <strong>the lazy
+setting provided it&#8217;s single-threaded because the order of execution is
+purely determined by the <span class="caps">STG</span> Code. In the concurrent lazy setting, it&#8217;s a
+bit trickier since lightweight locking mechanisms occur when multiple
+threads evaluate the same thunk, making it non-deterministic.</strong>
+</blockquote>
+
+<p>関連URL:</p>
+<ul>
+<li><a href="http://www.kotha.net/hperf/ghc.html">GHCのこと</a></li>
+<li><a href="https://pdfs.semanticscholar.org/c0d6/f0225c5140d1528f35d187f070d415f33ed6.pdf">A Term Pattern-Match Compiler Inspired by Finite Automata&nbsp;Theory</a></li>
+<li><a href="https://ghc.Haskell.org/trac/ghc/wiki/SemiTagging"><span class="caps">OLD</span> <span class="caps">DESIGN</span> <span class="caps">DOCUMENT</span>: The semi-tagging&nbsp;optimisation</a></li>
+<li><a href="https://www.microsoft.com/en-us/research/publication/implementing-lazy-functional-languages-on-stock-hardware-the-spineless-tagless-g-machine/?from=http%3A%2F%2Fresearch.microsoft.com%2Fapps%2Fpubs%2Fdefault.aspx%3Fid%3D67083">Implementing Lazy Functional Languages on Stock Hardware: The Spineless Tagless&nbsp;G-machine</a></li>
+<li><a href="https://link.springer.com/chapter/10.1007%2F3-540-15975-4_48">Compiling pattern matching&nbsp;(有料)</a></li>
+</ul>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn-1">
+<p><a href="https://godbolt.org/g/7N34EF">godbolt</a>, <a href="https://github.com/gcc-mirror/gcc/blob/47f1fd04f7e813fbfe041d7bde9edeadbef35f9d/gcc/params.def#L1099-L1107">gcc-mirror</a>, <a href="https://github.com/gcc-mirror/gcc/blob/c4b26cae233b9462ce32aa14464e916c43332c2d/gcc/tree-switch-conversion.c#L1701-L1710">gcc-mirror</a>,&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn-2">
+<p><a href="https://mail.Haskell.org/pipermail/beginners/2016-July/017010.html">time complexity of pattern matching - mail.Haskell</a>, <a href="https://mail.Haskell.org/pipermail/beginners/2016-July/017012.html">time complexity of pattern matching - mail.Haskell</a>&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+      </div>
+<!-- /.entry-content -->
+      <footer class="post-info text-muted">
+        <button type="button" class="btn btn-default">          
+          <a href="../../../../../category/haskell.html"><div class="fa fa-lg fa-folder-open"></div> Haskell</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/haskell.html"><div class="fa fa-lg fa-tag"></div> Haskell</a>
+        </button>
+      </footer>
+      <!-- /.post-info -->
+    <!-- Comment BEGIN -->
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'roki-log';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <!-- Comment END -->
+    </section>
+    </div>
+<footer class="footer">
+      <div class="container">
+          <p class="footer-text">&copy; <a href="../../../../..">roki.log</a> powered by 
+          <a href="https://getpelican.com/">pelican</a> and 
+          <a href="https://github.com/falgon/nikhil-theme">nikhil-theme (forked)</a><br>
+              <small>  <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>, except where indicated otherwise.
+</small>
+            </p>
+   </div>
+</footer>    <script src="../../../../../theme/js/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-116653080-1', 'auto');
+      ga('send', 'pageview');
+       $('#myModal').modal({show: true});
+
+    </script>
+  </body>
+</html>

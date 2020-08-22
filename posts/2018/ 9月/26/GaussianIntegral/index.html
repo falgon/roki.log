@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>ガウス積分の公式とその証明 - roki.log</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../../../theme/style.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="../../../../../favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/solid.css" integrity="sha384-TbilV5Lbhlwdyc4RuIV/JhD8NR+BfMrvz4BL5QFa2we1hQu6wvREr3v6XSRfCTRp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/brands.css" integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css" integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../../../../theme/js/css_browser_selector.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="roki" />
+        <link href="../../../../../theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+        <link href="../../../../../theme/typogrify.css" rel="stylesheet">
+    <link href="https://falgon.github.io/roki.log/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="roki.log Full Atom Feed" />
+    <link href="https://falgon.github.io/roki.log/feeds/math.rss.xml" type="application/atom+xml" rel="alternate" title="roki.log Categories Atom Feed" />
+
+  </head>
+  <body id="index" class="archive" style="font-family: '游明朝', 'Yu Mincho' , '游明朝体' , 'YuMincho' , 'ヒラギノ明朝 Pro W3' , 'Hiragino Mincho Pro' , 'HiraMinProN-W3', 'HGS明朝E' , 'ＭＳ Ｐ明朝' , 'MS PMincho', serif;">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">👋New blog information / ブログ移転のお知らせ</h4>
+      </div>
+      <div class="modal-body">
+      This blog has been moved to <a href="https://roki.dev/roki.log">new one (roki.dev/roki.log)</a> for 
+      serving you better view. This blog is no longer updated.
+      Thank you for migrating and re-registering your bookmarks.
+      <hr >
+      このブログは, 
+      <a href="https://roki.dev/roki.log">新ブログ (roki.dev/roki.log)</a> 
+      に移転しました。このページの今後の更新はありませんが,
+      移行用, 記録用に残されています。
+      もし宜しければ, 移行, またはブックマークの再登録をよろしくお願いいたします。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+       </div>
+    </div>
+  </div>
+</div>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../../..">roki.log</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li>
+                    <a href="../../../../../pages/about"><i class="fas fa-info-circle" style="margin-right: 4px;"></i>About</a>
+            </li>
+            <li>
+            </li>
+            
+            <li><a href="../../../../../tags.html"><i class="fas fa-tags" style="margin-right: 4px;"></i>Tags</a></li>
+            <li><span>
+                <form class="navbar-search" action="https://falgon.github.io/roki.log/search.html">
+                    <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+    <section id="content" class="article content">
+      <header>
+        <h2 class="entry-title">
+          ガウス積分の公式とその証明
+        </h2>
+        
+        <div class="text-muted">水 26 9月 2018</div>
+      </header>
+<!-- .entry-content -->
+      <div class="entry-content">
+        <p>当ブログ内でガウス積分(オイラー＝ポアソン積分)の公式を用いる際に self-contained でリファレンスを張るためと, 
+個人的な学習の記録として, 本エントリにてガウス積分の公式とその証明について書く<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup><span class="math">\(.\)</span>
+筆者自身にとっての分かりやすさを優先しているため,&nbsp;若干冗長的な記述があるかもしれない点に注意.</p>
+<div class="panel panel-default">
+  <div class="panel-heading theo"><a name="GaussianIntegral" class="disabled">ガウス積分の公式</a></div>
+  <div class="panel-body" style="overflow:scroll">
+  &#92;(x\in\mathbb{R}&#92;) のとき &#92;[\displaystyle\int_{-\infty}^{\infty}e^{-x^2}dx=\sqrt{\pi}&#92;]
+  </div>
+</div>
+
+<p><strong>証明</strong>:
+<br></p>
+<p>\[I=\displaystyle\int_{-\infty}^{\infty}e^{-x^2}dx\] とおく. 
+ここで, 最終的に \(\pi\) を出現させるために, 直交座標系から極座標系への移行を行いたい.
+そのために,&nbsp;まず二乗して</p>
+<p>\[I^2=\displaystyle\left(\int_{-\infty}^{\infty}e^{-x^2}dx\right)^2=
+\left(\int_{-\infty}^{\infty}e^{-x^2}dx\right)\cdot\left(\int_{-\infty}^{\infty}e^{-x^2}dx\right)&nbsp;\]</p>
+<p>文字を変えても積分値に変わりはないから</p>
+<p>\[I^2=\left(\int_{-\infty}^{\infty}e^{-x^2}dx\right)\cdot\left(\int_{-\infty}^{\infty}e^{-y^2}dy\right)=&nbsp;\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}e^{-\left(x^2+y^2\right)}dxdy\]</p>
+<p>\(x=r\cos\theta,\ y=r\sin\theta, dx\ dy=rdrd\theta\) とし<sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup></p>
+<div class="math">\begin{eqnarray}
+I^2&amp;=&amp;\int_{0}^{2\pi}\int_{0}^{\infty}e^{-r^2}rdrd\theta \\\
+&amp;=&amp;\int_{0}^{2\pi}d\theta\int_{0}^{\infty}re^{-r^2}dr \\\
+&amp;=&amp;2\pi\left[\dfrac{1}{2}e^{-r^2}\right]^{\infty}_{0} \\\
+&amp;=&amp;\pi
+\end{eqnarray}</div>
+<p>
+もともと \(I\) は被積分関数の関数形であり, 
+定義域は \(I &gt; 0\) だから, \(I=\sqrt{\pi}\).&nbsp;\(\square\)</p>
+<p>2 乗して \(x^2+y^2=r^2\)<sup id="fnref-3"><a class="footnote-ref" href="#fn-3">3</a></sup> を出現させ, 極座標での表現を開始する流れは, 胸熱であった.
+さて, 以下はガウス積分の公式に関連した,&nbsp;いくつかの等式について示すこととする.</p>
+<div class="panel panel-default">
+  <div class="panel-heading theo"><a name="SimilarGaussianIntegral1" class="disabled">ガウス積分の類似形 1</a></div>
+  <div class="panel-body" style="overflow:scroll">
+  &#92;(x\in\mathbb{R}, a\in\mathbb{R}^{+}&#92;) のとき, &#92;[\displaystyle\int_{-\infty}^{\infty}e^{-ax^2}dx=\sqrt{\dfrac{\pi}{a}}&#92;]
+  </div>
+</div>
+
+<p><strong>証明</strong>:<br></p>
+<p>\(y=\sqrt{a}x, dy=\sqrt{a}dx\)&nbsp;とし,</p>
+<p>\[\int_{-\infty}^{\infty}e^{-ax^2}dx=\int_{-\infty}^{\infty}e^{-y^2}\cdot\dfrac{1}{\sqrt{a}}dy=\dfrac{1}{\sqrt{a}}\int_{-\infty}^{\infty}e^{-y^2}dy\label{eq:first}\tag{1}\]
+\(\eqref{eq:first}\) の最右辺をみると<a href="#GaussianIntegral">ガウス積分の公式</a>と全く同じなので, \(\eqref{eq:first}=\sqrt{\dfrac{\pi}{a}}\).&nbsp;\(\square\)</p>
+<div class="panel panel-default">
+  <div class="panel-heading theo"><a name="SimilarGaussianIntegral2" class="disabled">ガウス積分の類似形 2</a></div>
+  <div class="panel-body" style="overflow:scroll">
+  &#92;(x\in\mathbb{R}, a\in\mathbb{R}^{+}&#92;) のとき, &#92;[\displaystyle\int_{0}^{\infty}e^{-ax^2}dx=\dfrac{1}{2}\sqrt{\dfrac{\pi}{a}}&#92;]
+  </div>
+</div>
+
+<p><strong>証明</strong>:<br></p>
+<p>単に<a href="#SimilarGaussianIntegral1">ガウス積分の類似形 1</a>の半分の領域となるだけなので,
+\(\displaystyle\int_{0}^{\infty}e^{-ax^2}dx=\dfrac{1}{2}\sqrt{\dfrac{\pi}{a}}\).&nbsp;\(\square\)</p>
+<h3>参考文献</h3>
+<ul>
+<li>「<a name="ref1" href="https://mathtrain.jp/gauss">ガウス積分の公式の 2 通りの証明</a>」 2018 年 9 月 26&nbsp;日アクセス.</li>
+<li>「<a href="http://www.chem.tsukuba.ac.jp/kazuya/kazuya/AppC.pdf">C. 極座標</a>」 2018 年 9 月 26&nbsp;日アクセス.</li>
+</ul>
+
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn-1">
+<p>証明内では, <a href="https://ja.wikipedia.org/wiki/%E3%83%95%E3%83%93%E3%83%8B%E3%81%AE%E5%AE%9A%E7%90%86">フビニの定理</a>を暗黙に使っている. 恥ずかしながら, 筆者は測度論について全くの素人であるので, これを暗に用いることはあまりよくないと思うのだが, これが<a href="#ref1"><i>シグマの二重和が分解できることの一般形</i></a>であると理解して, 今回はこれを用いた.&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn-2">
+<p>補足: 極座標系において, \(\theta\) の変域は \([0,2\pi]\), \(r\) の変域は \([0,\infty]\) である. また, 極座標での微小面積は \(drd\theta\) ではなく \(rdrd\theta\) であることに注意. これについては, 後日のエントリ, <a href="/roki.log/posts/2018/10/04/jacobian/">ヤコビアン</a>にて取り扱っている.&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn-3">
+<p>一応書いておくと, この裏付けは三平方の定理より \(\cos^2+\sin^2=1\).&#160;<a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js','color.js','enclose.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: false," +
+        "    messageStyle: 'None'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+      </div>
+<!-- /.entry-content -->
+      <footer class="post-info text-muted">
+        <button type="button" class="btn btn-default">          
+          <a href="../../../../../category/math.html"><div class="fa fa-lg fa-folder-open"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/math.html"><div class="fa fa-lg fa-tag"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/python.html"><div class="fa fa-lg fa-tag"></div> Python</a>
+        </button>
+      </footer>
+      <!-- /.post-info -->
+    <!-- Comment BEGIN -->
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'roki-log';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <!-- Comment END -->
+    </section>
+    </div>
+<footer class="footer">
+      <div class="container">
+          <p class="footer-text">&copy; <a href="../../../../..">roki.log</a> powered by 
+          <a href="https://getpelican.com/">pelican</a> and 
+          <a href="https://github.com/falgon/nikhil-theme">nikhil-theme (forked)</a><br>
+              <small>  <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>, except where indicated otherwise.
+</small>
+            </p>
+   </div>
+</footer>    <script src="../../../../../theme/js/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-116653080-1', 'auto');
+      ga('send', 'pageview');
+       $('#myModal').modal({show: true});
+
+    </script>
+  </body>
+</html>

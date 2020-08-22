@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>LU 分解 - roki.log</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../../../theme/style.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="../../../../../favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/solid.css" integrity="sha384-TbilV5Lbhlwdyc4RuIV/JhD8NR+BfMrvz4BL5QFa2we1hQu6wvREr3v6XSRfCTRp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/brands.css" integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css" integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../../../../theme/js/css_browser_selector.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="roki" />
+        <link href="../../../../../theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+        <link href="../../../../../theme/typogrify.css" rel="stylesheet">
+    <link href="https://falgon.github.io/roki.log/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="roki.log Full Atom Feed" />
+    <link href="https://falgon.github.io/roki.log/feeds/math.rss.xml" type="application/atom+xml" rel="alternate" title="roki.log Categories Atom Feed" />
+
+  </head>
+  <body id="index" class="archive" style="font-family: '游明朝', 'Yu Mincho' , '游明朝体' , 'YuMincho' , 'ヒラギノ明朝 Pro W3' , 'Hiragino Mincho Pro' , 'HiraMinProN-W3', 'HGS明朝E' , 'ＭＳ Ｐ明朝' , 'MS PMincho', serif;">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">👋New blog information / ブログ移転のお知らせ</h4>
+      </div>
+      <div class="modal-body">
+      This blog has been moved to <a href="https://roki.dev/roki.log">new one (roki.dev/roki.log)</a> for 
+      serving you better view. This blog is no longer updated.
+      Thank you for migrating and re-registering your bookmarks.
+      <hr >
+      このブログは, 
+      <a href="https://roki.dev/roki.log">新ブログ (roki.dev/roki.log)</a> 
+      に移転しました。このページの今後の更新はありませんが,
+      移行用, 記録用に残されています。
+      もし宜しければ, 移行, またはブックマークの再登録をよろしくお願いいたします。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+       </div>
+    </div>
+  </div>
+</div>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../../..">roki.log</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li>
+                    <a href="../../../../../pages/about"><i class="fas fa-info-circle" style="margin-right: 4px;"></i>About</a>
+            </li>
+            <li>
+            </li>
+            
+            <li><a href="../../../../../tags.html"><i class="fas fa-tags" style="margin-right: 4px;"></i>Tags</a></li>
+            <li><span>
+                <form class="navbar-search" action="https://falgon.github.io/roki.log/search.html">
+                    <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+    <section id="content" class="article content">
+      <header>
+        <h2 class="entry-title">
+          <span class="caps">LU</span>&nbsp;分解
+        </h2>
+        
+        <div class="text-muted">火 01 1月 2019</div>
+      </header>
+<!-- .entry-content -->
+      <div class="entry-content">
+        <p><span class="caps">LU</span>&nbsp;分解に関して初歩的な内容から網羅的にまとめた.</p>
+<h3>ガウスの消去法</h3>
+<p>ガウスの消去法は, 前進消去による上三角行列の形成と後退代入の組み合わせのことをいい, 
+その本質は行列の行基本変形, すなわち中学校で習う連立方程式の解法そのものである.
+例えば, 何の芸もないが,&nbsp;次の連立方程式</p>
+<div class="math">\begin{eqnarray}
+\begin{cases}
+x+2y&amp;=&amp;3  \\\
+3x+4y&amp;=&amp;5
+\end{cases}\leftrightarrow
+\left(\begin{array}{cc|c}
+1 &amp; 2 &amp; 3 \\\
+3 &amp; 4 &amp; 5
+\end{array}\right)\label{eq:sfour}\tag{1}
+\end{eqnarray}</div>
+<p>をガウスの消去法では次のようにして解くのであった.</p>
+<div class="math">$$
+\left(\begin{array}{cc|c}
+1 &amp; 2 &amp; 3 \\\
+3 &amp; 4 &amp; 5
+\end{array}\right)\to
+\underbrace{
+\left(\begin{array}{cc|c}
+\overbrace{1}^{\times (-3)} &amp; \overbrace{2}^{\times (-3)} &amp; \overbrace{3}^{\times (-3)} \\\
+\underline{3} &amp; 4 &amp; 5
+\end{array}\right)
+}_{\rm 前進消去}\to
+\left(\begin{array}{cc|c}
+1 &amp; 2 &amp; 3 \\\
+0 &amp; -2 &amp; -4
+\end{array}\right)\to
+\underbrace{
+\left(\begin{array}{cc|c}
+1 &amp; \underline{2} &amp; 3 \\\
+\overbrace{0}^{\times 1} &amp; \overbrace{-2}^{\times 1} &amp; \overbrace{-4}^{\times 1}
+\end{array}\right)
+}_{\rm 後退代入} \\\ \to
+\left(\begin{array}{cc|c}
+1 &amp; 0 &amp; -1 \\\
+0 &amp; -2 &amp; -4
+\end{array}\right) \\\
+\therefore \left(x,y\right)=\left(-1\div 1,-4\div (-2)\right)=\left(-1,2\right)
+$$</div>
+<p>この前進消去の操作は次のように行列の積で表現できる.</p>
+<div class="math">$$
+\left(\begin{array}{cc}
+1 &amp; 0 \\\
+-3 &amp; 1
+\end{array}\right)
+\left(\begin{array}{cc}
+1 &amp; 2 \\\
+3 &amp; 4
+\end{array}\right)=
+\left(\begin{array}{cc}
+1 &amp; 2 \\\
+0 &amp; -2
+\end{array}\right)
+$$</div>
+<p>これを理解しておくと後述する <span class="caps">LU</span> 分解の理解に容易くなる. ここで, この時間計算量について, 一般の \(n\) 次線形連立方程式
+\(X\boldsymbol{a}=\boldsymbol{y}\ {\rm where}\ X\in\mathbb{R}^{n\times n}, 
+\boldsymbol{a}\in\mathbb{R}^{n\times 1}, \boldsymbol{y}\in\mathbb{R}^{n\times 1}\)&nbsp;を用いて考えるする.</p>
+<div class="math">$$\left(\begin{array}{ccccc}
+x_{11} &amp; x_{12} &amp; x_{13} &amp; \cdots &amp; x_{1n} \\\
+x_{21} &amp; x_{22} &amp; x_{23} &amp; \cdots &amp; x_{2n} \\\
+x_{31} &amp; x_{32} &amp; x_{33} &amp; \cdots &amp; x_{3n} \\\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\\
+x_{n1} &amp; x_{n2} &amp; x_{n3} &amp; \cdots &amp; x_{nn}
+\end{array}\right)
+\left(\begin{array}{c}a_1 \\\ a_2 \\\ a_3 \\\ \vdots \\\ a_n\end{array}\right)=
+\left(\begin{array}{c}y_1 \\\ y_2 \\\ y_3 \\\ \vdots \\\ y_n\end{array}\right)
+$$</div>
+<p>まず前進消去の操作について考える.
+前進消去では, \(x_{11}\) を使って残りの \(x_{21}, x_{31}, \cdots, x_{n1}\)
+を掃き出していくのであった. ただし \(x_{21}, x_{31}, \cdots, x_{n1}\) は必ず <span class="math">\(0\)</span> 
+となるのだから, これは実質の計算量として考える必要はないだろう.
+すると \(x_{21}, x_{31}, \cdots, x_{n1}\) を掃きだすのに伴って,&nbsp;実際の計算を要される部分というのは</p>
+<div class="math">$$
+\begin{array}{cccc}
+x_{22} &amp; x_{23} &amp; \cdots &amp; x_{2n} \\\
+x_{32} &amp; x_{33} &amp; \cdots &amp; x_{3n} \\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\\
+x_{n2} &amp; x_{n3} &amp; \cdots &amp; x_{nn}
+\end{array}
+$$</div>
+<p>の箇所であることがいえる. 
+この部分の成分数は \(\left(n-1\right)^2\)
+なので, 一回目の前進消去では \(\left(n-1\right)^2\) 回の計算を行うことがわかる.
+次に, 二回目の前進消去では \(x_{22}\) を使って, 
+それと同列のそれよりも下の行の成分 \(x_{32},\cdots,x_{n2}\) を先と同様に消していくわけだが,
+ここでも同様, \(x_{32},\cdots,x_{n2}\) は必ず <span class="math">\(0\)</span> なので,&nbsp;実際に計算を行う部分は</p>
+<div class="math">$$
+\begin{array}{ccc}
+x_{33} &amp; \cdots &amp; x_{3n} \\\
+\vdots &amp; \ddots &amp; \vdots \\\
+x_{n3} &amp; \cdots &amp; x_{nn}
+\end{array}
+$$</div>
+<p>の箇所である. 
+この部分の成分数は \(\left(n-2\right)^2\)
+なので, 二回目の全身消去では \(\left(n-2\right)^2\) 回の計算を行うことがわかる.
+これを繰り返すと,&nbsp;計算を行う部分が残り一成分となるまで同様の計算回数がかかることがわかるから</p>
+<p>\[\left(n-1\right)^2+\left(n-2\right)^2+\cdots+2^2+1^2&nbsp;=\sum^{n}_{i=1}\left(i-1\right)^2\]</p>
+<p>ここで, 高校数学の教科書にも載っている定理(証明略)
+\(\sum^n_{j=1}j^2=\frac{n\left(n+1\right)\left(2n+1\right)}{6}\)
+を思い出せば, 先の式は \(\sum^n_{i=1}\left(i-1\right)^2=\frac{n^3}{3}+n^2\)&nbsp;と表せることがわかる.</p>
+<p>続いて, 後退代入について考える.
+後退代入は, 上三角行列となっている係数行列に対して代入を繰り返し,&nbsp;対角行列を形成していく操作であった.</p>
+<div class="math">$$\left(\begin{array}{ccccc}
+x_{11} &amp; x_{12} &amp; x_{13} &amp; \cdots &amp; x_{1n} \\\
+&amp; x_{22} &amp; x_{23} &amp; \cdots &amp; x_{2n} \\\
+&amp; &amp; x_{33} &amp; \cdots &amp; x_{3n} \\\
+&amp; &amp; &amp; \ddots &amp; \vdots \\\
+&amp;&amp;&amp;&amp; x_{nn}
+\end{array}\right)
+\left(\begin{array}{c}a_1 \\\ a_2 \\\ a_3 \\\ \vdots \\\ a_n\end{array}\right)=
+\left(\begin{array}{c}y_1 \\\ y_2 \\\ y_3 \\\ \vdots \\\ y_n\end{array}\right)
+$$</div>
+<p>この場合, まず \(x_{nn}\) を使って, 
+\(x_{1n},x_{2n},x_{3n},\cdots,x_{\left(n-1\right)n}\) を消していくわけだが,
+この際, 係数行列に対する操作というのはただ <span class="math">\(0\)</span> にしていくということだけである. 
+これを \(x_{22}\) まで繰り返し行うわけだが, その間の係数行列に関する操作はただ <span class="math">\(0\)</span>
+にしていくということだけなので, これを計算量に含む必要はない.
+実際に計算が発生するのは, 右辺ベクトルの部分である.
+まず \(y_n\) に対する計算は, 後退代入の操作を考えれば, 当然なにもする必要はない.
+次に \(y_{n-1}\) に対する計算は
+\(\left(y_{n-1}\right)&#8217;=y_{n-1}-\frac{x_{\left(n-1\right)n}}{x_{nn}}y_n\) であり,
+減算, 除算, 積算が各一回ずつ行われることがいえる.
+次の \(y_{n-2}\) に対する計算も同様
+\(y_{n-2}-\frac{x_{\left(n-2\right)n}}{x_{\left(n-1\right)n}}\left(y_{n-1}\right)&#8217;\)
+であり, 計算の形式は先と全く同じであるが, その前の後退代入の結果 \(\left(y_{n-1}\right)&#8217;\) 
+を用いている点で計算量は異なる. 
+つまり, いま計算したい右辺ベクトルの成分を計算するのには, 
+その一つ下の右辺ベクトルの成分に対する計算結果が必要となる(後退代入の操作そのもの)ことから,
+これが \(y_1\) にまで及ぶことを考えると,&nbsp;後退代入の総回数は</p>
+<p>\[1+2+\cdots+\left(n-1\right)=\frac{n\left(n-1\right)}{2}\]</p>
+<p>とかける(右辺への式変形の証明は高校数学の教科書で扱われているので略).
+ガウスの消去法は前進消去と後退代入の組み合わせであるので,&nbsp;その時間計算量は,</p>
+<p>\[O\left(\frac{n^3}{3}+\frac{n\left(n-1\right)}{2}\right)\label{eq:sthird}\tag{2}\]</p>
+<p>ただし各項の中で最高次の係数だけを考えればよいので,&nbsp;ガウスの消去法の時間計算量は</p>
+<p>\[\frac{1}{3}O\left(n^3\right)\]</p>
+<p>である.</p>
+<h3>ガウス・ジョルダン法</h3>
+<p>ガウスの名がつく行列を用いた線形方程式の直接解法には, 
+今述べたガウスの消去法のほかにガウス・ジョルダン法というものがある.
+これらは明確に区別されたところであまり意味がないような気もするが,
+ガウスの消去法が上記のように係数行列となる部分を単位行列でない対角行列へと変形していったのに対し,
+ガウス・ジョルダン法はそれを直接単位行列となるように変形していく点で異なる.&nbsp;ガウス・ジョルダン法で同様にして計算していくと,</p>
+<div class="math">$$
+\left(\begin{array}{cc|c}
+1 &amp; 2 &amp; 3 \\\
+3 &amp; 4 &amp; 5
+\end{array}\right)\to
+\left(\begin{array}{cc|c}
+\overbrace{1}^{\times (-3)} &amp; \overbrace{2}^{\times (-3)} &amp; \overbrace{3}^{\times (-3)} \\\
+\underline{3} &amp; 4 &amp; 5
+\end{array}\right)\to
+\left(\begin{array}{cc|c}
+1 &amp; 2 &amp; 3 \\\
+0 &amp; -2 &amp; -4
+\end{array}\right)\to
+\left(\begin{array}{cc|c}
+1 &amp; 2 &amp; 3 \\\
+\overbrace{0}^{\times \left(-\frac{1}{2}\right)} &amp; \overbrace{-2}^{\times \left(-\frac{1}{2}\right)} &amp; \overbrace{-4}^{\times \left(-\frac{1}{2}\right)}
+\end{array}\right) \\\ \to
+\left(\begin{array}{cc|c}
+1 &amp; 2 &amp; 3 \\\
+0 &amp; 1 &amp; 2
+\end{array}\right)\to
+\left(\begin{array}{cc|c}
+1 &amp; \underline{2} &amp; 3 \\\
+\overbrace{0}^{\times (-2)} &amp; \overbrace{1}^{\times (-2)} &amp; \overbrace{2}^{\times (-2)}
+\end{array}\right)\to
+\left(\begin{array}{cc|c}
+1 &amp; 0 &amp; -1 \\\
+0 &amp; 1 &amp; 2
+\end{array}\right) \\\
+\therefore \left(x,y\right)=\left(-1,2\right)
+$$</div>
+<p>これは掃き出し法とも言われることがある. 
+ガウス・ジョルダン法の計算量は \(\frac{1}{2}O\left(n^3\right)\) なので(導出は省略),&nbsp;ガウス・ジョルダン法をわざわざ用いるシーンはあまりない.</p>
+<h3>ピボッティング</h3>
+<p>ところで, いま示したガウスの消去法, ガウスジョルダン法の手順は, このままでは困る場合がある. 
+例えば,&nbsp;次の線形方程式をガウスの消去法で解いてみると</p>
+<div class="math">$$
+\left(\begin{array}{cccc|c}
+1 &amp; 2 &amp; 7 &amp; 6 &amp; 6 \\\
+2 &amp; 4 &amp; 4 &amp; 2 &amp; 2 \\\
+1 &amp; 8 &amp; 5 &amp; 2 &amp; 12 \\\
+2 &amp; 4 &amp; 3 &amp; 3 &amp; 5
+\end{array}\right)\to
+\left(\begin{array}{cccc|c}
+\overbrace{1}^{\times (-2)} &amp; \overbrace{2}^{\times (-2)} &amp; \overbrace{7}^{\times (-2)} &amp; \overbrace{6}^{\times (-2)} &amp; \overbrace{6}^{\times (-2)} \\\
+\underline{2} &amp; 4 &amp; 4 &amp; 2 &amp; 2 \\\
+1 &amp; 8 &amp; 5 &amp; 2 &amp; 12 \\\
+2 &amp; 4 &amp; 3 &amp; 3 &amp; 5
+\end{array}\right)\to
+\left(\begin{array}{cccc|c}
+1 &amp; 2 &amp; 7 &amp; 6 &amp; 6 \\\
+0 &amp; 0 &amp; -10 &amp; -10 &amp; -10 \\\
+1 &amp; 8 &amp; 5 &amp; 2 &amp; 12 \\\
+2 &amp; 4 &amp; 3 &amp; 3 &amp; 5
+\end{array}\right) \\\ \to
+\left(\begin{array}{cccc|c}
+\overbrace{1}^{\times (-1)} &amp; \overbrace{2}^{\times (-1)} &amp; \overbrace{7}^{\times (-1)} &amp; \overbrace{6}^{\times (-1)} &amp; \overbrace{6}^{\times (-1)} \\\
+0 &amp; 0 &amp; -10 &amp; -10 &amp; -10 \\\
+\underline{1} &amp; 8 &amp; 5 &amp; 2 &amp; 12 \\\
+2 &amp; 4 &amp; 3 &amp; 3 &amp; 5
+\end{array}\right)\to
+\left(\begin{array}{cccc|c}
+1 &amp; 2 &amp; 7 &amp; 6 &amp; 6 \\\
+0 &amp; 0 &amp; -10 &amp; -10 &amp; -10 \\\
+0 &amp; 6 &amp; -2 &amp; -4 &amp; 6 \\\
+2 &amp; 4 &amp; 3 &amp; 3 &amp; 5
+\end{array}\right)\to
+\left(\begin{array}{cccc|c}
+\overbrace{1}^{\times (-2)} &amp; \overbrace{2}^{\times (-2)} &amp; \overbrace{7}^{\times (-2)} &amp; \overbrace{6}^{\times (-2)} &amp; \overbrace{6}^{\times (-2)} \\\
+0 &amp; 0 &amp; -10 &amp; -10 &amp; -10 \\\
+0 &amp; 6 &amp; -2 &amp; -4 &amp; 6 \\\
+\underline{2} &amp; 4 &amp; 3 &amp; 3 &amp; 5
+\end{array}\right) \\\ \to
+\left(\begin{array}{cccc|c}
+1 &amp; 2 &amp; 7 &amp; 6 &amp; 6 \\\
+0 &amp; 0 &amp; -10 &amp; -10 &amp; -10 \\\
+0 &amp; 6 &amp; -2 &amp; -4 &amp; 6 \\\
+0 &amp; 0 &amp; -11 &amp; -9 &amp; -7
+\end{array}\right)\to
+\left(\begin{array}{cccc|c}
+1 &amp; 2 &amp; 7 &amp; 6 &amp; 6 \\\
+0 &amp; \overbrace{0}^{\times \left(-\frac{6}{0}\right)} &amp; \overbrace{-10}^{\times \left(-\frac{6}{0}\right)} &amp; \overbrace{-10}^{\times \left(-\frac{6}{0}\right)} &amp; \overbrace{-10}^{\times \left(-\frac{6}{0}\right)} \\\
+0 &amp; \underline{6} &amp; -2 &amp; -4 &amp; 6 \\\
+0 &amp; 0 &amp; -11 &amp; -9 &amp; -7
+\end{array}\right)
+$$</div>
+<p>というように <span class="math">\(0\)</span> で割るということが起きてしまうのである.
+これを防ぐために考えられる方法としては,
+掃きだすのに利用する値がその列の中で絶対値最大となるように行を入れ替える.
+これは, 部分ピボット選択付きガウスの消去法といわれる. 
+ピボットとは, いま述べた掃きだすのに利用する値のことである. 
+部分ピボット選択といわれる理由は, 入れ替えの操作が行に対してのみ行われるからである.
+列に対する入れ替え操作をも含んだ方法は完全ピボット選択といわれるが,
+当然それは行基本変形の範疇でないので,
+そのまま計算を続行して単に右辺ベクトルを取り出せばよいという話ではなくなる.
+完全ピボット選択は, 絶対値最大の値の選択の余地が部分ピボット選択よりも当然広がるので,
+直感的に, より大きな絶対値の値をピボットとして選択できる確率が上がることは考えられるだろう.
+しかしながら, このアドバンテージは当然行列に依存したものであり,
+プログラムの複雑度が上がることに釣り合っていないため,&nbsp;実際に用いられるようなことはあまりないと思われる.</p>
+<p>というわけで, 
+下記に部分ピボット選択付きガウスの消去法による計算過程を省略することなく書き下したが,
+とくに面白みもない上に長いので隠しておいた.
+<em onclick="obj=document.getElementById('open_gaussian_piv_com').style; obj.display=(obj.display=='none')?'block':'none';">
+<a style="font-style: normal; cursor:pointer;">クリックで展開.</a>
+</em>
+<div id="open_gaussian_piv_com" style="display:none;clear:both;"></p>
+<div class="math">$$
+\left(\begin{array}{cccc|c}
+1 &amp; 2 &amp; 7 &amp; 6 &amp; 6 \\\
+2 &amp; 4 &amp; 4 &amp; 2 &amp; 2 \\\
+1 &amp; 8 &amp; 5 &amp; 2 &amp; 12 \\\
+2 &amp; 4 &amp; 3 &amp; 3 &amp; 5
+\end{array}\right)\to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 4 &amp; 2 &amp; 2 \\\
+1 &amp; 2 &amp; 7 &amp; 6 &amp; 6 \\\
+1 &amp; 8 &amp; 5 &amp; 2 &amp; 12 \\\
+2 &amp; 4 &amp; 3 &amp; 3 &amp; 5
+\end{array}\right)\to
+\left(\begin{array}{cccc|c}
+\overbrace{2}^{\times\left(-\frac{1}{2}\right)} &amp; \overbrace{4}^{\times\left(-\frac{1}{2}\right)} &amp; \overbrace{4}^{\times\left(-\frac{1}{2}\right)} &amp; \overbrace{2}^{\times\left(-\frac{1}{2}\right)} &amp; \overbrace{2}^{\times\left(-\frac{1}{2}\right)} \\\
+\underline{1} &amp; 2 &amp; 7 &amp; 6 &amp; 6 \\\
+1 &amp; 8 &amp; 5 &amp; 2 &amp; 12 \\\
+2 &amp; 4 &amp; 3 &amp; 3 &amp; 5
+\end{array}\right)\\\ \to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 4 &amp; 2 &amp; 2 \\\
+0 &amp; 0 &amp; 5 &amp; 5 &amp; 5 \\\
+1 &amp; 8 &amp; 5 &amp; 2 &amp; 12 \\\
+2 &amp; 4 &amp; 3 &amp; 3 &amp; 5
+\end{array}\right)\to
+\left(\begin{array}{cccc|c}
+\overbrace{2}^{\times\left(-\frac{1}{2}\right)} &amp; \overbrace{4}^{\times\left(-\frac{1}{2}\right)} &amp; \overbrace{4}^{\times\left(-\frac{1}{2}\right)} &amp; \overbrace{2}^{\times\left(-\frac{1}{2}\right)} &amp; \overbrace{2}^{\times\left(-\frac{1}{2}\right)} \\\
+0 &amp; 0 &amp; 5 &amp; 5 &amp; 5 \\\
+\underline{1} &amp; 8 &amp; 5 &amp; 2 &amp; 12 \\\
+2 &amp; 4 &amp; 3 &amp; 3 &amp; 5
+\end{array}\right)\to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 4 &amp; 2 &amp; 2 \\\
+0 &amp; 0 &amp; 5 &amp; 5 &amp; 5 \\\
+0 &amp; 6 &amp; 3 &amp; 1 &amp; 11 \\\
+2 &amp; 4 &amp; 3 &amp; 3 &amp; 5
+\end{array}\right)\\\ \to
+\left(\begin{array}{cccc|c}
+\overbrace{2}^{\times (-1)} &amp; \overbrace{4}^{\times (-1)} &amp; \overbrace{4}^{\times (-1)} &amp; \overbrace{2}^{\times (-1)} &amp; \overbrace{2}^{\times (-1)} \\\
+0 &amp; 0 &amp; 5 &amp; 5 &amp; 5 \\\
+0 &amp; 6 &amp; 3 &amp; 1 &amp; 11 \\\
+\underline{2} &amp; 4 &amp; 3 &amp; 3 &amp; 5
+\end{array}\right)\to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 4 &amp; 2 &amp; 2 \\\
+0 &amp; 0 &amp; 5 &amp; 5 &amp; 5 \\\
+0 &amp; 6 &amp; 3 &amp; 1 &amp; 11 \\\
+0 &amp; 0 &amp; -1 &amp; 1 &amp; 3
+\end{array}\right)\to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 4 &amp; 2 &amp; 2 \\\
+0 &amp; 6 &amp; 3 &amp; 1 &amp; 11 \\\
+0 &amp; 0 &amp; 5 &amp; 5 &amp; 5 \\\
+0 &amp; 0 &amp; -1 &amp; 1 &amp; 3
+\end{array}\right) \\\ \to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 4 &amp; 2 &amp; 2 \\\
+0 &amp; 6 &amp; 3 &amp; 1 &amp; 11 \\\
+0 &amp; 0 &amp; 5 &amp; 5 &amp; 5 \\\
+0 &amp; 0 &amp; -1 &amp; 1 &amp; 3
+\end{array}\right)\to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 4 &amp; 2 &amp; 2 \\\
+0 &amp; 6 &amp; 3 &amp; 1 &amp; 11 \\\
+0 &amp; 0 &amp; \overbrace{5}^{\times\frac{1}{5}} &amp; \overbrace{5}^{\times\frac{1}{5}} &amp; \overbrace{5}^{\times\frac{1}{5}} \\\
+0 &amp; 0 &amp; \underline{-1} &amp; 1 &amp; 3
+\end{array}\right)\to
+\underbrace{\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 4 &amp; 2 &amp; 2 \\\
+0 &amp; 6 &amp; 3 &amp; 1 &amp; 11 \\\
+0 &amp; 0 &amp; 5 &amp; 5 &amp; 5 \\\
+0 &amp; 0 &amp; 0 &amp; 2 &amp; 4
+\end{array}\right)}_{上三角行列} \\\ \to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 4 &amp; \underline{2} &amp; 2 \\\
+0 &amp; 6 &amp; 3 &amp; 1 &amp; 11 \\\
+0 &amp; 0 &amp; 5 &amp; 5 &amp; 5 \\\
+0 &amp; 0 &amp; 0 &amp; \overbrace{2}^{\times(-1)} &amp; \overbrace{4}^{\times(-1)}
+\end{array}\right) \to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 4 &amp; 0 &amp; -2 \\\
+0 &amp; 6 &amp; 3 &amp; 1 &amp; 11 \\\
+0 &amp; 0 &amp; 5 &amp; 5 &amp; 5 \\\
+0 &amp; 0 &amp; 0 &amp; 2 &amp; 4
+\end{array}\right)\to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 4 &amp; 0 &amp; -2 \\\
+0 &amp; 6 &amp; 3 &amp; \underline{1} &amp; 11 \\\
+0 &amp; 0 &amp; 5 &amp; 5 &amp; 5 \\\
+0 &amp; 0 &amp; 0 &amp; \overbrace{2}^{\times \left(-\frac{1}{2}\right)} &amp; \overbrace{4}^{\times \left(-\frac{1}{2}\right)}
+\end{array}\right) \\\ \to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 4 &amp; 0 &amp; -2 \\\
+0 &amp; 6 &amp; 3 &amp; 0 &amp; 9 \\\
+0 &amp; 0 &amp; 5 &amp; 5 &amp; 5 \\\
+0 &amp; 0 &amp; 0 &amp; 2 &amp; 4
+\end{array}\right)\to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 4 &amp; 0 &amp; -2 \\\
+0 &amp; 6 &amp; 3 &amp; 0 &amp; 9 \\\
+0 &amp; 0 &amp; 5 &amp; \underline{5} &amp; 5 \\\
+0 &amp; 0 &amp; 0 &amp; \overbrace{2}^{\times \left(-\frac{5}{2}\right)} &amp; \overbrace{4}^{\times \left(-\frac{5}{2}\right)}
+\end{array}\right)\to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 4 &amp; 0 &amp; -2 \\\
+0 &amp; 6 &amp; 3 &amp; 0 &amp; 9 \\\
+0 &amp; 0 &amp; 5 &amp; 0 &amp; -5 \\\
+0 &amp; 0 &amp; 0 &amp; 2 &amp; 4
+\end{array}\right) \\\ \to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; \underline{4} &amp; 0 &amp; -2 \\\
+0 &amp; 6 &amp; 3 &amp; 0 &amp; 9 \\\
+0 &amp; 0 &amp; \overbrace{5}^{\times \left(-\frac{4}{5}\right)} &amp; \overbrace{0}^{\times \left(-\frac{4}{5}\right)} &amp; \overbrace{-5}^{\times \left(-\frac{4}{5}\right)} \\\
+0 &amp; 0 &amp; 0 &amp; 2 &amp; 4
+\end{array}\right) \to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 0 &amp; 0 &amp; 2 \\\
+0 &amp; 6 &amp; 3 &amp; 0 &amp; 9 \\\
+0 &amp; 0 &amp; 5 &amp; 0 &amp; -5 \\\
+0 &amp; 0 &amp; 0 &amp; 2 &amp; 4
+\end{array}\right) \to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 0 &amp; 0 &amp; 2 \\\
+0 &amp; 6 &amp; \underline{3} &amp; 0 &amp; 9 \\\
+0 &amp; 0 &amp; \overbrace{5}^{\times \left(-\frac{3}{5}\right)} &amp; \overbrace{0}^{\times \left(-\frac{3}{5}\right)} &amp; \overbrace{-5}^{\times \left(-\frac{3}{5}\right)} \\\
+0 &amp; 0 &amp; 0 &amp; 2 &amp; 4
+\end{array}\right) \\\ \to
+\left(\begin{array}{cccc|c}
+2 &amp; 4 &amp; 0 &amp; 0 &amp; 2 \\\
+0 &amp; 6 &amp; 0 &amp; 0 &amp; 12 \\\
+0 &amp; 0 &amp; 5 &amp; 0 &amp; -5 \\\
+0 &amp; 0 &amp; 0 &amp; 2 &amp; 4
+\end{array}\right) \to
+\left(\begin{array}{cccc|c}
+2 &amp; \underline{4} &amp; 0 &amp; 0 &amp; 2 \\\
+0 &amp; \overbrace{6}^{\times\left(-\frac{2}{3}\right)} &amp; \overbrace{0}^{\times\left(-\frac{2}{3}\right)} &amp; \overbrace{0}^{\times\left(-\frac{2}{3}\right)} &amp; \overbrace{12}^{\times\left(-\frac{2}{3}\right)} \\\
+0 &amp; 0 &amp; 5 &amp; 0 &amp; -5 \\\
+0 &amp; 0 &amp; 0 &amp; 2 &amp; 4
+\end{array}\right) \to
+\left(\begin{array}{cccc|c}
+2 &amp; 0 &amp; 0 &amp; 0 &amp; -6 \\\
+0 &amp; 6 &amp; 0 &amp; 0 &amp; 12 \\\
+0 &amp; 0 &amp; 5 &amp; 0 &amp; -5 \\\
+0 &amp; 0 &amp; 0 &amp; 2 &amp; 4
+\end{array}\right) \\\
+\therefore \left(-6\div 2,12\div 6, -5\div 0, 4\div 2\right)^T =\left(-3,2,-1,2\right)^T
+$$</div>
+<p>
+</div></p>
+<h3><span class="caps">LU</span>&nbsp;分解</h3>
+<p>漸く本題の <span class="caps">LU</span> 分解(<span class="caps">LR</span> 分解, 三角分解)について.
+簡単のために式 \(\eqref{eq:sfour}\) を使って <span class="caps">LU</span> 分解の導出をする.
+式 \(\eqref{eq:sfour}\)&nbsp;は次の式と同値である.</p>
+<div class="math">$$
+A^{(0)}\left(\begin{array}{c}x \\\ y\end{array}\right)=\boldsymbol{v}
+\ {\rm where}\ A^{(0)}=\left(\begin{array}{cc}1 &amp; 2 \\\ 3 &amp; 4\end{array}\right),\boldsymbol{v}=\left(\begin{array}{c}3\\\ 5\end{array}\right)
+$$</div>
+<p>\({A^{(0)}}^{-1}\boldsymbol{v}\) とすれば \(\left(x,y\right)^T\) は求まるが, 逆行列の計算はガウスの消去法により \(\frac{1}{3}O(n^3)\) の時間計算量がかかる.
+一定の条件下でそれよりも高速に求める方法を考えることとする.
+いま \(A^{(0)}\) を徐に上三角行列にすることを考えると,&nbsp;ガウスの消去法の前進消去より</p>
+<div class="math">$$
+A^{(1)}=L^{(1)}A^{(0)}=\left(\begin{array}{cc}1 &amp; 2 \\\ 0 &amp; -2\end{array}\right)
+\leftrightarrow
+A^{(0)}={L^{(1)}}^{-1}A^{(1)}
+\ {\rm where}\ L^{(1)}=\left(\begin{array}{cc}1 &amp; 0 \\\ -3 &amp; 1\end{array}\right)
+$$</div>
+<p>従って</p>
+<div class="math">$$
+{L^{(1)}}^{-1}A^{(1)}\left(\begin{array}{c}x \\\ y\end{array}\right)=\boldsymbol{v}
+$$</div>
+<p>ここで, \(\boldsymbol{b}=A^{(1)}\left(x,y\right)^T\) とおくと, 上の式は \({L^{(1)}}^{-1}\boldsymbol{b}=\boldsymbol{v}\) と同値であり,
+この式を用いて \(\boldsymbol{b}\) について解くことができる. 
+まずこの時間計算量を考えるとする.
+\(L^{(1)}\) は元々前進消去のための行列であり, それは必ず下三角行列である.
+正則な下三角行列の逆行列は下三角行列であり(証明略), いま \(L^{(1)}\) が正則であるとする(これが特異となるような場合には後述する <span class="caps">PLU</span> 分解が有効)と,
+その計算は前進代入(上記後退代入の下三角行列バージョンと考えればよい)を実行すればよいので, 時間計算量は \(\frac{1}{2}O\left(n^2\right)\ \because\eqref{eq:sthird}\)&nbsp;となる.</p>
+<p>その後に \(A^{(1)}\left(x,y\right)^T=\boldsymbol{b}\) を \(\left(x,y\right)^T\) について解くわけであるが,
+\(A^{(1)}\) は上三角行列であるので, その計算にはガウスの消去法の後退代入を実行すれば良く, 従ってその時間計算量は 
+\(\frac{1}{2}O\left(n^2\right)\ \because\eqref{eq:sthird}\)&nbsp;である.</p>
+<p>よって, この一連の操作における時間計算量は \(\frac{1}{3}O\left(n^3\right)\) であり,&nbsp;部分ピボットつきガウスの消去法を実行した場合と変わらない.</p>
+<p>しかし, \(L U\) を流用できる(つまり, 共通の \(A^{(0)}\) に対し異なる右辺ベクトル \(\boldsymbol{v}\) から成る連立方程式を解く)とすればどうだろう.
+この場合, やらなければならない計算は前進代入および後退代入のみなので,
+全体の時間計算量は \(\frac{1}{2}O\left(n^2\right)\) となり,&nbsp;先よりも高速に解を得ることができる.</p>
+<p>いまの説明では, 式 \(\eqref{eq:sfour}\) において \(A^{(0)}\) を \({L^{(1)}}^{-1}\) と \(A^{(1)}\) に分解したが, これを <span class="caps">LU</span> 分解(\(L={L^{(1)}}^{-1},U=A^{(1)}\))といい, 
+\(L^{(i)}\) が正則ならば,&nbsp;一般の場合においても同様にしていうことができる.</p>
+<div class="panel panel-default">
+<div class="panel-heading def"><a name="LU" class="disabled"><span class="caps">LU</span> 分解(外積形式ガウス法)</a></div>
+  <div class="panel-body" style="overflow:scroll">
+    すべての前進消去の行列 &#92;(L^{(i)}&#92;) が正則ならば &#92;(A\in\mathbb{R}^{m\times n}&#92;) に対する <span class="caps">LU</span> 分解は 
+    &#92;[A=A^{(0)}=L U\ {\rm where}\ L=\prod_{i=1}^{n-1}{L^{(i)}}^{-1}, U=A^{(n-1)}&#92;]
+  </div>
+</div>
+
+<p>補足すると, \(A^{(0)}\) に対し \(n-1\) 回の前進消去をするというのは, \(L^{(n-1)}\cdots L^{(2)}L^{(1)}A^{(0)}\) ということであり,
+\(\lambda=L^{(n-1)}\cdots L^{(2)}L^{(1)}\) とおくと \(\lambda A^{(0)}=U=A^{(n-1)}\) だから \(A^{(0)}=\lambda^{-1}U\). 
+ここで逆行列の公式 \(\left(X Y\right)^{-1}=Y^{-1} X^{-1}\) より(証明略)上式となる.
+一般論を得たところで, 実際に一つ <span class="caps">LU</span>&nbsp;分解を実践してみることとする.</p>
+<div class="math">$$
+A^{(0)}=
+\left(\begin{array}{ccc}
+3 &amp; 1 &amp; 0 \\\
+6 &amp; 1 &amp; -2 \\\
+-3 &amp; 0 &amp; 3
+\end{array}\right)\to
+\underbrace{\left(\begin{array}{ccc}
+1 &amp; 0 &amp; 0 \\\
+-2 &amp; 1 &amp; 0 \\\
+1 &amp; 0 &amp; 1
+\end{array}\right)}_{L^{(1)}}
+\left(\begin{array}{ccc}
+3 &amp; 1 &amp; 0 \\\
+6 &amp; 1 &amp; -2 \\\
+-3 &amp; 0 &amp; 3
+\end{array}\right)=
+\underbrace{
+\left(\begin{array}{ccc}
+3 &amp; 1 &amp; 0 \\\
+0 &amp; -1 &amp; -2 \\\
+0 &amp; 1 &amp; 3
+\end{array}\right)
+}_{A^{(1)}} \\\
+\to
+\underbrace{
+\left(\begin{array}{ccc}
+1 &amp; 0 &amp; 0 \\\
+0 &amp; 1 &amp; 0 \\\
+0 &amp; 1 &amp; 1
+\end{array}\right)
+}_{L^{(2)}}
+A^{(1)}=
+\underbrace{
+\left(\begin{array}{ccc}
+3 &amp; 1 &amp; 0 \\\
+0 &amp; -1 &amp; -2 \\\
+0 &amp; 0 &amp; 1
+\end{array}\right)}_{A^{(2)}}
+$$</div>
+<p>より </p>
+<div class="math">$$L=\left(L^{(2)}L^{(1)}\right)^{-1}=\left(\begin{array}{ccc} 1 &amp; 0 &amp; 0 \\\ 2 &amp; 1 &amp; 0 \\\ -1 &amp; -1 &amp; 1 \end{array}\right),U=A^{(2)}$$</div>
+<p>
+実際には, すべてを減算で考えることで, \(\left(L^{(2)}L^{(1)}\right)^{-1}\) の計算は楽に済む(つまり
+<span class="math">\(A^{0}=\left(\boldsymbol{a_1}^T,\boldsymbol{a_2}^T,\boldsymbol{a_3}^T\right)^T\)</span> としたとき
+\(\underline{2}\boldsymbol{a_1}-\boldsymbol{a_2}, \underline{-1}\boldsymbol{a_1}-\boldsymbol{a_3}, \underline{-1}\boldsymbol{a_2}-\boldsymbol{a_3}\) より \(L\)&nbsp;が導けるということ).</p>
+<p>この導出過程を見ればなんとなく <span class="caps">LU</span> 分解が一意となることは直感的にも納得できるが,&nbsp;一応証明を与えておく.</p>
+<div class="panel panel-default">
+<div class="panel-heading theo"><a name="theorem1" class="disabled">定理 1</a></div>
+  <div class="panel-body" style="overflow:scroll">
+<span class="caps">LU</span> 分解された &#92;(L,U&#92;) は一意に決まる
+</div>
+</div>
+
+<p><strong>証明</strong>:<br>
+正則行列 \(A\) の <span class="caps">LU</span> 分解 \(A= L U\) に対して \(A= L_{1}U_{1} = L_{2}U_{2} \leftrightarrow L_{2}^{-1}L_{1} = U_{2}U_{1}^{-1}\) とおく.
+\(L\) は元々下三角行列であり下三角行列の逆行列は下三角行列, また下三角行列の積は下三角行列だから \(L_{2}^{-1}L_{1}\) は下三角行列である.
+\(U\) は元々上三角行列であり上三角行列の逆行列は上三角行列, また上三角行列の積は上三角行列だから \(U_{2}U_{1}^{-1}\) は上三角行列である.
+従って, 両行列は上および下三角行列でなければならず, それを満たす唯一の行列は対角行列であり, \(L\) の対角成分は元々 \(1\) であるから
+\(L_{2}^{-1}L_{1} = I = U_{2}U_{1}^{-1}\). 
+故に \(L_{2}=L_{1}, U_{2}=U_{1}\).&nbsp;\(\square\)</p>
+<p>次に, 次のような行列に対する <span class="caps">LU</span>&nbsp;分解を考えてみる.</p>
+<div class="math">\begin{eqnarray}
+A=\left(\begin{array}{ccc}
+0 &amp; 1 &amp; 0 \\\
+-8 &amp; 8 &amp; 1 \\\
+2 &amp; -2 &amp; 0
+\end{array}\right)
+\end{eqnarray}</div>
+<p>見てわかるように, 前進消去の段階で \(-8\div 0\) となってしまい計算できない.
+しかし, これも部分ピボット選択付きガウスの消去法と同様に, 絶対値最大の値がピボットとなるように行を予め入れ替えておけば,
+計算が続行できる.
+そのような手続きのある <span class="caps">LU</span> 分解は <span class="caps">PLU</span> 分解といわれ, 置換行列 \(P\in\mathbb{R}^{m\times n}\) をつかって, \(A=P L U\) とする.
+以下 \(A\) をつかって導出してみることとする. \(\boldsymbol{a_1}^T\) と \(\boldsymbol{a_2}^T\)&nbsp;を入れ替えれば良いので,</p>
+<div class="math">\begin{eqnarray}
+\underbrace{\left(\begin{array}{ccc}
+0 &amp; 1 &amp; 0 \\\
+1 &amp; 0 &amp; 0 \\\
+0 &amp; 0 &amp; 1
+\end{array}\right)}_{P^{(1)}}A=
+\underbrace{\left(\begin{array}{ccc}
+-8 &amp; 8 &amp; 1 \\\
+0 &amp; 1 &amp; 0 \\\
+2 &amp; -2 &amp; 0
+\end{array}\right)}_{A'}\to
+\underbrace{\left(\begin{array}{ccc}
+1 &amp; 0 &amp; 0 \\\
+0 &amp; 1 &amp; 0 \\\
+\frac{1}{4} &amp; 0 &amp; 1
+\end{array}\right)}_{L^{(1)}}A'=
+\underbrace{\left(\begin{array}{ccc}
+-8 &amp; 8 &amp; 1 \\\
+0 &amp; 1 &amp; 0 \\\
+0 &amp; 0 &amp; \frac{1}{4}
+\end{array}\right)}_{A'^{(1)}}
+\end{eqnarray}</div>
+<p>より </p>
+<div class="math">$$L = {L^{(1)}}^{-1}=\left(\begin{array}{ccc}1 &amp; 0 &amp; 0 \\\ 0 &amp; 1 &amp; 0 \\\ -\frac{1}{4} &amp; 0 &amp; 1\end{array}\right),U={A'}^{(1)}$$</div>
+<p>とおくと \(A&#8217;={L^{(1)}}^{-1}{A&#8217;}^{(1)}\)&nbsp;だから</p>
+<div class="math">$$P^{(1)}A=L U$$</div>
+<p>\(P^{(1)}\) は元々置換行列であるから正則であり, また直行行列でもある. 
+すなわち \({P=P^{(1)}}^{-1}={P^{(1)}}^T\)&nbsp;とおけて</p>
+<div class="math">\begin{eqnarray}
+A&amp;=&amp;P L U\\\
+\left(\begin{array}{ccc}
+0 &amp; 1 &amp; 0 \\\
+-8 &amp; 8 &amp; 1 \\\
+2 &amp; -2 &amp; 0
+\end{array}\right)&amp;=&amp;
+\left(\begin{array}{ccc}
+0 &amp; 1 &amp; 0 \\\
+1 &amp; 0 &amp; 0 \\\
+0 &amp; 0 &amp; 1
+\end{array}\right)
+\left(\begin{array}{ccc}
+1 &amp; 0 &amp; 0 \\\
+0 &amp; 1 &amp; 0 \\\
+-\frac{1}{4} &amp; 0 &amp; 1
+\end{array}\right)
+\left(\begin{array}{ccc}
+-8 &amp; 8 &amp; 1 \\\
+0 &amp; 1 &amp; 0 \\\
+0 &amp; 0 &amp; \frac{1}{4}
+\end{array}\right)
+\end{eqnarray}</div>
+<p>ここで \(\boldsymbol{a}\in\mathbb{R}^{n\times 1},\boldsymbol{v}\in\mathbb{R}^{n\times 1}\) に対して
+\(P L U \boldsymbol{a}=\boldsymbol{v}\) というように, <span class="caps">PLU</span> 分解を用いて連立方程式解くことを考えると,
+\(L\underbrace{\left(U\boldsymbol{a}\right)}_{\boldsymbol{b}}=P^{-1}\boldsymbol{v}\) だから先と同様にまず前進代入によって
+\(\boldsymbol{b}\) を求め(このときの \(P^{-1}\boldsymbol{v}\) は \(P^{-1}=P^{(1)}\) であり, また置換行列であるので, その計算は単に \(\boldsymbol{v}\) を並び替えるだけである),
+\(U\boldsymbol{a}=\boldsymbol{b}\) を \(\boldsymbol{a}\)&nbsp;について後退代入によって求めればよい.</p>
+<p>さて, 数学的な言葉では, 以上のように書き下すことで十分であるが,
+これをプログラムで組むことを考えると, 様々な工夫やアプローチが考えられる.
+まず \(L, U\) はそれぞれ必ず上三角行列, 
+下三角行列であり <span class="math">\(0\)</span> や <span class="math">\(1\)</span> の部分をそのまま持っているのは無駄である.
+従って \(L, U\)&nbsp;の値は次のように一つの行列として持っておけば十分.</p>
+<div class="math">$$
+\left(\begin{array}{ccc}
+-8 &amp; 8 &amp; 1 \\\
+0 &amp; 1 &amp; 0 \\\
+-\frac{1}{4} &amp; 0 &amp; \frac{1}{4}
+\end{array}\right)
+$$</div>
+<p>また, 置換行列 <span class="math">\(P\)</span> はただの並び替えでなので, これも各インデックスへの対応関係をテーブルにでもしておけば十分.
+サンプル実装, 実行例を下記に示す.
+Haskell で書いたわけだが, 普通の <span class="caps">ST</span> モナドによる実装とリストによる実装をそれぞれ行った.
+<em onclick="obj=document.getElementById('open_lu').style; obj.display=(obj.display=='none')?'block':'none';">
+<a style="font-style: normal; cursor:pointer;">クリックで実装を開く.</a>
+</em>
+<div id="open_lu" style="display:none;clear:both;">
+<script src="https://gist-it.appspot.com/https://github.com/falgon/PlayLinearAlgebra/blob/7a387f803e1ee30d3e7e83915b88eea18d7e096b/src/Math/Matrix/Core.hs?slice=138:217"></script>
+</div></p>
+<div class="highlight"><pre><span></span><span class="nf">λ</span><span class="o">&gt;</span> <span class="kt">:</span><span class="n">m</span> <span class="kt">Data</span><span class="o">.</span><span class="kt">Array</span> <span class="kt">Math</span><span class="o">.</span><span class="kt">Matrix</span><span class="o">.</span><span class="kt">LU</span>
+<span class="nf">λ</span><span class="o">&gt;</span> <span class="n">lu</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]]</span> <span class="ow">::</span> <span class="kt">Maybe</span> <span class="p">(</span><span class="kt">PLU</span> <span class="kt">Array</span> <span class="kt">Int</span> <span class="kt">Double</span><span class="p">)</span>
+<span class="kt">Just</span> <span class="p">(</span><span class="n">array</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)],</span>
+<span class="p">{</span>       <span class="o">-</span><span class="mf">8.0</span>    <span class="mf">8.0</span>     <span class="mf">1.0</span>     <span class="p">}</span>
+<span class="p">{</span>       <span class="o">-</span><span class="mf">0.0</span>    <span class="mf">1.0</span>     <span class="mf">0.0</span>     <span class="p">}</span>
+<span class="p">{</span>       <span class="o">-</span><span class="mf">0.25</span>   <span class="mf">0.0</span>     <span class="mf">0.25</span>    <span class="p">}</span>
+<span class="p">)</span>
+<span class="nf">λ</span><span class="o">&gt;</span> <span class="n">luST&#39;</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]]</span> <span class="ow">::</span> <span class="kt">Maybe</span> <span class="p">(</span><span class="kt">PLU</span> <span class="kt">Array</span> <span class="kt">Int</span> <span class="kt">Double</span><span class="p">)</span>
+<span class="kt">Just</span> <span class="p">(</span><span class="n">array</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)],</span>
+<span class="p">{</span>       <span class="o">-</span><span class="mf">8.0</span>    <span class="mf">8.0</span>     <span class="mf">1.0</span>     <span class="p">}</span>
+<span class="p">{</span>       <span class="o">-</span><span class="mf">0.0</span>    <span class="mf">1.0</span>     <span class="mf">0.0</span>     <span class="p">}</span>
+<span class="p">{</span>       <span class="o">-</span><span class="mf">0.25</span>   <span class="mf">0.0</span>     <span class="mf">0.25</span>    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>連立方程式を解く.
+<em onclick="obj=document.getElementById('open_resolveLinearEq').style; obj.display=(obj.display=='none')?'block':'none';">
+<a style="font-style: normal; cursor:pointer;">クリックで実装を開く.</a>
+</em>
+<div id="open_resolveLinearEq" style="display:none;clear:both;">
+<script src="https://gist-it.appspot.com/https://github.com/falgon/PlayLinearAlgebra/blob/7a387f803e1ee30d3e7e83915b88eea18d7e096b/src/Math/Matrix/Core.hs?slice=258:305"></script>
+</div></p>
+<div class="highlight"><pre><span></span><span class="nf">λ</span><span class="o">&gt;</span> <span class="n">resolveLinearEq&#39;</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">6</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]]</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="ow">::</span> <span class="kt">Maybe</span> <span class="p">(</span><span class="kt">Array</span> <span class="kt">Int</span> <span class="kt">Rational</span><span class="p">)</span>
+<span class="kt">Just</span> <span class="p">(</span><span class="n">array</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,(</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span> <span class="o">%</span> <span class="mi">1</span><span class="p">),(</span><span class="mi">2</span><span class="p">,(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span> <span class="o">%</span> <span class="mi">1</span><span class="p">)])</span>
+<span class="nf">λ</span><span class="o">&gt;</span> <span class="n">plu</span> <span class="ow">=</span> <span class="n">luST&#39;</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">6</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]]</span> <span class="ow">::</span> <span class="kt">Maybe</span> <span class="p">(</span><span class="kt">PLU</span> <span class="kt">Array</span> <span class="kt">Int</span> <span class="kt">Double</span><span class="p">)</span>
+<span class="nf">λ</span><span class="o">&gt;</span> <span class="n">plu</span>
+<span class="kt">Just</span> <span class="p">(</span><span class="n">array</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)],</span>
+<span class="p">{</span>       <span class="mf">2.0</span>     <span class="mf">4.0</span>     <span class="mf">4.0</span>     <span class="mf">2.0</span>     <span class="p">}</span>
+<span class="p">{</span>       <span class="mf">0.5</span>     <span class="mf">6.0</span>     <span class="mf">3.0</span>     <span class="mf">1.0</span>     <span class="p">}</span>
+<span class="p">{</span>       <span class="mf">0.5</span>     <span class="mf">0.0</span>     <span class="mf">5.0</span>     <span class="mf">5.0</span>     <span class="p">}</span>
+<span class="p">{</span>       <span class="mf">1.0</span>     <span class="mf">0.0</span>     <span class="o">-</span><span class="mf">0.2</span>    <span class="mf">2.0</span>     <span class="p">}</span>
+<span class="p">)</span>
+<span class="nf">λ</span><span class="o">&gt;</span> <span class="n">fromJust</span> <span class="n">plu</span> <span class="p">`</span><span class="n">assign</span><span class="p">`</span> <span class="p">(</span><span class="n">listArray</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span> <span class="ow">::</span> <span class="kt">Maybe</span> <span class="p">(</span><span class="kt">Array</span> <span class="kt">Int</span> <span class="kt">Double</span><span class="p">)</span>
+<span class="kt">Just</span> <span class="p">(</span><span class="n">array</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mf">3.0</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mf">2.0</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mf">1.0</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mf">2.0</span><span class="p">)])</span>
+<span class="nf">λ</span><span class="o">&gt;</span> <span class="n">fromJust</span> <span class="n">plu</span> <span class="p">`</span><span class="n">assign</span><span class="p">`</span> <span class="p">(</span><span class="n">listArray</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span> <span class="ow">::</span> <span class="kt">Maybe</span> <span class="p">(</span><span class="kt">Array</span> <span class="kt">Int</span> <span class="kt">Double</span><span class="p">)</span>
+<span class="kt">Just</span> <span class="p">(</span><span class="n">array</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.6666666666666667</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.6666666666666666</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mf">1.0</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)])</span>
+<span class="nf">λ</span><span class="o">&gt;</span> <span class="n">fromJust</span> <span class="n">plu</span> <span class="p">`</span><span class="n">assign</span><span class="p">`</span> <span class="p">(</span><span class="n">listArray</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span> <span class="ow">::</span> <span class="kt">Maybe</span> <span class="p">(</span><span class="kt">Array</span> <span class="kt">Int</span> <span class="kt">Double</span><span class="p">)</span>
+<span class="kt">Just</span> <span class="p">(</span><span class="n">array</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.666666666666667</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.8666666666666667</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mf">0.8</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mf">1.2</span><span class="p">)])</span>
+</pre></div>
+
+
+<p>ところで, <span class="caps">LU</span> 分解をしておくと逆行列も簡単に求めることがすぐに示せる.
+逆行列とはそもそも \(A A^{-1} =I\) であり, 
+\(A^{-1}=\left(\boldsymbol{a^{-1}_1},\boldsymbol{a^{-1}_2},\cdots,\boldsymbol{a^{-1}}_m\right), I=\left(\boldsymbol{I_1},\boldsymbol{I_2},\cdots,\boldsymbol{I_m}\right)\) 
+とすると行列の積の定義より \(A \boldsymbol{a^{-1}_i}=\boldsymbol{I_i}\ {\rm where\ } i\in\mathbb{Z}^{+}, 1\leq i\leq m\) だから, 
+\(A=L U\) と分解して \(1\) から \(m\) までのすべての \(\boldsymbol{a^{-1}}_i\) を得てそれらをそのまま 1 つの行列とすればよい.
+当然ながら, 構成される方程式のうち変わる部分は \(\boldsymbol{a^{-1}}_i\) と \(I_i\) の部分だけなので, <span class="caps">LU</span> 分解は一度行うだけで済む.
+プログラムでの実行例. 
+<em onclick="obj=document.getElementById('open_inverse').style; obj.display=(obj.display=='none')?'block':'none';">
+<a style="font-style: normal; cursor:pointer;">クリックで実装を開く.</a>
+</em>
+<div id="open_inverse" style="display:none;clear:both;">
+<script src="https://gist-it.appspot.com/https://github.com/falgon/PlayLinearAlgebra/blob/7a387f803e1ee30d3e7e83915b88eea18d7e096b/src/Math/Matrix/Core.hs?slice=306:324"></script>
+</div></p>
+<div class="highlight"><pre><span></span><span class="nf">λ</span><span class="o">&gt;</span> <span class="n">inverse&#39;</span> <span class="p">[[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span> <span class="ow">::</span> <span class="kt">Maybe</span> <span class="p">(</span><span class="kt">Matrix</span> <span class="kt">Array</span> <span class="kt">Int</span> <span class="kt">Rational</span><span class="p">)</span>
+<span class="kt">Just</span>
+<span class="p">{</span>       <span class="mi">1</span> <span class="o">%</span> <span class="mi">2</span>   <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span>        <span class="mi">1</span> <span class="o">%</span> <span class="mi">1</span>   <span class="p">}</span>
+<span class="p">{</span>       <span class="mi">1</span> <span class="o">%</span> <span class="mi">2</span>   <span class="mi">1</span> <span class="o">%</span> <span class="mi">2</span>   <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1</span>        <span class="p">}</span>
+<span class="p">{</span>       <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1</span>        <span class="mi">1</span> <span class="o">%</span> <span class="mi">1</span>   <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1</span>        <span class="p">}</span>
+</pre></div>
+
+
+<p>ただし, 逆行列の計算には今述べたようにすべての \(\boldsymbol{I^{-1}}_i\) に関して代入操作を行わなければならないので,
+\(A\boldsymbol{x}=\boldsymbol{v}\) といった方程式を解く目的で逆行列 \(A^{-1}\)&nbsp;を求めることはただの愚行である.</p>
+<p>また, <span class="caps">LU</span> 分解は行列式の計算も簡単にする. 
+\(A= L U\) ならば積の行列式は行列式の積(証明略)なので \(\left|A\right|=\left|L U\right|=\left|L\right|\left|U\right|\) であるが,
+上および下三角行列の行列式は対角成分の積(証明略)であるので \(\left|L\right|=1\) である.
+よって \(\left|A\right|=\prod_{i=1}^{n}\boldsymbol{u}_{ii}\) である.
+置換行列 \(P\) を考慮すれば, いま \(S\) を <span class="caps">LU</span> 分解の過程で行の入れ替えを行った回数としたとき,
+\(\left|A\right|=\left|P\right|\left|L\right|\left|U\right|=(-1)^S \prod_{i=1}^{n}\boldsymbol{u}_{ii}\) となる.
+また, 後述する Crout 法では \(U\) のすべての対角成分を <span class="math">\(1\)</span> とするので, その場合 \(\left|A\right| = (-1)^S \prod_{i=1}^{n}\boldsymbol{l}_{ii}\) となる.
+<em onclick="obj=document.getElementById('open_det').style; obj.display=(obj.display=='none')?'block':'none';">
+<a style="font-style: normal; cursor:pointer;">クリックで実装を開く.</a>
+</em>
+<div id="open_det" style="display:none;clear:both;">
+<script src="https://gist-it.appspot.com/https://github.com/falgon/PlayLinearAlgebra/blob/7a387f803e1ee30d3e7e83915b88eea18d7e096b/src/Math/Matrix/Core.hs?slice=326:340"></script>
+</div></p>
+<div class="highlight"><pre><span></span><span class="nf">λ</span><span class="o">&gt;</span> <span class="n">determinant</span> <span class="o">$</span> <span class="n">toMat</span> <span class="o">$</span> <span class="n">listArray</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="mf">2.0</span>
+<span class="nf">λ</span><span class="o">&gt;</span> <span class="n">determinant</span> <span class="o">$</span> <span class="n">toMat</span> <span class="o">$</span> <span class="n">listArray</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="mf">120.0</span>
+</pre></div>
+
+
+<p>なお, <span class="caps">LU</span> 分解は <span class="caps">LDU</span> 分解ともいわれることがある. その場合, 上記の \(U\) に含まれる対角成分を対角行列 \(D\) に分離して \(A = L D U\)&nbsp;とする.</p>
+<div class="math">$$
+L D U=
+\left(\begin{array}{cccc}
+1 &amp; 0 &amp; \cdots &amp; 0 \\\
+l_{21} &amp; 1 &amp; \cdots &amp; 0 \\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\\
+l_{m1} &amp; l_{m2} &amp; \cdots &amp; 1
+\end{array}\right)
+\mathrm{diag}\left(d_1,\cdots,d_m\right)
+\left(\begin{array}{cccc}
+1 &amp; u_{12} &amp; \cdots &amp; u_{1n} \\\
+0 &amp; 1 &amp; \cdots &amp; u_{2n} \\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\\ 
+0 &amp; 0 &amp; \cdots &amp; 1
+\end{array}\right)
+$$</div>
+<p>ところで, \(A\in\mathbb{R}^{m\times n}\) が対称行列ならば, この <span class="caps">LDU</span> 分解は \(A=L D L^{T}\)&nbsp;と計算することができる.</p>
+<div class="panel panel-default">
+<div class="panel-heading theo"><a name="theorem2" class="disabled">定理 2</a></div>
+  <div class="panel-body" style="overflow:scroll">
+&#92;(A=A^T\ {\rm where}\ A\in\mathbb{R}^{m\times n}&#92;) ならば &#92;(A&#92;) の <span class="caps">LDU</span> 分解は &#92;(A=L D L^{T}&#92;)
+</div>
+</div>
+
+<p><strong>証明</strong>:<br>
+\(M^T = D^{-1}U\) とし \(A\) の <span class="caps">LDU</span> 分解を \(A= L D M^T\) とおくと \[A = A^T = \left(L D M^T\right)^T = M D L^T = L U\]
+ここで, 第二辺から第三辺への変形は, 積の転置は積の左右を入れ替えた転置の積なる公式を用いた.
+このとき \(M\left(D L^T\right)\) と \(L U\) は <span class="caps">LU</span> 分解の 2 つの表現であるが, <a href="#theorem1">定理 1</a> より <span class="caps">LU</span> 分解は一意であるから
+\(M=L\) でなければならない(後述する Crout 法の <span class="caps">LU</span> 分解ならば \(M=L D\) でなければならない. 導かれる結論は同じ).
+従って \(L D M^T = L D L^T\).&nbsp;\(\square\)</p>
+<p>ここまで述べてきた <span class="caps">LU</span> 分解の方法は, 外積形式ガウス法といわれるものであるが,
+<span class="caps">LU</span> 分解の他の方法として内積形式ガウス法(以下 Doolittle 法), クラウト法がある. 
+簡単のために \(n=3\) として, 行列 \(X\) を次のように下三角行列 \(L\in\mathbb{R}^{3\times 3}\) 
+と上三角行列 \(U\in\mathbb{R}^{3\times 3}\) に分解することを考える.
+このとき \(X = L&#8217; D U&#8217;\) に対して \(L = L&#8217; D\) とおいて \(X = L U&#8217;\) というように分解できることを過程して行列 \(L,U&#8217;\) を導出することを Doolittle 法,
+また \(U=D U&#8217;\) とおいて \(X = L&#8217; U\) というように分解できることを過程して行列 \(L&#8217; U\) を導出することを Crout&nbsp;法という.</p>
+<div class="math">\begin{eqnarray}
+X= L U'\leftrightarrow 
+\left(\begin{array}{ccc}
+x_{11} &amp; x_{12} &amp; x_{13} \\\
+x_{21} &amp; x_{22} &amp; x_{23} \\\
+x_{31} &amp; x_{32} &amp; x_{33}
+\end{array}\right)=\left(\begin{array}{ccc}
+1 &amp; 0 &amp; 0 \\\
+l_{21} &amp; 1 &amp; 0 \\\
+l_{31} &amp; l_{32} &amp; 1
+\end{array}\right)\left(\begin{array}{ccc}
+u_{11} &amp; u_{12} &amp; u_{13} \\\
+0 &amp; u_{22} &amp; u_{23} \\\
+0 &amp; 0 &amp; u_{33}
+\end{array}\right)&amp;:=&amp;{\rm Doolittle\ 法} \\\
+X= L' U\leftrightarrow 
+\left(\begin{array}{ccc}
+x_{11} &amp; x_{12} &amp; x_{13} \\\
+x_{21} &amp; x_{22} &amp; x_{23} \\\
+x_{31} &amp; x_{32} &amp; x_{33}
+\end{array}\right)=\left(\begin{array}{ccc} 
+l_{11} &amp; 0 &amp; 0 \\\
+l_{21} &amp; l_{22} &amp; 0 \\\
+l_{31} &amp; l_{32} &amp; l_{33} 
+\end{array}\right)\left(\begin{array}{ccc}
+1 &amp; u_{12} &amp; u_{13} \\\
+0 &amp; 1 &amp; u_{23} \\\
+0 &amp; 0 &amp; 1
+\end{array}\right)&amp;:=&amp;{\rm Crout\ 法}
+\end{eqnarray}</div>
+<p>いま行列 \(X\) を Doolittle 法により <span class="caps">LU</span> 分解できたならば
+\(L U&#8217;\) を単に計算して \(X=L U&#8217;\)&nbsp;は次のようにかけるはずである.</p>
+<div class="math">$$
+\left(\begin{array}{ccc}
+u_{11} &amp; u_{12} &amp; u_{13} \\\
+l_{21}u_{11} &amp; l_{21}u_{12}+u_{22} &amp; l_{21}u_{13}+u_{23} \\\
+l_{31}u_{11} &amp; l_{31}u_{12}+l_{32}u_{22} &amp; l_{31}u_{13}+l_{32}u_{23}+u_{33}
+\end{array}\right)=
+\left(\begin{array}{ccc}
+1 &amp; 0 &amp; 0 \\\
+l_{21} &amp; 1 &amp; 0 \\\
+l_{31} &amp; l_{32} &amp; 1
+\end{array}\right)\left(\begin{array}{ccc}
+u_{11} &amp; u_{12} &amp; u_{13} \\\
+0 &amp; u_{22} &amp; u_{23} \\\
+0 &amp; 0 &amp; u_{33}
+\end{array}\right)
+$$</div>
+<p>よって, 行列 \(X\) 
+の成分で行列 
+<span class="math">\(L, U'\)</span>&nbsp;を次のように書き換えることができる.</p>
+<div class="math">\begin{eqnarray}
+\left(\begin{array}{ccc}
+x_{11} &amp; x_{12} &amp; x_{13} \\\
+x_{21} &amp; x_{22} &amp; x_{23} \\\
+x_{31} &amp; x_{32} &amp; x_{33} 
+\end{array}\right)&amp;=&amp;
+\left(\begin{array}{ccc}
+1 &amp; 0 &amp; 0 \\\ 
+\frac{x_{21}}{u_{11}} &amp; 1 &amp; 0 \\\
+\frac{x_{31}}{u_{11}} &amp; l_{32} &amp; 1
+\end{array}\right)
+\left(\begin{array}{ccc}
+u_{11} &amp; u_{12} &amp; u_{13} \\\
+0 &amp; u_{22} &amp; u_{23} \\\
+0 &amp; 0 &amp; u_{33}
+\end{array}\right)\because
+\begin{array}{l}
+x_{21}=l_{21}u_{11}\leftrightarrow l_{21}=\frac{x_{21}}{u_{11}}, \\\
+l_{31}\ {\rm についても同様}
+\end{array} \\\
+&amp;=&amp;
+\left(\begin{array}{ccc}
+1 &amp; 0 &amp; 0 \\\
+\frac{x_{21}}{x_{11}} &amp; 1 &amp; 0 \\\
+\frac{x_{31}}{x_{11}} &amp; l_{32} &amp; 1
+\end{array}\right)\left(\begin{array}{ccc}
+x_{11} &amp; x_{12} &amp; x_{13} \\\
+0 &amp; u_{22} &amp; u_{23} \\\
+0 &amp; 0 &amp; u_{33}
+\end{array}\right)\because\ u_{11}=x_{11},u_{12}=x_{12},u_{13}=x_{13} \\\
+&amp;=&amp; 
+\left(\begin{array}{ccc}
+1 &amp; 0 &amp; 0 \\\
+\frac{x_{21}}{x_{11}} &amp; 1 &amp; 0 \\\
+\frac{x_{31}}{x_{11}} &amp; l_{32} &amp; 1
+\end{array}\right)\left(\begin{array}{ccc}
+x_{11} &amp; x_{12} &amp; x_{13} \\\
+0 &amp; x_{22}-\frac{x_{21}}{x_{11}}x_{12} &amp; x_{23}-\frac{x_{21}}{x_{11}}x_{13} \\\
+0 &amp; 0 &amp; u_{33} 
+\end{array}\right)\because
+\begin{array}{l}
+x_{22}=l_{21}u_{12}+u_{22} \leftrightarrow u_{22}=x_{22}-l_{21}u_{12},\\\
+u_{23}\ {\rm についても同様}
+\end{array} \\\
+&amp;=&amp; 
+\left(\begin{array}{ccc}
+1 &amp; 0 &amp; 0 \\\
+\frac{x_{21}}{x_{11}} &amp; 1 &amp; 0 \\\
+\frac{x_{31}}{x_{11}} &amp; \frac{x_{32}-\frac{x_{31}}{x_{11}}x_{12}}{x_{22}-\frac{x_{21}}{x_{11}}x_{12}} &amp; 1
+\end{array}\right)\left(\begin{array}{ccc}
+x_{11} &amp; x_{12} &amp; x_{13} \\\
+0 &amp; x_{22}-\frac{x_{21}}{x_{11}}x_{12} &amp; x_{23}-\frac{x_{21}}{x_{11}}x_{13} \\\
+0 &amp; 0 &amp; x_{33}-\frac{x_{31}}{x_{11}}x_{13}-\frac{x_{32}-\frac{x_{31}}{x_{11}}x_{12}}{x_{22}-\frac{x_{21}}{x_{11}}x_{12}}\left(x_{23}-\frac{x_{21}}{x_{11}}x_{13}\right)
+\end{array}\right)\\\
+&amp;\because&amp;
+\begin{array}{l}
+x_{32}=l_{31}u_{12}+l_{32}u_{22}\leftrightarrow l_{32}=\frac{x_{32}-l_{31}u_{12}}{u_{22}}, \\\
+u_{33}\ {\rm についても同様}
+\end{array}
+\end{eqnarray}</div>
+<p>これをみると, 一行目, 一列目, 二行目, 二列目 \(\cdots\) と展開していくことで,
+芋づる式に <span class="math">\(L,U'\)</span> が決まっていくことがわかる.
+この作業を一般化すると, \(u_{ij}\) の導出およびそれによって得られた値で \(l_{ij}\) を導出する部分に分けることができる.&nbsp;それぞれをいま漸化式で書くと</p>
+<div class="math">\begin{eqnarray}
+{\rm Doolittle 法} &amp;:=&amp;
+\begin{cases}
+\begin{cases}
+u_{1k}&amp;=&amp;x_{1k} \\\
+u_{ik}&amp;=&amp;x_{1k}-\sum^{i-1}_{j=1}l_{ij}u_{jk},\ \left(i=2,3,\cdots,k\right)
+\end{cases} \\\
+l_{ik}=\frac{\left(x_{ik}-\sum^{k-1}_{j=1}l_{ij}u_{jk}\right)}{u_{kk}},\ \left(i=k+1,k+2,\cdots,n\right)
+\end{cases}
+\end{eqnarray}</div>
+<p>ただし \(u_{kk}=0\) の場合は計算できないので,
+実際にはピボッティングを要することになるわけであるが,
+\(U\) の \(k\) 番目の行が \(L\) の対応する列の前に計算されるという Doolittle 法の性質上,
+このままではどの行が \(k\) 番目に来るのかを処理以前に知ることができない.
+この問題は \(l_{ik}\)&nbsp;の分子を次のように計算することで自明に克服できる.</p>
+<p>\[s_i = x_{ik}-\sum^{k-1}_{j=1}l_{ij}u_{jk},\&nbsp;\left(i=k,\cdots,n\right)\]</p>
+<p>これにより \(s_i\) の最大値を求め,
+対応する行を入れ替えて最大の要素を \(k\) 行目に入れることができる.
+交換後は \(u_{kk}=s_{k}\) となるが,
+\(U\) の \(k\) 番目の行の他の要素はそれ以前と同様に計算することができ, 
+対応する \(L\) の要素は \(l_{ik}=\frac{s_i}{u_{kk}}\)&nbsp;と得られる.</p>
+<p>Crout 法も同様に, \(X=L&#8217; U\)&nbsp;を次のように書けるはずなので,</p>
+<div class="math">\begin{eqnarray}
+\left(\begin{array}{ccc}
+l_{11} &amp; l_{11}u_{12} &amp; l_{11}u_{13} \\\
+l_{21} &amp; l_{21}u_{12}+l_{22} &amp; l_{21}u_{13}+l_{22}u_{23} \\\
+l_{31} &amp; l_{31}u_{12}+l_{32} &amp; l_{31}u_{13}+l_{32}u_{23}+l_{33}
+\end{array}\right)=
+\left(\begin{array}{ccc}
+l_{11} &amp; 0 &amp; 0 \\\
+l_{21} &amp; l_{22} &amp; 0 \\\
+l_{31} &amp; l_{32} &amp; l_{33}
+\end{array}\right)
+\left(\begin{array}{ccc}
+1 &amp; u_{12} &amp; u_{13} \\\
+0 &amp; 1 &amp; u_{23} \\\
+0 &amp; 0 &amp; 1
+\end{array}\right)
+\end{eqnarray}</div>
+<p>従ってこの作業の一般形は結果的に</p>
+<div class="math">\begin{eqnarray}
+{\rm Crout 法} &amp;:=&amp;
+\begin{cases}
+l_{ik}&amp;=&amp;x_{ik}-\sum^{k-1}_{j=1}l_{ij}u_{jk},\ \left(i=k,k+1,\cdots,n\right)\\\
+u_{kj}&amp;=&amp;\frac{\left(x_{kj}-\sum^{k-1}_{i=1}l_{ki}u_{ij}\right)}{l_{kk}},\ \left(j=k,k+1,\cdots,n\right)
+\end{cases}
+\end{eqnarray}</div>
+<p>\(L\) の \(k\) 番目の列の要素を計算した後に最大値を求め,
+\(L\) の要素を含む最初の \(k-1\)
+列に対応する行列の行を交換できるため, 
+Crout&nbsp;法はピボットを簡単に選択できる.</p>
+<h3>参考文献</h3>
+<ul>
+<li>Richard Hamming (1987) &#8220;Numerical Methods for Scientists and Engineers (Dover Books on Mathematics)&#8221; Dover Publications, <span class="caps">ISBN</span>&nbsp;9780486652412</li>
+</ul>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js','color.js','enclose.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: false," +
+        "    messageStyle: 'None'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+      </div>
+<!-- /.entry-content -->
+      <footer class="post-info text-muted">
+        <button type="button" class="btn btn-default">          
+          <a href="../../../../../category/math.html"><div class="fa fa-lg fa-folder-open"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/math.html"><div class="fa fa-lg fa-tag"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/haskell.html"><div class="fa fa-lg fa-tag"></div> haskell</a>
+        </button>
+      </footer>
+      <!-- /.post-info -->
+    <!-- Comment BEGIN -->
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'roki-log';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <!-- Comment END -->
+    </section>
+    </div>
+<footer class="footer">
+      <div class="container">
+          <p class="footer-text">&copy; <a href="../../../../..">roki.log</a> powered by 
+          <a href="https://getpelican.com/">pelican</a> and 
+          <a href="https://github.com/falgon/nikhil-theme">nikhil-theme (forked)</a><br>
+              <small>  <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>, except where indicated otherwise.
+</small>
+            </p>
+   </div>
+</footer>    <script src="../../../../../theme/js/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-116653080-1', 'auto');
+      ga('send', 'pageview');
+       $('#myModal').modal({show: true});
+
+    </script>
+  </body>
+</html>

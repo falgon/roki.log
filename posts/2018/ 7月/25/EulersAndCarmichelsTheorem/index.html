@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>オイラーの定理とカーマイケルの定理 - roki.log</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../../../theme/style.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="../../../../../favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/solid.css" integrity="sha384-TbilV5Lbhlwdyc4RuIV/JhD8NR+BfMrvz4BL5QFa2we1hQu6wvREr3v6XSRfCTRp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/brands.css" integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css" integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../../../../theme/js/css_browser_selector.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="roki" />
+        <link href="../../../../../theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+        <link href="../../../../../theme/typogrify.css" rel="stylesheet">
+    <link href="https://falgon.github.io/roki.log/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="roki.log Full Atom Feed" />
+    <link href="https://falgon.github.io/roki.log/feeds/math.rss.xml" type="application/atom+xml" rel="alternate" title="roki.log Categories Atom Feed" />
+
+  </head>
+  <body id="index" class="archive" style="font-family: '游明朝', 'Yu Mincho' , '游明朝体' , 'YuMincho' , 'ヒラギノ明朝 Pro W3' , 'Hiragino Mincho Pro' , 'HiraMinProN-W3', 'HGS明朝E' , 'ＭＳ Ｐ明朝' , 'MS PMincho', serif;">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">👋New blog information / ブログ移転のお知らせ</h4>
+      </div>
+      <div class="modal-body">
+      This blog has been moved to <a href="https://roki.dev/roki.log">new one (roki.dev/roki.log)</a> for 
+      serving you better view. This blog is no longer updated.
+      Thank you for migrating and re-registering your bookmarks.
+      <hr >
+      このブログは, 
+      <a href="https://roki.dev/roki.log">新ブログ (roki.dev/roki.log)</a> 
+      に移転しました。このページの今後の更新はありませんが,
+      移行用, 記録用に残されています。
+      もし宜しければ, 移行, またはブックマークの再登録をよろしくお願いいたします。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+       </div>
+    </div>
+  </div>
+</div>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../../..">roki.log</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li>
+                    <a href="../../../../../pages/about"><i class="fas fa-info-circle" style="margin-right: 4px;"></i>About</a>
+            </li>
+            <li>
+            </li>
+            
+            <li><a href="../../../../../tags.html"><i class="fas fa-tags" style="margin-right: 4px;"></i>Tags</a></li>
+            <li><span>
+                <form class="navbar-search" action="https://falgon.github.io/roki.log/search.html">
+                    <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+    <section id="content" class="article content">
+      <header>
+        <h2 class="entry-title">
+          オイラーの定理とカーマイケルの定理
+        </h2>
+        
+        <div class="text-muted">水 25 7月 2018</div>
+      </header>
+<!-- .entry-content -->
+      <div class="entry-content">
+        <p>以前の記事, <a href="https://falgon.github.io/roki.log/posts/2018/%207月/13/elgamalEncryption/">エルガマル暗号</a>では,
+エルガマル暗号に関する諸々の前提の説明と, その実装について示した. 
+同エントリ内で, フェルマーの小定理<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup>については取り扱ったものの, 
+その一般形であるオイラーの定理およびカーマイケルの定理について<a href="https://falgon.github.io/roki.log/posts/2018/%207月/13/elgamalEncryption/#fn-5">特に触れなかった</a>ため,
+本エントリでそれらに関してまとめる. しばしば値の確認には, 簡単のため Haskell&nbsp;を使う.</p>
+<h3>オイラーの定理</h3>
+<p>いま, <a href="https://falgon.github.io/roki.log/posts/2018/%207月/13/elgamalEncryption/#fermattest">フェルマーテスト</a>を定義したとき, \(FT_n(a)\) をパスするには(すなわち, フェルマーの小定理が示す合同式が成り立つには), 要件として,
+既約剰余類郡 \(\mathbb{Z}^{\ast}_n\) の各要素と
+\(^\exists a\ \in\mathbb{Z}\) の積が全て異なり, 
+<span class="math">\(\bmod n\)</span> の既約代表系のすべての積と合同でなければならない.
+たとえば, 法 <span class="math">\(n=8\)</span> による合同関係で構成する剰余類の完全代表系<sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup>は
+\(0,1,2,3,4,5,6,7\) であるが,
+\(a=2\) としてしまうと, 既約剰余類郡が構成できていないので, 次のようにしても完全代表系が得られない(積をわざわざ示していないが, 非合同でないことは,&nbsp;各要素の積が全て異なっていない時点で明白である).</p>
+<div class="highlight"><pre><span></span><span class="kt">Prelude</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">`</span><span class="n">rem</span><span class="p">`</span> <span class="mi">8</span> <span class="o">|</span> <span class="n">x</span> <span class="ow">&lt;-</span> <span class="p">[</span><span class="mi">0</span><span class="o">..</span><span class="mi">7</span><span class="p">]]</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+</pre></div>
+
+
+<p>そこで, 先に述べた剰余類の既約代表系を考える. これは <span class="math">\(\phi(8)=4\)</span> 個<sup id="fnref-3"><a class="footnote-ref" href="#fn-3">3</a></sup>で, <span class="math">\(1,3,5,7\)</span> である.
+これを同じように, \(\left\{1\cdot a,\ 3\cdot a,\ 5\cdot a,\ 7\cdot a\right\}\) とし, 
+先の要件を確認すると, 
+<a href="https://falgon.github.io/roki.log/posts/2018/%207月/13/elgamalEncryption/#lem2">この補題2</a>より, 
+<span class="math">\(\bmod 8\)</span> で全体として \(\left\{1,3,5,7\right\}\) と一致していて,
+\[1\cdot 3\cdot 5\cdot 7\equiv 1\cdot 3\cdot 5\cdot 7\cdot a^4\pmod{8}\label{eq:first}\tag{1}\]
+<span class="math">\(\gcd(1\cdot 3\cdot 5\cdot 7,8)=1\)</span> だから, <span class="math">\(1\cdot 3\cdot 5\cdot 7\)</span> を約して,
+\[a^4\equiv 1\pmod{8}\label{eq:second}\tag{2}\] 
+これは, <span class="math">\(\gcd(a,n)=1\)</span> ということの他に, <span class="math">\(a\)</span> および <span class="math">\(n\)</span> の値に依存した論ではない.&nbsp;すなわち,</p>
+<div class="panel panel-default">
+  <div class="panel-heading theo"><a name="eulerstheorem" class="disabled">オイラーの定理</a></div>
+  <div class="panel-body">
+&#92;[a^{\phi(n)}\equiv 1\pmod{n}\ \left(2\leq n\in\mathbb{Z}^{+},\ \gcd(a,n)=1\right)&#92;]
+  </div>
+</div>
+
+<p>がいえる<sup id="fnref-4"><a class="footnote-ref" href="#fn-4">4</a></sup>.</p>
+<div class="highlight"><pre><span></span><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="n">euler&#39;sTheorem</span> <span class="n">n</span> <span class="ow">=</span> <span class="p">[</span><span class="n">a</span> <span class="p">`</span><span class="n">modExp</span><span class="p">`</span> <span class="p">(</span><span class="n">totient</span> <span class="n">n</span><span class="p">)</span> <span class="o">$</span> <span class="n">n</span> <span class="o">|</span> <span class="n">a</span> <span class="ow">&lt;-</span> <span class="p">[</span><span class="mi">2</span><span class="o">..</span><span class="p">],</span> <span class="n">gcd</span> <span class="n">a</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="n">all</span> <span class="p">(</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="o">$</span> <span class="n">take</span> <span class="mi">100</span> <span class="o">$</span> <span class="n">euler&#39;sTheorem</span> <span class="mi">8</span>
+<span class="kt">True</span>
+</pre></div>
+
+
+<p><span class="math">\(n\)</span> が素数 <span class="math">\(p\)</span> であるとき, <span class="math">\(\phi(p)=p-1\)</span> で, フェルマーの小定理<sup id="fnref2-1"><a class="footnote-ref" href="#fn-1">1</a></sup>となる<sup id="fnref-5"><a class="footnote-ref" href="#fn-5">5</a></sup>.</p>
+<h3>ラグランジュの定理</h3>
+<p>いま述べた<a href="#eulerstheorem">オイラーの定理</a>は, 
+ラグランジュの定理を使っても証明できる.&nbsp;ラグランジュの定理は,</p>
+<div class="panel panel-default">
+  <div class="panel-heading theo"><a name="lagrangestheorem" class="disabled">ラグランジュの定理</a></div>
+  <div class="panel-body">
+  有限郡 &#92;(G&#92;) の部分郡 &#92;(H&#92;) の位数 &#92;(\mid H\mid&#92;) は, &#92;(G&#92;) の位数 &#92;(\mid G\mid&#92;) 
+  の約数となる.
+  &#92;[\mid G\mid\ =\ \mid G:H\mid \mid H\mid&#92;]
+  </div>
+</div>
+
+<p>である. </p>
+<p><strong>証明</strong>: 有限郡 \(G\) の部分郡 \(H\) による類別が \(\displaystyle G=\bigcup_i^r a_iH\) であるとき, \(\mid G\mid=r\mid H\mid\) といえる. この \(r\) は \(r=\mid G:H\mid\) 
+そのものなので, \(\mid G\mid\ =\ \mid G:H\mid\mid H\mid\).&nbsp;\(\square\)</p>
+<p>ごく直感的な定理である. これを使えば, <a href="#eulerstheorem">オイラーの定理</a>は次のように証明できる.</p>
+<p><strong>補題1</strong>: 有限郡 <span class="math">\(G\)</span> とその元 <span class="math">\(^\forall g\in G\)</span> に対し, <span class="math">\(g^{\mid G\mid}=e\)</span>. <span class="math">\(e\in G\)</span>&nbsp;は単位元. </p>
+<p><strong>証明</strong>:
+巡回部分郡 <span class="math">\(H=\lt g\gt\)</span> の元 <span class="math">\(g\)</span> の位数 <span class="math">\(\mid H\mid\)</span> は,
+巡回して <span class="math">\(g^i=e\)</span> となる最小の <span class="math">\(i\in\mathbb{N}\)</span> であるといえる. すなわち
+\[g^{\mid H\mid}=e\]
+ここで, 商集合の位数を両辺に次のように与える.
+\[\left(g^{\mid H\mid}\right)^{\mid G:H\mid}=(e)^{\mid G:H\mid}\]
+左辺は指数法則により, また右辺は単位元の繰り返しだから, これを次のようにかける.
+\[g^{\mid H\mid\mid G:H\mid}=e\]
+ラグランジュの定理より
+\[g^{\mid G\mid}=e\]&nbsp;\(\square\)</p>
+<p><strong>オイラーの定理の証明</strong>:
+<a href="#eulerstheorem">オイラーの定理</a>を仮定したとき, 脚注<sup id="fnref2-2"><a class="footnote-ref" href="#fn-2">2</a></sup>より剰余類 \(\overline{a}\) は法 \(n\) に関する既約剰余類郡 \(\mathbb{Z}^{\ast}_{n}\) に含まれる.  \(\mid\mathbb{Z}^{\ast}_{n}\mid=\phi(n)\) だから補題 1 より 
+\(\overline{a}^{\phi(n)}=\overline{a^{\phi(n)}}=\overline{1}\).&nbsp;\(\square\)</p>
+<h3>カーマイケルの定理</h3>
+<p><a href="#eulerstheorem">オイラーの定理</a>で用いる <span class="math">\(\phi\)</span> 関数は, 
+<span class="math">\(a^{m}\equiv 1\pmod{n}\ (m\in{N}, \gcd(a,n)=1\)</span> を成立させる最小の整数 <span class="math">\(m\)</span> を持ち得ない.
+たとえば, <span class="math">\(n=8\)</span> では, 先の通り確かに <span class="math">\(m=\phi(8)=4\)</span> で合同式が満足できたが, 
+<span class="math">\(m=2\)</span> としても,&nbsp;これを満足できる.</p>
+<div class="highlight"><pre><span></span><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="n">all</span> <span class="p">(</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="o">$</span> <span class="n">take</span> <span class="mi">100</span> <span class="o">$</span> <span class="p">[</span><span class="n">a</span> <span class="p">`</span><span class="n">modExp</span><span class="p">`</span> <span class="mi">2</span> <span class="o">$</span> <span class="mi">8</span> <span class="o">|</span> <span class="n">a</span> <span class="ow">&lt;-</span> <span class="p">[</span><span class="mi">2</span><span class="o">..</span><span class="p">],</span> <span class="n">gcd</span> <span class="n">a</span> <span class="mi">8</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="kt">True</span>
+</pre></div>
+
+
+<p>カーマイケルの \(\lambda\) 関数は, 与えられた整数 <span class="math">\(n\)</span> に対して同合同式を満足する最小の
+<span class="math">\(m\)</span>&nbsp;を定義より自明に与える.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="lagrangestheorem" class="disabled">カーマイケルの &#92;(\lambda&#92;) 関数</a></div>
+  <div class="panel-body" style="overflow:scroll">
+  扱う文字を全て整数とし, &#92;(\lambda(n)&#92;) は
+  \begin{array}{lcl}
+  \DeclareMathOperator{\lcm}{lcm}
+  \lambda(1)&:=&1&#92;\
+  \lambda(2)&:=&1&#92;\
+  \lambda(4)&:=&4&#92;\
+  \lambda(2^k)&:=&\phi(2^k)\ \left(0\leq k\leq 2\right)&#92;\
+  \lambda(2^k)&:=&2^{k-2}=\dfrac{\phi(2^k)}{2}\ \left(e\geq 3\right)&#92;\
+  \lambda(p^h)&:=&\phi(p^h)=(p-1)\cdot p^{h-1}\ \left(p\ is\ an\ odd\ prime, h\geq 1\right)&#92;\
+  \lambda\left(2^kp_1^{h_1}p_2^{h_2}p_3^{h_3}\cdots p_t^{h_t}\right)&:=&\lcm\left(\lambda(2^k),\lambda(p_1^{h_1}),\lambda(p_2^{h_2}),\lambda(p_3^{h_3}),\cdots,\lambda(p_t^{h_t})\right)\ \left(p_n\ is\ an\ odd\ prime, k\geq 0, h_n\geq 1\right)
+  \end{array}
+  と定義する.
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading theo"><a name="carmichelstheorem" class="disabled">カーマイケルの定理</a></div>
+  <div class="panel-body" style="overflow:scroll">
+  &#92;[a^{\lambda(n)}\equiv 1\pmod{n}\ (2\leq n\in\mathbb{Z}^{+},\ \gcd(a,n)=1)&#92;]
+  </div>
+</div>
+
+<p>実装して確かめよう.</p>
+<div class="highlight"><pre><span></span><span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">carmichael&#39;sLambda</span> <span class="n">n</span> <span class="ow">=</span> <span class="n">head</span> <span class="p">[</span><span class="n">k</span> <span class="o">|</span> <span class="n">k</span> <span class="ow">&lt;-</span> <span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="p">],</span> <span class="n">and</span> <span class="p">[(</span><span class="n">m</span> <span class="p">`</span><span class="n">modExp</span><span class="p">`</span> <span class="n">k</span> <span class="o">$</span> <span class="n">n</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">|</span> <span class="n">m</span> <span class="ow">&lt;-</span> <span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="n">n</span><span class="p">]</span> <span class="n">gcd</span> <span class="n">m</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">]]</span>
+<span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">carmichael&#39;sTheorem</span> <span class="n">n</span> <span class="ow">=</span> <span class="p">[</span><span class="n">a</span> <span class="p">`</span><span class="n">modExp</span><span class="p">`</span> <span class="p">(</span><span class="n">carmichael&#39;sLambda</span> <span class="n">n</span><span class="p">)</span> <span class="o">$</span> <span class="n">n</span> <span class="o">|</span> <span class="n">a</span> <span class="ow">&lt;-</span> <span class="p">[</span><span class="mi">2</span><span class="o">..</span><span class="p">],</span> <span class="n">gcd</span> <span class="n">a</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="o">*</span><span class="kt">Main</span><span class="o">&gt;</span> <span class="n">all</span> <span class="p">(</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="o">$</span> <span class="n">take</span> <span class="mi">100</span> <span class="o">$</span> <span class="n">carmichael&#39;sTheorem</span> <span class="mi">8</span>
+<span class="kt">True</span>
+</pre></div>
+
+
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn-1">
+<p>証明: <a href="https://falgon.github.io/roki.log/posts/2018/%207月/13/elgamalEncryption/#fermatstheorem">フェルマーの小定理</a>&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn-2">
+<p>補足. 郡 <span class="math">\(G\)</span> とその部分郡 <span class="math">\(H\)</span> があるとき, <span class="math">\(H\)</span> は郡であるから単位元 <span class="math">\(e\in H\)</span> を含む. よって, <span class="math">\(^\exists a\in G\)</span> の剰余類を <span class="math">\(aH=\left\{ah\mid h\in H\right\}\)</span> としたとき(簡単のため, 左剰余類として式をおいたが, これに深い意味はない.), <span class="math">\(a=ae\in aH\)</span> より <span class="math">\(a\in aH\)</span> である. この <span class="math">\(a\)</span> を剰余類 <span class="math">\(aH\)</span> の代表という. また郡 <span class="math">\(G\)</span> は, 異なる \(a_i\) を代表とした剰余類 \(a_iH\) によって類別できる(\(\displaystyle G=\bigcup_i a_iH\)). この \(\mid G:H\mid\) 個の類別に対して, 各剰余類から代表の元を取り, 構成した集合を, <span class="math">\(G\)</span> の <span class="math">\(H\)</span> に対する代表系という.&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn-3">
+<p>ここで, <span class="math">\(\phi\)</span> は, <a href="https://falgon.github.io/roki.log/posts/2018/%207月/13/elgamalEncryption/#totientf">オイラーのトーシェント関数</a>.&#160;<a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn-4">
+<p>コード内の<code>totient</code>と<code>modExp</code>は, それぞれ以前の投稿のうち, <a href="https://falgon.github.io/roki.log/posts/2018/%207月/13/elgamalEncryption/#totientf">オイラーのトーシェント関数の実装部分</a>と, <a href="https://falgon.github.io/roki.log/posts/2018/%207月/13/elgamalEncryption/#modexpref">カーマイケル数を得るための実装</a>を利用.&#160;<a class="footnote-backref" href="#fnref-4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn-5">
+<p>この補足は冗長的かもしれないが, <span class="math">\(n\)</span> が素数 <span class="math">\(p\)</span> である場合, \(\mathbb{Z}_p^{\ast}\) が構成されるから, これから取った代表は素数 <span class="math">\(p\)</span> と互いに素であることから, 既約代表である. この事実も, 一般に \(\eqref{eq:first}\) から \(\eqref{eq:second}\) へのような式変形が実行できることとの整合を示す.&#160;<a class="footnote-backref" href="#fnref-5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js','color.js','enclose.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: false," +
+        "    messageStyle: 'None'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+      </div>
+<!-- /.entry-content -->
+      <footer class="post-info text-muted">
+        <button type="button" class="btn btn-default">          
+          <a href="../../../../../category/math.html"><div class="fa fa-lg fa-folder-open"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/elementary-number-theory.html"><div class="fa fa-lg fa-tag"></div> Elementary number theory</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/group-theory.html"><div class="fa fa-lg fa-tag"></div> Group theory</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/math.html"><div class="fa fa-lg fa-tag"></div> math</a>
+        </button>
+      </footer>
+      <!-- /.post-info -->
+    <!-- Comment BEGIN -->
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'roki-log';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <!-- Comment END -->
+    </section>
+    </div>
+<footer class="footer">
+      <div class="container">
+          <p class="footer-text">&copy; <a href="../../../../..">roki.log</a> powered by 
+          <a href="https://getpelican.com/">pelican</a> and 
+          <a href="https://github.com/falgon/nikhil-theme">nikhil-theme (forked)</a><br>
+              <small>  <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>, except where indicated otherwise.
+</small>
+            </p>
+   </div>
+</footer>    <script src="../../../../../theme/js/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-116653080-1', 'auto');
+      ga('send', 'pageview');
+       $('#myModal').modal({show: true});
+
+    </script>
+  </body>
+</html>

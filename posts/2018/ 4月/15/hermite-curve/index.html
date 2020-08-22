@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>エルミート曲線 - roki.log</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../../../theme/style.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="../../../../../favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/solid.css" integrity="sha384-TbilV5Lbhlwdyc4RuIV/JhD8NR+BfMrvz4BL5QFa2we1hQu6wvREr3v6XSRfCTRp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/brands.css" integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css" integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../../../../theme/js/css_browser_selector.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="roki" />
+        <link href="../../../../../theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+        <link href="../../../../../theme/typogrify.css" rel="stylesheet">
+    <link href="https://falgon.github.io/roki.log/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="roki.log Full Atom Feed" />
+    <link href="https://falgon.github.io/roki.log/feeds/math.rss.xml" type="application/atom+xml" rel="alternate" title="roki.log Categories Atom Feed" />
+
+  </head>
+  <body id="index" class="archive" style="font-family: '游明朝', 'Yu Mincho' , '游明朝体' , 'YuMincho' , 'ヒラギノ明朝 Pro W3' , 'Hiragino Mincho Pro' , 'HiraMinProN-W3', 'HGS明朝E' , 'ＭＳ Ｐ明朝' , 'MS PMincho', serif;">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">👋New blog information / ブログ移転のお知らせ</h4>
+      </div>
+      <div class="modal-body">
+      This blog has been moved to <a href="https://roki.dev/roki.log">new one (roki.dev/roki.log)</a> for 
+      serving you better view. This blog is no longer updated.
+      Thank you for migrating and re-registering your bookmarks.
+      <hr >
+      このブログは, 
+      <a href="https://roki.dev/roki.log">新ブログ (roki.dev/roki.log)</a> 
+      に移転しました。このページの今後の更新はありませんが,
+      移行用, 記録用に残されています。
+      もし宜しければ, 移行, またはブックマークの再登録をよろしくお願いいたします。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+       </div>
+    </div>
+  </div>
+</div>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../../..">roki.log</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li>
+                    <a href="../../../../../pages/about"><i class="fas fa-info-circle" style="margin-right: 4px;"></i>About</a>
+            </li>
+            <li>
+            </li>
+            
+            <li><a href="../../../../../tags.html"><i class="fas fa-tags" style="margin-right: 4px;"></i>Tags</a></li>
+            <li><span>
+                <form class="navbar-search" action="https://falgon.github.io/roki.log/search.html">
+                    <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+    <section id="content" class="article content">
+      <header>
+        <h2 class="entry-title">
+          エルミート曲線
+        </h2>
+        
+        <div class="text-muted">日 15 4月 2018</div>
+      </header>
+<!-- .entry-content -->
+      <div class="entry-content">
+        <p>典型的なパラメトリック曲線の一種である,&nbsp;エルミート曲線についてのメモ.</p>
+<h3>パラメトリック曲線</h3>
+<p>そもそもパラメトリック曲線とは, 任意のパラメータから各々の座標を陽関数形式で表現できる曲線のことをいう. 
+このとき定義できる関数 \(f\) がパラメータ \(t\)<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup> の多項式である場合, それを多項式曲線といい,
+有理式である場合, それを有理曲線という. 例えば, 直線の方程式 \(y = m(x-a)+b\)&nbsp;は,</p>
+<div class="math">\begin{cases}
+x=t \\
+y=m(t-a)+b
+\end{cases}</div>
+<p>
+とパラメタライズできる. この方程式では, パラメタライズせずとも, \(x\) に 1 つの実数を代入すれば, 必ず \(y\) が求まる(逆も言える)ことは明らかである.
+次に, 3 次曲線 \(y^{2} = x^{3} + x^{2} \) について考える. \(x\) に 1 つの実数を代入すると, \(y\)&nbsp;は,</p>
+<ul>
+<li>\(x^{3} + x^{2} \gt 0\) のとき \(\pm{\sqrt{x^{3} +&nbsp;x^{2}}}\), </li>
+<li>\(x^{3} + x^{2} = 0\) のとき&nbsp;\(0\),</li>
+<li>\(x^{3} + x^{2} \lt 0\)&nbsp;のとき複素数</li>
+</ul>
+<p>となり, \(x\) の値によっては, グラフが存在しない.&nbsp;これを </p>
+<div class="math">\begin{cases}
+x=t^{2}-1 \\
+y=t^{3}-t
+\end{cases}</div>
+<p>
+とパラメタライズすることで, 任意の実数 \(t\) に対するグラフ上の一点を定めることができる<sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup>.</p>
+<p><img src="../../../../../images/2018/Apr/15/curves0.png" alt="パラメトリック曲線との視覚的差異" width="650px"/></p>
+<h3>エルミート曲線</h3>
+<p>エルミート曲線は, 始点\((x_{0}, y_{0})\)とその速度ベクトル\((v_{0}, w_{0})\), 終点\((x_{1}, y_{1})\)とその速度ベクトル\((v_{1}, w_{1})\) を与えたときに,
+始点と終点の間をつなぐ 3 次パラメトリック曲線である. 3 次パラメトリック曲線と言うからには, これを一般の 3 次多項式で表現できるはずである.\[ f(t) = At^{3} + Bt^{2} + Ct + D \]
+パラメトリック曲線は \(x\) と \(y\) をそれぞれ別々に扱えるので, まず \(x\) について考える. \[x(t) = At^{3} + Bt^{2} + Ct + D \tag{1}\]
+4 つの係数, \(A, B, C, D\) が得られれば, 任意の \(t\) に対するエルミート曲線の \(x\) が得られるはずである.
+まず, 始点の座標を求める. \(t = 0\) のときを始点, \(t = 1\) のときを終点としたとき, \(t = 0\) のときに始点の座標, \(t = 1\) のときに終点の座標が得られることは明らかなので, 
+\(t\) に \(0\), および \(t\) に \(1\) を代入して次の二式が得られる.\[x(0) = D = x_{0} \tag{2}\] \[x(1) = A + B + C + D = x_{1} \tag{3}\]
+ここで, ある地点 \(t\) での曲線の傾きを求めるために, 一階微分した次の式を得る. \[\displaystyle
+\dfrac{d}{dt}x(t)=3At^{2} + 2Bt + C \tag{4}\] 始点(\(0\))と終点(\(1\))をそれぞれ式 \((4)\) の \(t\) に代入し, 始点における曲線の傾きと, 終点における曲線の傾きが得られる.
+\[\displaystyle \dfrac{dx}{dt}(0) = C = v_{0} \tag{5}\] \[\displaystyle \dfrac{dx}{dt}(1) = 3A + 2B + C = v_{1} \tag{6}\] 
+式 \((3)\) に式 \((2)\), \((5)\) を, 式 \((6)\) に式 \((5)\) を代入すると, 次の二式が得られる.
+\[A+B+v_{0}+x_{0} = x_{1} \tag{7}\] 
+\[3A + 2B + v_{0} = v_{1} \tag{8}\]
+式 \((7)\), \((8)\) の連立方程式を解くと,
+\[A = 2x_{0} - 2x_{1} + v_{0} + v_{1} \tag{9} \] \[B = -3x_{0}+3x_{1} - 2v_{0} - v_{1} \tag{10} \]
+となる. 式 \((2), (5), (9), (10)\) を式 \((1)\) に代入すると\[
+x(t) = (2x_{0} - 2x_{1} + v_{0} + v_{1})t^{3} + (-3x_{0} + 3x_{1} - 2v_{0} - v_{1})t^{2} + v_{0}t + x_{0} \tag{11}
+\]
+であるから, 式 \((11)\) から \(t\) に対するエルミート曲線の \(x\) が取れることがわかった. \(y\) についても, \(x\) を \(y\) に, \(v\) を \(w\) にすると,&nbsp;同様にして得られるから
+</p>
+<div class="math">\begin{align}
+\begin{cases}
+x(t) &amp;= (2x_{0} - 2x_{1} + v_{0} + v_{1})t^{3} + (-3x_{0} + 3x_{1} - 2v_{0} - v_{1})t^{2} + v_{0}t + x_{0} \\
+y(t) &amp;= (2y_{0} - 2y_{1} + w_{0} + w_{1})t^{3} + (-3y_{0} + 3y_{1} - 2w_{0} - w_{1})t^{2} + w_{0}t + y_{0}
+\end{cases}
+\end{align}</div>
+<p>
+がいえる. </p>
+<p>さらに, \(x(t)\) から \(x_{0}, x_{1}, v_{0}, v_{1}\)(\(y_{0}, y_{1}, w_{0}, w_{1}\) についても同様) の係数にそれぞれ着目して,&nbsp;次のように定義する.</p>
+<ul>
+<li>\(x_{0}\) の係数に着目し, \(2t^3-3t^2+1=(2t+1)(1-t)^2 \),  これを \(H^3_{0}(t)\)&nbsp;とする</li>
+<li>\(v_{0}\) の係数に着目し, \(t^3-2t^2+t=t(1-t)^2\), これを \(H^3_{1}(t)\)&nbsp;とする</li>
+<li>\(v_{1}\) の係数に着目し, \(t^3-t^2=-t^2(1-t)\), これを \(H^3_{2}(t)\)&nbsp;とする</li>
+<li>\(x_{1}\) の係数に着目し, \(3t^2-2t^3=t^2(3-2t)\), これを \(H^3_{3}(t)\)&nbsp;とする</li>
+</ul>
+<p>すると, 先ほど導出した\(x(t), y(t)\)&nbsp;の式は次のように定義できる.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a class="disabled">エルミート曲線</a></div>
+  <div class="panel-body">
+\begin{align}
+\begin{cases}
+x(t) &= x_{0}H^3_{0}(t) + v_{0}H^3_{1} + v_{1}H^3_{2}(t) + x_{1}H^3_{3}(t) &#92;\
+y(t) &= y_{0}H^3_{0}(t) + w_{0}H^3_{1} + w_{1}H^3_{2}(t) + y_{1}H^3_{3}(t) 
+\end{cases}
+\end{align}
+  </div>
+</div>
+
+<p>これは, 3&nbsp;次エルミート多項式によるエルミート曲線の定義と同義である.</p>
+<h3>実際に描く</h3>
+<p>始点 \((1, 0)\) での速度ベクトルを \((0, 1)\), 終点 \((-1, 0)\) での速度ベクトルを \((0, -1)\) として,
+上記に導いたエルミート曲線に従い, 点を打ってみた<sup id="fnref-3"><a class="footnote-ref" href="#fn-3">3</a></sup>. </p>
+<div class="highlight"><pre><span></span><span class="cm">{-# OPTIONS_GHC -Wall #-}</span>
+
+<span class="kr">module</span> <span class="nn">Main</span> <span class="kr">where</span>
+
+<span class="kr">import</span> <span class="nn">Graphics.Rendering.OpenGL</span> 
+<span class="kr">import</span> <span class="nn">Graphics.UI.GLUT</span> 
+<span class="kr">import</span> <span class="nn">Control.Monad</span> <span class="p">(</span><span class="nf">forM_</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">Control.Arrow</span> <span class="p">((</span><span class="o">&amp;&amp;&amp;</span><span class="p">))</span>
+
+<span class="kr">type</span> <span class="kt">Float&#39;</span> <span class="ow">=</span> <span class="kt">GLfloat</span>
+
+<span class="nf">linspaceWithDensity</span> <span class="ow">::</span> <span class="kt">Float&#39;</span> <span class="ow">-&gt;</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="kt">Float&#39;</span><span class="p">]</span>
+<span class="nf">linspaceWithDensity</span> <span class="n">density</span> <span class="n">bt</span> <span class="n">et</span> <span class="ow">=</span> <span class="kr">let</span> <span class="n">distance</span> <span class="ow">=</span> <span class="n">round</span> <span class="p">(</span><span class="n">realToFrac</span> <span class="p">(</span><span class="n">abs</span> <span class="n">et</span> <span class="o">+</span> <span class="n">abs</span> <span class="n">bt</span><span class="p">)</span> <span class="o">/</span> <span class="n">density</span><span class="p">)</span> <span class="kr">in</span> 
+    <span class="n">take</span> <span class="n">distance</span> <span class="o">$</span> <span class="n">iterate</span> <span class="p">(</span><span class="o">+</span><span class="n">density</span><span class="p">)</span> <span class="p">(</span><span class="n">realToFrac</span> <span class="n">bt</span> <span class="ow">::</span> <span class="kt">Float&#39;</span><span class="p">)</span>
+
+<span class="c1">-- | The function that generates a coordinate list of Hermite curve according to</span>
+<span class="c1">--</span>
+<span class="c1">-- the start point, the velocity vector of the start point, the end point, the velocity vector of the end point,</span>
+<span class="c1">-- the density of the points and the range of @t@ (@bt &lt;= t &lt;= et@).</span>
+<span class="nf">hermite</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Float&#39;</span><span class="p">,</span> <span class="kt">Float&#39;</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Float&#39;</span><span class="p">,</span> <span class="kt">Float&#39;</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Float&#39;</span><span class="p">,</span> <span class="kt">Float&#39;</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Float&#39;</span><span class="p">,</span> <span class="kt">Float&#39;</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">Float&#39;</span> <span class="ow">-&gt;</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="p">[(</span><span class="kt">Float&#39;</span><span class="p">,</span> <span class="kt">Float&#39;</span><span class="p">)]</span>
+<span class="nf">hermite</span> <span class="n">st</span> <span class="n">stVec</span> <span class="n">ed</span> <span class="n">edVec</span> <span class="ow">=</span> <span class="p">((</span><span class="n">map</span> <span class="p">(</span><span class="n">herX</span> <span class="o">&amp;&amp;&amp;</span> <span class="n">herY</span><span class="p">)</span><span class="o">.</span><span class="p">)</span><span class="o">.</span><span class="p">)</span><span class="o">.</span><span class="n">linspaceWithDensity</span>
+    <span class="kr">where</span>
+        <span class="n">h30</span> <span class="n">t</span> <span class="ow">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span>
+        <span class="n">h31</span> <span class="n">t</span> <span class="ow">=</span> <span class="n">t</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span>
+        <span class="n">h32</span> <span class="n">t</span> <span class="ow">=</span> <span class="o">-</span><span class="n">t</span><span class="o">^</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">h33</span> <span class="n">t</span> <span class="ow">=</span> <span class="n">t</span><span class="o">^</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">hermite&#39;</span> <span class="n">t</span> <span class="n">v1</span> <span class="n">v2</span> <span class="n">v3</span> <span class="n">v4</span> <span class="ow">=</span> <span class="n">h30</span> <span class="n">t</span> <span class="o">*</span> <span class="n">v1</span> <span class="o">+</span> <span class="n">h31</span> <span class="n">t</span> <span class="o">*</span> <span class="n">v2</span> <span class="o">+</span> <span class="n">h32</span> <span class="n">t</span> <span class="o">*</span> <span class="n">v3</span> <span class="o">+</span> <span class="n">h33</span> <span class="n">t</span> <span class="o">*</span> <span class="n">v4</span>
+        <span class="n">herX</span> <span class="n">t</span> <span class="ow">=</span> <span class="n">hermite&#39;</span> <span class="n">t</span> <span class="p">(</span><span class="n">fst</span> <span class="n">st</span><span class="p">)</span> <span class="p">(</span><span class="n">fst</span> <span class="n">stVec</span><span class="p">)</span> <span class="p">(</span><span class="n">fst</span> <span class="n">edVec</span><span class="p">)</span> <span class="p">(</span><span class="n">fst</span> <span class="n">ed</span><span class="p">)</span>
+        <span class="n">herY</span> <span class="n">t</span> <span class="ow">=</span> <span class="n">hermite&#39;</span> <span class="n">t</span> <span class="p">(</span><span class="n">snd</span> <span class="n">st</span><span class="p">)</span> <span class="p">(</span><span class="n">snd</span> <span class="n">stVec</span><span class="p">)</span> <span class="p">(</span><span class="n">snd</span> <span class="n">edVec</span><span class="p">)</span> <span class="p">(</span><span class="n">snd</span> <span class="n">ed</span><span class="p">)</span>
+
+<span class="nf">resize</span> <span class="ow">::</span> <span class="kt">Size</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">resize</span> <span class="n">s</span><span class="o">@</span><span class="p">(</span><span class="kt">Size</span> <span class="n">w</span> <span class="n">h</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span>
+    <span class="n">viewport</span> <span class="o">$=</span> <span class="p">(</span><span class="kt">Position</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+    <span class="n">loadIdentity</span>
+    <span class="n">ortho</span> <span class="p">(</span><span class="o">-</span><span class="n">w&#39;</span><span class="p">)</span> <span class="n">w&#39;</span> <span class="p">(</span><span class="o">-</span><span class="n">h&#39;</span><span class="p">)</span> <span class="n">h&#39;</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span> <span class="mf">1.0</span>
+    <span class="kr">where</span>
+        <span class="n">w&#39;</span> <span class="ow">=</span> <span class="n">realToFrac</span> <span class="n">w</span> <span class="o">/</span> <span class="mf">200.0</span>
+        <span class="n">h&#39;</span> <span class="ow">=</span> <span class="n">realToFrac</span> <span class="n">h</span> <span class="o">/</span> <span class="mf">200.0</span>
+
+<span class="nf">disp</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">disp</span> <span class="ow">=</span> <span class="kr">do</span>
+    <span class="n">clear</span> <span class="p">[</span><span class="kt">ColorBuffer</span><span class="p">]</span>
+    <span class="n">color</span> <span class="p">(</span><span class="kt">Color3</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="ow">::</span> <span class="kt">Color3</span> <span class="kt">GLdouble</span><span class="p">)</span>
+    <span class="n">pointSize</span> <span class="o">$=</span> <span class="mf">1.0</span>
+    <span class="n">renderPrimitive</span> <span class="kt">Points</span> <span class="o">$</span> <span class="n">forM_</span> <span class="n">hcurve</span> <span class="p">(</span><span class="n">vertex</span><span class="o">.</span><span class="p">(</span><span class="n">uncurry</span> <span class="kt">Vertex2</span><span class="p">))</span>
+    <span class="n">flush</span>
+    <span class="kr">where</span>
+        <span class="n">hcurve</span> <span class="ow">=</span> <span class="n">hermite</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="mf">0.001</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="mi">2</span>
+
+<span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">main</span> <span class="ow">=</span> <span class="kr">do</span>
+    <span class="p">(</span><span class="n">progname</span><span class="p">,</span> <span class="kr">_</span><span class="p">)</span> <span class="ow">&lt;-</span> <span class="n">getArgsAndInitialize</span>
+    <span class="n">initialDisplayMode</span> <span class="o">$=</span> <span class="p">[</span><span class="kt">RGBAMode</span><span class="p">]</span>
+    <span class="kr">_</span> <span class="ow">&lt;-</span> <span class="n">createWindow</span> <span class="n">progname</span>
+    <span class="n">clearColor</span> <span class="o">$=</span> <span class="kt">Color4</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span>
+    <span class="n">windowTitle</span> <span class="o">$=</span> <span class="s">&quot;Hermite curve&quot;</span>
+    <span class="n">displayCallback</span> <span class="o">$=</span> <span class="n">disp</span>
+    <span class="n">reshapeCallback</span> <span class="o">$=</span> <span class="kt">Just</span> <span class="n">resize</span>
+    <span class="n">mainLoop</span>
+</pre></div>
+
+
+<p>次のような曲線を得た.</p>
+<p><img src="../../../../../images/2018/Apr/15/hshermiteCurve.png" width="350px"></p>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn-1">
+<p>\(t\) は time からくる.&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn-2">
+<p>グラフ描画の<a href="https://gist.github.com/falgon/84614f9f8be752f8ada1f7d4379d00b1">ソースコード</a>.&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn-3">
+<p>浮動小数点数の絶対誤差が気になる演算だが, そのような観点において上記コードでは手抜きをした.&#160;<a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js','color.js','enclose.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: false," +
+        "    messageStyle: 'None'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+      </div>
+<!-- /.entry-content -->
+      <footer class="post-info text-muted">
+        <button type="button" class="btn btn-default">          
+          <a href="../../../../../category/math.html"><div class="fa fa-lg fa-folder-open"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/math.html"><div class="fa fa-lg fa-tag"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/python.html"><div class="fa fa-lg fa-tag"></div> Python</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/haskell.html"><div class="fa fa-lg fa-tag"></div> Haskell</a>
+        </button>
+      </footer>
+      <!-- /.post-info -->
+    <!-- Comment BEGIN -->
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'roki-log';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <!-- Comment END -->
+    </section>
+    </div>
+<footer class="footer">
+      <div class="container">
+          <p class="footer-text">&copy; <a href="../../../../..">roki.log</a> powered by 
+          <a href="https://getpelican.com/">pelican</a> and 
+          <a href="https://github.com/falgon/nikhil-theme">nikhil-theme (forked)</a><br>
+              <small>  <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>, except where indicated otherwise.
+</small>
+            </p>
+   </div>
+</footer>    <script src="../../../../../theme/js/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-116653080-1', 'auto');
+      ga('send', 'pageview');
+       $('#myModal').modal({show: true});
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>De Bruijn Sequence - roki.log</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../../../theme/style.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="../../../../../favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/solid.css" integrity="sha384-TbilV5Lbhlwdyc4RuIV/JhD8NR+BfMrvz4BL5QFa2we1hQu6wvREr3v6XSRfCTRp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/brands.css" integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css" integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../../../../theme/js/css_browser_selector.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="roki" />
+        <link href="../../../../../theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+        <link href="../../../../../theme/typogrify.css" rel="stylesheet">
+    <link href="https://falgon.github.io/roki.log/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="roki.log Full Atom Feed" />
+    <link href="https://falgon.github.io/roki.log/feeds/math.rss.xml" type="application/atom+xml" rel="alternate" title="roki.log Categories Atom Feed" />
+
+  </head>
+  <body id="index" class="archive" style="font-family: '游明朝', 'Yu Mincho' , '游明朝体' , 'YuMincho' , 'ヒラギノ明朝 Pro W3' , 'Hiragino Mincho Pro' , 'HiraMinProN-W3', 'HGS明朝E' , 'ＭＳ Ｐ明朝' , 'MS PMincho', serif;">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">👋New blog information / ブログ移転のお知らせ</h4>
+      </div>
+      <div class="modal-body">
+      This blog has been moved to <a href="https://roki.dev/roki.log">new one (roki.dev/roki.log)</a> for 
+      serving you better view. This blog is no longer updated.
+      Thank you for migrating and re-registering your bookmarks.
+      <hr >
+      このブログは, 
+      <a href="https://roki.dev/roki.log">新ブログ (roki.dev/roki.log)</a> 
+      に移転しました。このページの今後の更新はありませんが,
+      移行用, 記録用に残されています。
+      もし宜しければ, 移行, またはブックマークの再登録をよろしくお願いいたします。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+       </div>
+    </div>
+  </div>
+</div>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../../..">roki.log</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li>
+                    <a href="../../../../../pages/about"><i class="fas fa-info-circle" style="margin-right: 4px;"></i>About</a>
+            </li>
+            <li>
+            </li>
+            
+            <li><a href="../../../../../tags.html"><i class="fas fa-tags" style="margin-right: 4px;"></i>Tags</a></li>
+            <li><span>
+                <form class="navbar-search" action="https://falgon.github.io/roki.log/search.html">
+                    <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+    <section id="content" class="article content">
+      <header>
+        <h2 class="entry-title">
+          De Bruijn&nbsp;Sequence
+        </h2>
+        
+        <div class="text-muted">金 22 6月 2018</div>
+      </header>
+<!-- .entry-content -->
+      <div class="entry-content">
+        <p>大学のレポート内で De Bruijn Sequence について書く機会があった.
+これまた<a href="https://falgon.github.io/roki.log/posts/2018/%206月/08/qft/">以前と同じく</a>, 
+折角なのでこちらのブログにも,&nbsp;若干内容を変えつつ載せておくことにした.</p>
+<p>De Bruijn Sequence は, オランダ人の数学者 Nicolaas de Bruijn に因んで命名された系列で, 特定の長さのすべての組み合わせを含む系列である. 
+次数 <span class="math">\(n\)</span> の <span class="math">\(k\)</span> 種類に関する De Bruijn Sequence <span class="math">\(B\left(k, n\right)\)</span> は, 長さ <span class="math">\(n\)</span> で表現可能なすべての部分列によって構成される.
+次元数 <span class="math">\(2\)</span> (すなわちバイナリ) の De Bruijn Sequence は <span class="math">\(B\left(2, n\right)\)</span> であり, <span class="math">\(n\)</span> ビットの固有な部分系列から成る <span class="math">\(2^n\)</span> ビット長の系列である.
+例えば, <span class="math">\(B\left(2, 3\right)\)</span> は \(00011101_{(2)}\) であり <span class="math">\(n\)</span> に対する有向グラフが下図<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup>のように示される.</p>
+<div style="text-align:center"><img src="../../../../../images/2018/June/deb_graph1.png"></div>
+
+<p>この系列から <span class="math">\(3\)</span> ビットずつ取る, または図 1 の有向グラフから <span class="math">\(B(2, 3)\)</span> を再構築していくと,&nbsp;次の表で示す部分系列を構成することがわかる.</p>
+<div class="table-responsive">
+<table class="table table-bordered table-hover"><thead><th>&#92;[B(2,3)&#92;]</th><th>&#92;[10\ {\rm進値}&#92;]</th></thead>
+<caption id="karnaugh1" style="caption-side: bottom">&#92;(B(2,3)&#92;) の部分系列</caption>
+<tbody>
+<tr><td>&#92;[\overbrace{000}^{sub\ seq}11101_{(2)}&#92;]</td><td>&#92;[0_{(10)}&#92;]</td></tr>
+<tr><td>&#92;[0\overbrace{001}^{sub\ seq}1101_{(2)}&#92;]</td><td>&#92;[1_{(10)}&#92;]</td></tr>
+<tr><td>&#92;[00\overbrace{011}^{sub\ seq}101_{(2)}&#92;]</td><td>&#92;[3_{(10)}&#92;]</td></tr>
+<tr><td>&#92;[000\overbrace{111}^{sub\ seq}01_{(2)}&#92;]</td><td>&#92;[7_{(10)}&#92;]</td></tr>
+<tr><td>&#92;[0001\overbrace{110}^{sub\ seq}1_{(2)}&#92;]</td><td>&#92;[6_{(10)}&#92;]</td></tr>
+<tr><td>&#92;[{00011\overbrace{101}^{sub\ seq}}_{(2)}&#92;]</td><td>&#92;[5_{(10)}&#92;]</td></tr>
+<tr><td>&#92;[{000111\overbrace{01\underbrace{0}_{cir}}^{sub\ seq}}_{(2)}&#92;]</td><td>&#92;[2_{(10)}&#92;]</td></tr>
+<tr><td>&#92;[{0001110\overbrace{1\underbrace{00}_{cir}}^{sub\ seq}}_{(2)}&#92;]</td><td>&#92;[4_{(10)}&#92;]</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>最後の <span class="math">\(2\)</span> つの部分系列は \(00011101_{(2)}\) から <span class="math">\(3\)</span> ビットずつとって構成できないが, 系列の初めへ循環していると考えることで,&nbsp;これが成り立つ.</p>
+<p>De Bruijn Sequence は, いくつかのコンピュータアルゴリズムで応用でき, 例えば Number of Training Zero を求める問題も, よく知られた応用例の 1 つである. これは ntz と呼ばれる.
+以降, <span class="math">\(m=n-1\)</span>, <span class="math">\(x\)</span> を <span class="math">\(8\)</span> ビットの値, <span class="math">\(x_i\ \ \left(\left\{i \in \mathbb{Z}\mid 0 &lt; i &lt; 9\right\}\right)\)</span> を lsb 見た値
+<span class="math">\(x\)</span> の <span class="math">\(i\)</span> 番目のビット値, Number of Training Zero を ntz&nbsp;とする.</p>
+<p>例えば \(x=192_{(10)}\)&nbsp;は</p>
+<div class="math">$$x=1\overbrace{\overbrace{1}^{x_7}\underbrace{\overbrace{0}^{x_6}00000}_{m}}^{n}$$</div>
+<p>であり, <span class="math">\(m=6\)</span>&nbsp;が解である.</p>
+<p>ntz をプログラムで解こうとしたとき,&nbsp;例えば次のような実装がよく知られる.</p>
+<div class="highlight"><pre><span></span><span class="kr">module</span> <span class="nn">Main</span> <span class="kr">where</span>
+
+<span class="kr">import</span> <span class="nn">Control.Monad</span> <span class="p">(</span><span class="nf">void</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">Data.Bits</span> <span class="p">((</span><span class="o">.&amp;.</span><span class="p">),</span> <span class="nf">shiftR</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">Data.Word</span> <span class="p">(</span><span class="kt">Word8</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">Data.Tuple.Extra</span> <span class="p">(</span><span class="nf">first</span><span class="p">,</span> <span class="nf">second</span><span class="p">,</span> <span class="nf">dupe</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">Test.HUnit</span> <span class="p">(</span><span class="nf">runTestText</span><span class="p">,</span> <span class="nf">putTextToHandle</span><span class="p">,</span> <span class="kt">Test</span> <span class="p">(</span><span class="kt">TestList</span><span class="p">),</span> <span class="p">(</span><span class="o">~:</span><span class="p">),</span> <span class="p">(</span><span class="o">~?=</span><span class="p">))</span>
+<span class="kr">import</span> <span class="nn">System.IO</span> <span class="p">(</span><span class="nf">stderr</span><span class="p">)</span>
+
+<span class="c1">-- | pop counting 8 bit</span>
+<span class="nf">popcnt8</span> <span class="ow">::</span> <span class="kt">Word8</span> <span class="ow">-&gt;</span> <span class="kt">Word8</span>
+<span class="nf">popcnt8</span> <span class="ow">=</span> <span class="kr">let</span> <span class="n">fol</span> <span class="n">m</span> <span class="n">s</span> <span class="ow">=</span> <span class="n">uncurry</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="o">.</span> <span class="n">first</span> <span class="p">(</span><span class="o">.&amp;.</span> <span class="n">m</span><span class="p">)</span> <span class="o">.</span> <span class="n">second</span> <span class="p">((</span><span class="o">.&amp;.</span> <span class="n">m</span><span class="p">)</span> <span class="o">.</span> <span class="p">(`</span><span class="n">shiftR</span><span class="p">`</span> <span class="n">s</span><span class="p">))</span> <span class="o">.</span> <span class="n">dupe</span> <span class="kr">in</span>
+    <span class="n">flip</span> <span class="p">(</span><span class="n">foldr</span> <span class="n">id</span><span class="p">)</span> <span class="p">[</span><span class="n">fol</span> <span class="p">(</span><span class="mh">0x0f</span> <span class="ow">::</span> <span class="kt">Word8</span><span class="p">)</span> <span class="mi">4</span><span class="p">,</span> <span class="n">fol</span> <span class="p">(</span><span class="mh">0x33</span> <span class="ow">::</span> <span class="kt">Word8</span><span class="p">)</span> <span class="mi">2</span><span class="p">,</span> <span class="n">fol</span> <span class="p">(</span><span class="mh">0x55</span> <span class="ow">::</span> <span class="kt">Word8</span><span class="p">)</span> <span class="mi">1</span><span class="p">]</span>
+
+ <span class="c1">-- | ntz 8 bit version 1</span>
+<span class="nf">ntz81</span> <span class="ow">::</span> <span class="kt">Word8</span> <span class="ow">-&gt;</span> <span class="kt">Word8</span>
+<span class="nf">ntz81</span> <span class="ow">=</span> <span class="n">uncurry</span> <span class="n">id</span> <span class="o">.</span> <span class="n">first</span> <span class="p">(</span><span class="n">bool</span> <span class="p">(</span><span class="n">popcnt8</span> <span class="o">.</span> <span class="n">pred</span> <span class="o">.</span> <span class="n">uncurry</span> <span class="p">(</span><span class="o">.&amp;.</span><span class="p">)</span> <span class="o">.</span> <span class="n">second</span> <span class="n">negate</span> <span class="o">.</span> <span class="n">dupe</span><span class="p">)</span> <span class="p">(</span><span class="nf">\</span><span class="kr">_</span> <span class="ow">-&gt;</span> <span class="mi">8</span> <span class="ow">::</span> <span class="kt">Word8</span><span class="p">)</span> <span class="o">.</span> <span class="p">(</span><span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="o">.</span> <span class="n">dupe</span>
+
+<span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">main</span> <span class="ow">=</span> <span class="n">void</span> <span class="o">.</span> <span class="n">runTestText</span> <span class="p">(</span><span class="n">putTextToHandle</span> <span class="n">stderr</span> <span class="kt">False</span><span class="p">)</span> <span class="o">$</span> <span class="kt">TestList</span> <span class="p">[</span><span class="s">&quot;ntz81 192: &quot;</span> <span class="o">~:</span> <span class="n">ntz81</span> <span class="p">(</span><span class="mi">192</span> <span class="ow">::</span> <span class="kt">Word8</span><span class="p">)</span> <span class="o">~?=</span> <span class="mi">6</span><span class="p">]</span>
+</pre></div>
+
+
+<p><code>popcnt8</code>は, 各ビットそのものがその桁で立っているビット数と捉え, 畳み込んでいくことで最終的に立っている全体のビット数を得る関数である. 
+<code>ntz81</code> は, まず lsb から見て一番端で立っているビットを倒し, それまでのビット列を全て立てておく. これを<code>popcnt8</code>に渡すことで ntz としての役割を果せる.
+これはとても有名な方法で, よく最適化された手法であるといえるのだが, De Bruijn Sequence を利用すると, より少ない演算回数で ntz が解ける.
+De Bruijn Sequence を利用して ntz を解く方法は, 随分前に<a href="http://d.hatena.ne.jp/siokoshou/20090704#p1">このブログさん</a>で丁寧に解説されているので, 
+特別ここで改めて詳しく述べる必要はないとは思うが,&nbsp;一応レポート内で書いた内容を載せておく.</p>
+<ol>
+<li><span class="math">\(B(2, n)\)</span> から成る部分系列を元とした集合 <span class="math">\(X\)</span> と, 「系列全体からみて, その部分系列を得るにいくつスライドしたか」を元とする集合 <span class="math">\(Y\)</span> の写像 <span class="math">\(f\)</span> を定める(例: <span class="math">\(f(000_{(2)}) = 0, f(001_{(2)}) = 1, f(011_{(2)}) = 2, \cdots f(100_{(2)}) = 7\)</span>).</li>
+<li><span class="math">\(x\)</span> のうち一番右端に立っているビットのみを残し, 他を全て倒す(<code>x &amp; -x</code>). この値は必ず <span class="math">\(2^i\)</span> である. これを <span class="math">\(y\)</span>&nbsp;とする.</li>
+<li><span class="math">\(B(2, n)\)</span> と <span class="math">\(y\)</span> の積を得る(<span class="math">\(y = 2^i\)</span> であるから, この演算は系列に対する <span class="math">\(i\)</span> ビットの左シフト演算である). これを <span class="math">\(z_0\)</span>&nbsp;とする.</li>
+<li>いま, ここまでの演算を <span class="math">\(s\ (\{s \in \mathbb{Z}\mid s &gt; n, s は 2 の累乗数\})\)</span> ビットの領域上で行なったとしたとき, <span class="math">\(z_0\)</span> に対して <span class="math">\(s-n\)</span> ビット左にシフトする(<span class="math">\(z_0\)</span> を msb から数えて <span class="math">\(n\)</span> ビット分のみが必要であるから, それ以外を除去する). これを <span class="math">\(z_1\)</span>&nbsp;とする.</li>
+<li><span class="math">\(f(z_1)\)</span> の値が ntz&nbsp;の解である.</li>
+</ol>
+<p>要するに, De Bruijn Sequence の特徴を生かして, ユニークなビット列に紐づく各値をマッピングしておき, 
+積がシフト演算と同等となるように調節, いらない値を省いた後にテーブルを引くのである<sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup>.</p>
+<div class="highlight"><pre><span></span><span class="kr">module</span> <span class="nn">Main</span> <span class="kr">where</span>
+
+<span class="kr">import</span> <span class="nn">Data.Array</span> <span class="p">(</span><span class="kt">Array</span><span class="p">,</span> <span class="nf">listArray</span><span class="p">,</span> <span class="p">(</span><span class="o">!</span><span class="p">),</span> <span class="nf">elems</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">Data.Tuple.Extra</span> <span class="p">(</span><span class="nf">dupe</span><span class="p">,</span> <span class="nf">first</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">Data.Bits</span> <span class="p">((</span><span class="o">.&amp;.</span><span class="p">),</span> <span class="nf">shiftR</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">Data.Word</span> <span class="p">(</span><span class="kt">Word8</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">Test.HUnit</span> <span class="p">(</span><span class="nf">runTestText</span><span class="p">,</span> <span class="nf">putTextToHandle</span><span class="p">,</span> <span class="kt">Test</span> <span class="p">(</span><span class="kt">TestList</span><span class="p">),</span> <span class="p">(</span><span class="o">~:</span><span class="p">),</span> <span class="p">(</span><span class="o">~?=</span><span class="p">))</span>
+<span class="kr">import</span> <span class="nn">System.IO</span> <span class="p">(</span><span class="nf">stderr</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">Control.Monad</span> <span class="p">(</span><span class="nf">void</span><span class="p">)</span>
+
+<span class="c1">-- | ntz 8 bit version 2</span>
+<span class="nf">ntz82</span> <span class="ow">::</span> <span class="kt">Word8</span> <span class="ow">-&gt;</span> <span class="kt">Word8</span>
+<span class="nf">ntz82</span> <span class="ow">=</span> <span class="p">(</span><span class="n">tb</span> <span class="o">!</span><span class="p">)</span> <span class="o">.</span> <span class="p">(`</span><span class="n">shiftR</span><span class="p">`</span> <span class="mi">4</span><span class="p">)</span> <span class="o">.</span> <span class="n">fromIntegral</span> <span class="o">.</span> <span class="p">((</span><span class="mh">0x1d</span> <span class="ow">::</span> <span class="kt">Word8</span><span class="p">)</span> <span class="o">*</span><span class="p">)</span> <span class="o">.</span> <span class="n">uncurry</span> <span class="p">(</span><span class="o">.&amp;.</span><span class="p">)</span> <span class="o">.</span> <span class="n">first</span> <span class="n">negate</span> <span class="o">.</span> <span class="n">dupe</span>
+    <span class="kr">where</span>
+        <span class="n">tb</span> <span class="ow">=</span> <span class="n">listArray</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="ow">::</span> <span class="kt">Array</span> <span class="kt">Int</span> <span class="kt">Word8</span>
+
+<span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">main</span> <span class="ow">=</span> <span class="n">void</span> <span class="o">.</span> <span class="n">runTestText</span> <span class="p">(</span><span class="n">putTextToHandle</span> <span class="n">stderr</span> <span class="kt">False</span><span class="p">)</span> <span class="o">$</span> <span class="kt">TestList</span> <span class="p">[</span><span class="s">&quot;192 ntz: &quot;</span> <span class="o">~:</span> <span class="n">ntz82</span> <span class="p">(</span><span class="mi">192</span> <span class="ow">::</span> <span class="kt">Word8</span><span class="p">)</span> <span class="o">~?=</span> <span class="mi">6</span><span class="p">]</span> 
+</pre></div>
+
+
+<p>ここまでは <span class="math">\(x\)</span> が <span class="math">\(8\)</span> ビットである前提を置いて述べてきたが, 任意の <span class="math">\(B(2, n)\)</span> が求まれば, どのようなビット長のデータに対しても同様にして計算できることがわかる.
+これをどのように得るかであるが, ここでは Prefer One algorithm<sup id="fnref-3"><a class="footnote-ref" href="#fn-3">3</a></sup> という比較的単純なアルゴリズムを用いて <span class="math">\(B(2, n)\)</span> を得ることとする. 
+このアルゴリズムに関する詳細と証明は原文を読んでほしいが, その大雑把な概要だけをここでは述べる. 任意の正整数 <span class="math">\(n\geq 1\)</span> について, まず <span class="math">\(n\)</span> 個の <span class="math">\(0\)</span> を置く.
+次に, 最後の <span class="math">\(n\)</span> ビットによって形成された部分系列が以前に系列内で生成されていなかった場合, その次のビットに対して <span class="math">\(1\)</span> を,
+そうでない場合 <span class="math">\(0\)</span> を置く. <span class="math">\(0\)</span> または <span class="math">\(1\)</span> のどちらを置いても, 以前に生成していた部分系列と一致するならば停止する.
+下記に示す同アルゴリズムの実装例は, <span class="math">\(2^3\)</span> から <span class="math">\(2^6\)</span> に対応する De Bruijn Sequence&nbsp;を得ている.</p>
+<div class="highlight"><pre><span></span><span class="kr">module</span> <span class="nn">Main</span> <span class="kr">where</span>
+<span class="kr">import</span> <span class="nn">Data.Array</span> <span class="p">(</span><span class="nf">listArray</span><span class="p">,</span> <span class="p">(</span><span class="o">!</span><span class="p">))</span>
+<span class="kr">import</span> <span class="nn">Data.Tuple.Extra</span> <span class="p">(</span><span class="nf">dupe</span><span class="p">,</span> <span class="nf">first</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">Control.Monad</span> <span class="p">(</span><span class="nf">mapM_</span><span class="p">)</span>
+<span class="kr">import</span> <span class="nn">Numeric</span> <span class="p">(</span><span class="nf">showHex</span><span class="p">)</span>
+
+<span class="nf">preferOne</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="kt">Int</span><span class="p">]</span>
+<span class="nf">preferOne</span> <span class="n">n</span> <span class="ow">=</span> <span class="kr">let</span> <span class="n">s</span> <span class="ow">=</span> <span class="mi">2</span> <span class="o">^</span> <span class="n">n</span> <span class="kr">in</span>
+    <span class="kr">let</span> <span class="n">ar</span> <span class="ow">=</span> <span class="n">listArray</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="o">$</span> <span class="n">replicate</span> <span class="n">n</span> <span class="kt">False</span> <span class="o">++</span> <span class="n">map</span> <span class="p">(</span><span class="n">not</span> <span class="o">.</span> <span class="n">yet</span><span class="p">)</span> <span class="p">[</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">..</span> <span class="n">s</span><span class="p">]</span>
+        <span class="n">yet</span> <span class="n">i</span> <span class="ow">=</span> <span class="n">or</span> <span class="p">[</span><span class="n">map</span> <span class="p">(</span><span class="n">ar</span> <span class="o">!</span><span class="p">)</span> <span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">..</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">++</span> <span class="p">[</span><span class="kt">True</span><span class="p">]</span> <span class="o">==</span> <span class="n">map</span> <span class="p">(</span><span class="n">ar</span> <span class="o">!</span><span class="p">)</span> <span class="p">[</span><span class="n">i1</span> <span class="o">..</span> <span class="n">i1</span> <span class="o">+</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="n">i1</span> <span class="ow">&lt;-</span> <span class="p">[</span><span class="mi">1</span> <span class="o">..</span> <span class="n">i</span> <span class="o">-</span> <span class="n">n</span><span class="p">]]</span> <span class="kr">in</span> 
+            <span class="n">cycle</span> <span class="o">$</span> <span class="n">map</span> <span class="n">fromEnum</span> <span class="o">$</span> <span class="n">elems</span> <span class="n">ar</span>
+
+<span class="nf">bin2dec</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">Int</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="kt">Int</span>
+<span class="nf">bin2dec</span> <span class="ow">=</span> <span class="n">sum</span> <span class="o">.</span> <span class="n">uncurry</span> <span class="p">(</span><span class="n">zipWith</span> <span class="p">(</span><span class="o">*</span><span class="p">))</span> <span class="o">.</span> <span class="n">first</span> <span class="p">(</span><span class="n">map</span> <span class="p">(</span><span class="mi">2</span><span class="o">^</span><span class="p">)</span> <span class="o">.</span> <span class="n">takeWhile</span> <span class="p">(</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">)</span> <span class="o">.</span> <span class="n">iterate</span> <span class="p">(</span><span class="n">subtract</span> <span class="mi">1</span><span class="p">)</span> <span class="o">.</span> <span class="n">subtract</span> <span class="mi">1</span> <span class="o">.</span> <span class="n">length</span><span class="p">)</span> <span class="o">.</span> <span class="n">dupe</span>
+
+<span class="nf">somebases</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">somebases</span> <span class="n">n</span> <span class="ow">=</span> <span class="kr">let</span> <span class="n">d</span> <span class="ow">=</span> <span class="n">take</span> <span class="p">(</span><span class="mi">2</span><span class="o">^</span><span class="n">n</span><span class="p">)</span> <span class="o">$</span> <span class="kt">L</span><span class="o">.</span><span class="n">preferOne</span> <span class="n">n</span> <span class="kr">in</span>
+    <span class="n">print</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">bin2dec</span> <span class="n">d</span><span class="p">,</span> <span class="n">showHex</span> <span class="p">(</span><span class="n">bin2dec</span> <span class="n">d</span><span class="p">)</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+
+<span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">main</span> <span class="ow">=</span> <span class="n">mapM_</span> <span class="n">somebases</span> <span class="p">[</span><span class="mi">3</span><span class="o">..</span><span class="mi">6</span><span class="p">]</span>
+</pre></div>
+
+
+<p>各 <span class="math">\(B(2, n)\)</span>&nbsp;が次のように得られる.</p>
+<div class="highlight"><pre><span></span><span class="o">([</span><span class="m">0</span>,0,0,1,1,1,0,1<span class="o">]</span>,29,1d<span class="o">)</span>
+<span class="o">([</span><span class="m">0</span>,0,0,0,1,1,1,1,0,1,1,0,0,1,0,1<span class="o">]</span>,3941,f65<span class="o">)</span>
+<span class="o">([</span><span class="m">0</span>,0,0,0,0,1,1,1,1,1,0,1,1,1,0,0,1,1,0,1,0,1,1,0,0,0,1,0,1,0,0,1<span class="o">]</span>,131913257,7dcd629<span class="o">)</span>
+<span class="o">([</span><span class="m">0</span>,0,0,0,0,0,1,1,1,1,1,1,0,1,1,1,1,0,0,1,1,1,0,1,0,1,1,1,0,0,0,1,1,0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1,0,0,1<span class="o">]</span>,285870213051386505,3f79d71b4cb0a89<span class="o">)</span>
+</pre></div>
+
+
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn-1">
+<p>Python, networkx, pyplot で<a href="https://gist.github.com/falgon/a3da8e0fd013f41de62e0d7a0288a66d">生成</a>.&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn-2">
+<p>本エントリでは Haskell による実装を示しているが, だいぶ以前に C++ で同様の <a href="https://github.com/falgon/SrookCppLibraries/blob/acfad043881d5559f921d547331ba9d5ec1b1d9f/srook/bit/algorithm/ntz.hpp">ntz を実装した</a>のであった. この実装は, <a href="https://qiita.com/kazatsuyu/items/38203287c19890a2b7c6">この Qiita 投稿</a> の内容と殆ど同じ. C++ では, 簡単なテンプレートメタプログラミングにより, ビット長ごとに必要となるビットマスクや演算を, 同じ関数呼び出しから型ごとに適切に分岐するよう実装できる(Haskell でも, 似たようなことはできる).&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn-3">
+<p>Abbas Alhakim, &#8220;A <span class="caps">SIMPLE</span> <span class="caps">COMBINATORIAL</span> <span class="caps">ALGORITHM</span> <span class="caps">FOR</span> <span class="caps">DE</span> <span class="caps">BRUIJN</span> <span class="caps">SEQUENCES</span>&#8221; <a href="https://www.mimuw.edu.pl/~rytter/TEACHING/TEKSTY/PreferOpposite.pdf">https://www.mimuw.edu.pl/~rytter/<span class="caps">TEACHING</span>/<span class="caps">TEKSTY</span>/PreferOpposite.pdf</a> 2018-06-21 アクセス.&#160;<a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js','color.js','enclose.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: false," +
+        "    messageStyle: 'None'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+      </div>
+<!-- /.entry-content -->
+      <footer class="post-info text-muted">
+        <button type="button" class="btn btn-default">          
+          <a href="../../../../../category/math.html"><div class="fa fa-lg fa-folder-open"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/math.html"><div class="fa fa-lg fa-tag"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/haskell.html"><div class="fa fa-lg fa-tag"></div> Haskell</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/python.html"><div class="fa fa-lg fa-tag"></div> Python</a>
+        </button>
+      </footer>
+      <!-- /.post-info -->
+    <!-- Comment BEGIN -->
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'roki-log';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <!-- Comment END -->
+    </section>
+    </div>
+<footer class="footer">
+      <div class="container">
+          <p class="footer-text">&copy; <a href="../../../../..">roki.log</a> powered by 
+          <a href="https://getpelican.com/">pelican</a> and 
+          <a href="https://github.com/falgon/nikhil-theme">nikhil-theme (forked)</a><br>
+              <small>  <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>, except where indicated otherwise.
+</small>
+            </p>
+   </div>
+</footer>    <script src="../../../../../theme/js/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-116653080-1', 'auto');
+      ga('send', 'pageview');
+       $('#myModal').modal({show: true});
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>確率論で用いられる言葉の整理 - roki.log</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../../../theme/style.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="../../../../../favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/solid.css" integrity="sha384-TbilV5Lbhlwdyc4RuIV/JhD8NR+BfMrvz4BL5QFa2we1hQu6wvREr3v6XSRfCTRp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/brands.css" integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css" integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../../../../theme/js/css_browser_selector.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="roki" />
+        <link href="../../../../../theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+        <link href="../../../../../theme/typogrify.css" rel="stylesheet">
+    <link href="https://falgon.github.io/roki.log/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="roki.log Full Atom Feed" />
+    <link href="https://falgon.github.io/roki.log/feeds/math.rss.xml" type="application/atom+xml" rel="alternate" title="roki.log Categories Atom Feed" />
+
+  </head>
+  <body id="index" class="archive" style="font-family: '游明朝', 'Yu Mincho' , '游明朝体' , 'YuMincho' , 'ヒラギノ明朝 Pro W3' , 'Hiragino Mincho Pro' , 'HiraMinProN-W3', 'HGS明朝E' , 'ＭＳ Ｐ明朝' , 'MS PMincho', serif;">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">👋New blog information / ブログ移転のお知らせ</h4>
+      </div>
+      <div class="modal-body">
+      This blog has been moved to <a href="https://roki.dev/roki.log">new one (roki.dev/roki.log)</a> for 
+      serving you better view. This blog is no longer updated.
+      Thank you for migrating and re-registering your bookmarks.
+      <hr >
+      このブログは, 
+      <a href="https://roki.dev/roki.log">新ブログ (roki.dev/roki.log)</a> 
+      に移転しました。このページの今後の更新はありませんが,
+      移行用, 記録用に残されています。
+      もし宜しければ, 移行, またはブックマークの再登録をよろしくお願いいたします。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+       </div>
+    </div>
+  </div>
+</div>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../../..">roki.log</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li>
+                    <a href="../../../../../pages/about"><i class="fas fa-info-circle" style="margin-right: 4px;"></i>About</a>
+            </li>
+            <li>
+            </li>
+            
+            <li><a href="../../../../../tags.html"><i class="fas fa-tags" style="margin-right: 4px;"></i>Tags</a></li>
+            <li><span>
+                <form class="navbar-search" action="https://falgon.github.io/roki.log/search.html">
+                    <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+    <section id="content" class="article content">
+      <header>
+        <h2 class="entry-title">
+          確率論で用いられる言葉の整理
+        </h2>
+        
+        <div class="text-muted">日 28 10月 2018</div>
+      </header>
+<!-- .entry-content -->
+      <div class="entry-content">
+        <p>当ブログ内では, 既に確率論の話題として<a href="https://falgon.github.io/roki.log/posts/2018/%207月/26/bayestheorem/">ベイズの定理</a>のエントリが存在するが,
+今後同様にして確率論の話題を本ブログで取り上げる際に, 
+用語へのリファレンスを self-contained で張れるよう, 本エントリにて一度整理しておくこととした<span class="math">\(.\)</span></p>
+<h3>確率の定義</h3>
+<p>そもそも一言に「確率」といえども, それは古典的確率, 統計的確率,&nbsp;公理的確率というように大別できる.</p>
+<h4>古典的確率</h4>
+<p>古典的確率は, \(\Omega\) の要素数といま注目している事象の場合の数の比を用いるもので, 
+すべての事象が等確率で発生することを前提条件とする.&nbsp;理想的なサイコロの出目の確率などがこれに当てはまる.</p>
+<h4>統計的確率</h4>
+<p>統計的確率は, 「\(\Omega\) の部分集合 = 事象」の発生回数と, その試行回数の比を用いるもので,&nbsp;打率などがこれに当てはまる.</p>
+<h4>公理的確率</h4>
+<p>公理的確率とは, 確率の公理により定義された確率であり, 同公理における理論体系上では各事象の発生する確率が異なるものをも扱うことができる.
+この確率の公理では集合論, 測度論の言葉が使われるが, 同理論に関して深堀りすると本エントリの主題から大きく逸れてしまうため,&nbsp;ここではあまり深くは触れずに持ち出すこととしている.</p>
+<p>集合のあつまりを一般に集合族というが, 次に示すのはその 1 種である<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup>.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="CompletelyAdditiveClass" class="disabled">&#92;(\sigma&#92;)-加法族</a></div>
+  <div class="panel-body" style="overflow:scroll">
+  標本空間 &#92;(\Omega&#92;) の部分集合族 &#92;(\mathcal{F}&#92;) が次の 3 つの性質を満足するとき, &#92;(\mathcal{F}&#92;) は &#92;(\sigma&#92;)-加法族という.
+  <ol>
+   <li>&#92;(\emptyset\in&nbsp;\mathcal{F}&#92;)</li>
+   <li>&#92;(A\in\mathcal{F}\Rightarrow&nbsp;A^{c}\in\mathcal{F}&#92;)</li>
+   <li>&#92;(\displaystyle A_1,A_2,\cdots\in\mathcal{F}\Rightarrow \bigcup^{\infty}_{i=1}A_i&nbsp;\in\mathcal{F}&#92;)</li>
+  </ol>
+  ここで, &#92;(A^{c}&#92;) は集合 &#92;(A&#92;) の補集合.
+  </div>
+</div>
+
+<p>\(\sigma\)-加法族は, 空集合と補集合, 加算無限個の集合の和集合について閉じることを要請し,
+確率の公理は, この&nbsp;\(\sigma\)-加法族の関数に対して次の条件を付与する.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="KolmogorovAxioms" class="disabled">コルモゴロフの公理</a></div>
+  <div class="panel-body" style="overflow:scroll">
+  &#92;(\sigma&#92;)-加法族 &#92;(\mathcal{F}&#92;) 上の関数 &#92;(P&#92;) が次の 3 つの性質を満足するとき, &#92;(P&#92;) を確率関数という.
+  <ol>
+   <li>&#92;(0\leq P(A)\leq 1,\ ^\forall&nbsp;A\in\mathcal{F}&#92;)</li>
+   <li>&#92;(P(\Omega) =&nbsp;1&#92;)</li>
+   <li>&#92;(A_1,A_2,\cdots\in\mathcal{F}&#92;) があって, &#92;(\displaystyle \bigcap^{\infty}_{i=1}A_i = \emptyset&#92;)(互いに排反)
+   &#92;(\displaystyle\Rightarrow P\left(\bigcup_{i=1}^\infty A_i\right)=\sum_{i=1}^\infty&nbsp;P(A_i)&#92;)</li>
+  </ol>
+  </div>
+</div>
+
+<p>可算無限個の事象が互いに排反な事象の和集合の値は,&nbsp;各事象の値の和となる.</p>
+<p>なお, 標本空間を \(\Omega =\left\{x_1,x_2,\cdots,x_n\right\}\),
+\(p_1,\dots,p_n\) がそれぞれ \(\displaystyle 0\leq p_{i}\leq 1\) で, \(\displaystyle \sum_{i=1}^{n}p_{i}=1\) であるとき,
+\(\Omega\) の部分集合 \(A\) に対して関数 \(P\) を 
+\(P(A)=\displaystyle\sum_{\left\{i\ |\ x_i\in A\right\}}p_i\) とすると \(P\) は確率関数となるから, 統計的確率論の問題は公理的確率論の問題として扱うことができるといえ,&nbsp;自ずと公理的確率論が統計的確率論の拡張であることがいえる.</p>
+<h3>基本的な言葉</h3>
+<style>
+td {
+    width: 40px;
+}
+
+.min100 {
+    min-width: 100px;
+}
+</style>
+
+<div class="table-responsive">
+<table class="table table-hover">
+<thead>
+    <tr>
+      <th scope="col">用語</th>
+      <th scope="col">意味</th>
+      <th scope="col">表現</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+      <td>標本空間</td>
+      <td>試行に付随して決まる, 試行の取りうるすべての結果から成る &#92;(\emptyset&#92;) でない集合.</td>
+      <td>&#92;(\Omega&#92;)</td>
+    </tr>
+    <tr>
+      <td>標本</td>
+      <td>標本空間の元. 試行の結果発生しうる個々の事柄.</td>
+      <td>&#92;(\omega\in\Omega&#92;)</td>
+    </tr>
+    <tr>
+      <td>事象</td>
+      <td>標本空間の部分集合. 試行の結果発生しうる事柄.</td>
+      <td>&#92;(A\subset\Omega&#92;)</td>
+    </tr>
+    <tr>
+      <td>確率変数</td>
+      <td>ある事象が確率的に取りうる数. 
+      <ul>
+      <li>確率変数 &#92;(X&#92;) の取りうる値 &#92;(x_1, x_2,\cdots&#92;) それぞれに対応する確率 &#92;(p_1, p_2,\cdots&#92;) が存在する場合, 
+      隣り合う数の間に値が存在しない確率変数(サイコロの出目など)をとくに離散型確率変数といい, 
+      離散確率変数 &#92;(X&#92;) がある値 &#92;(x&#92;) をとるとき, 標本から実現値 &#92;(\mathbb{R}&#92;) への関数 &#92;(f(x)&#92;)&nbsp;を確率質量関数という.</li>
+      <li>離散型確率変数でない確率型変数を連続型確率変数という(<a href="https://falgon.github.io/roki.log/posts/2018/10月/04/jacobian/#epsilonDelta-definitionOfLimit">&#92;(\epsilon-\delta&#92;)論法</a>で厳密に説明できる).</li>
+      </ul>
+    　</td>
+      <td>&#92;(X&#92;)</td>
+    </tr>
+    <tr>
+      <td>実現値</td>
+      <td>確率変数がとる具体的な値.</td>
+      <td>&#92;(x_n&#92;)</td>
+    </tr>
+    <tr>
+      <td>確率分布</td>
+      <td>
+            確率変数がある値となる確率, 又はある集合に属する確率を与える関数(<span class="caps">JIS</span> 規格より).
+      </td>
+      <td>&#92;(P(A)&#92;)</td>
+    </tr>
+    <tr id="iid">
+      <td>「独立同一分布に従う」</td>
+      <td>
+      確率変数 &#92;(X_1,X_2,\cdots,X_n&#92;) が互いに<a href="#isIndependence">独立</a>で, かつそれらが同一の確率分布に従うことをいう. 
+      <ul>
+        <li>注意されたいのが, 「独立同一分布」といわれる分布はない. この用例は, 「独立同一分布」という分布に従うというようにも捉えられるかもしれないが,&nbsp;そのような意味ではない.</li>
+        <li>&#92;(\rm i.i.d&#92;) 標本 &#92;(X_1,X_2,\cdots,X_n&#92;) の同時の確率密度関数は &#92;(f(x_1,x_2,\cdots,x_n)=g(x_1)g(x_2)\cdots&nbsp;g(x_n)&#92;).</li>
+      </ul>
+      </td>
+      <td>&#92;(\rm i.i.d&#92;), independent and identically distributed.</td>
+    </tr>
+    <tr>
+        <td><ul class="min100"><li>算術平均</li><li>相加平均</li><li>単純平均</li></ulL</td>
+        <td>全体の総和をそれらの個数で割った値. &#92;(\displaystyle\dfrac{1}{n}\sum^{n}_{i=1}X_i&#92;).</td>
+        <td>
+        <ul>
+        <li>確率変数 &#92;(X&#92;) の平均:&nbsp;&#92;(\overline{X}&#92;)</li>
+        <li>母平均:&nbsp;&#92;(\mu&#92;)</li>
+        </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>期待値</td>
+        <td>
+        確率変数のとりうる値にそれが起こる確率を掛けた値の総和のこと(加重平均). 
+        すなわち, 確率変数 &#92;(X&#92;) の取り得る値 &#92;(x&#92;) に関する確率 &#92;(P(x_i)&#92;) があって, 
+        \begin{cases}
+        \displaystyle\sum^{n}_{i=1}x_i P(x_i) &:X {\rm は離散的確率変数}&#92;\
+        \displaystyle\int^\infty_{-\infty} xP(x)dx &:X {\rm は連続的確率変数}
+        \end{cases}
+        <ul>
+            <li id="LinearityExpectedValue">離散, 連続共に和の期待値は期待値の和(期待値の線形性)<sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup>: &#92;(\displaystyle E\left[\sum_{i=1}^nX_i\right]=\sum_{i=1}^nE\left[X_i\right]&#92;),&nbsp;連続の場合も同様.</li>
+        </ul>
+        <dl>
+            <dt>離散</dt>
+            <dd><ul>
+                <li>&#92;(n&#92;) 個の &#92;(P(x_1),P(x_2),\cdots,P(x_n)&#92;) がすべて等しいとき &#92;(P_i=\dfrac{1}{n}\ (1\leq i\leq n)&#92;) となり, &#92;(\overline{X}&#92;)&nbsp;と等しくなる.</li>
+            </ul></dd>
+            <dt>連続</dt>
+            <dd><ul>
+                <li>&#92;(f(x)=xP(x)&#92;) としたとき, &#92;(f(x)&#92;)&nbsp;は確率密度関数といわれる.</li>
+                <li>連続型確率変数がある 1 点の値をとる確率は 0 である(0 でなければ, 連続量とはいえない: &#92;(P(X=a)=\int^{a}_{a}f(x)dx=0&#92;))
+                から, 事象 &#92;(X&#92;) の確率については &#92;(a\leq X\leq b&#92;) と幅を持たせて表す必要がある.
+                従って, (連続量が表されたグラフを思い浮かべれば想像に容易いが)その &#92;([a,b]&#92;) 間の面積が求まれば, 事象 &#92;(X&#92;) に対する確率が求まることとなるので,
+                事象 &#92;(X&#92;) が &#92;(a&#92;) 以上 &#92;(b&#92;) 以下となる確率を &#92;(P(a\leq X\leq b)=\int_a^bf(x)dx&#92;)&nbsp;とかける.</li>
+                <li id="normalizationLaw"><a href="#KolmogorovAxioms">コルモゴロフの公理</a>より &#92;(\int_{-\infty}^{\infty}f(x)dx=1&#92;) がいえ,&nbsp;これを規格化条件という.</li>
+                <li id="consExpIsCons">定数 &#92;(a&#92;) の期待値は &#92;(a&#92;) である: 
+                &#92;(E\left[a\right]=\int^\infty_{-\infty}aP(x)dx=a\int^\infty_{-\infty}P(x)dx&#92;) だから&nbsp;&#92;[E\left[a\right]=a\label{eq:exaxiom1}\tag{i}&#92;]</li>
+                <li>定数 &#92;(a&#92;) と確率変数 &#92;(X&#92;) の和の期待値は, 確率変数 &#92;(X&#92;) の期待値に定数 &#92;(a&#92;) を加えた値である: 
+                &#92;(E\left[a+X\right]=\int^\infty_{-\infty}(a+x)P(x)dx=\int^\infty_{-\infty}aP(x)dx+\int^\infty_{-\infty}xP(x)dx&#92;) だから&nbsp;&#92;[E\left[a+X\right]=a+E\left[X\right]\label{eq:exaxiom2}\tag{ii}&#92;]</li>
+                <li>定数 &#92;(b&#92;) と確率変数 &#92;(X&#92;) の積の期待値は, 確率変数 &#92;(X&#92;) の期待値の &#92;(b&#92;) 倍の値である:
+                &#92;(E\left[bX\right]=\int^\infty_{-\infty}bxP(x)dx=b\int^\infty_{-\infty}xP(x)dx&#92;) だから&nbsp;&#92;[E\left[bX\right]=bE\left[X\right]\label{eq:exaxiom3}\tag{iii}&#92;]
+                </li>
+                <li>定数 &#92;(b&#92;) と確率変数の積に定数 &#92;(a&#92;) を加えた値の期待値は, 確率変数 &#92;(X&#92;) の期待値の &#92;(b&#92;) 倍に &#92;(a&#92;) を加えた値である:
+                &#92;(\eqref{eq:exaxiom2},\eqref{eq:exaxiom3}&#92;) より &#92;[E\left[bX+a\right]=bE\left[X\right]+a\label{eq:exaxiom4}\tag{iv}&#92;]
+            </ul></dd>
+        </dl>
+        </td>
+        <td>
+        <ul>
+            <li>確率変数 &#92;(X&#92;) の期待値:&nbsp;&#92;(E\left[X\right]&#92;)</li>
+            <li>標本平均 &#92;(\overline{X}&#92;) の期待値<sup id="fnref-3"><a class="footnote-ref" href="#fn-3">3</a></sup>: &#92;(\mu&#92;)
+        </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>条件付き確率</td>
+        <td>
+            ある事象が起きる条件のもとで, 別のある事象が起こる確率. 
+            &#92;[P\left(A\mid B\right)=\dfrac{P\left(A\cap B\right)}{P\left(B\right)}\ \left(\because P\left(A\cap B\right):=A\ {\rm および}\ B\ {\rm が発生する確率}\right)&#92;]
+            <ul>
+                <li id="isIndependence">2 つの事象の確率について, 相互が一方の事象の発生確率がもう一方の事象の発生確率に影響を与えないとき, これを独立であるという. すなわち &#92;(P\left(A\mid&nbsp;B\right)=P\left(A\right)&#92;)</li>
+                <li>2 つの事象について, 一方の事象が発生したときに, もう一方の事象は発生しないことがいえるとき, これを排反であるという. すなわち &#92;(P\left(A\mid&nbsp;B\right)=0&#92;)</li>
+                <li id="MulTheoremConditionalProbability">&#92;(P\left(A\cap B\right)=P\left(B\right)P\left(A\mid B\right)&#92;)&nbsp;を条件付き確率の乗法定理という.</li>
+                <li><a href="https://falgon.github.io/roki.log/posts/2018/%207月/26/bayestheorem/">ベイズの定理</a></li>
+            </ul>
+        </td>
+        <td>
+        &#92;(B&#92;) の下で &#92;(A&#92;) が発生する確率: &#92;(P\left(A\mid B\right)&#92;)
+        </td>
+    </tr>
+    <tr>
+        <td>条件付き期待値</td>
+        <td>
+            確率変数 &#92;(X&#92;) の値が &#92;(x&#92;) であるときの &#92;(Y&#92;) の期待値. &#92;(E\left[Y|X=x\right]&#92;)
+            &#92;[E\left[Y|X=x\right]=\sum^{n}_{i=1}y_i\dfrac{P\left(Y=y_i,X=x\right)}{P\left(X=x\right)}&#92;]
+            <ul>
+                <li>&#92;(E\left[Y\right]=E\left[E\left[Y|X\right]\right]&#92;) が成りたつ<sup id="fnref-4"><a class="footnote-ref" href="#fn-4">4</a></sup>.</li>
+            </ul>
+        </td>
+        <td>
+            &#92;(E\left[Y|X\right],\ E_Y\left[Y|X\right]&#92;)
+        </td>
+    </tr>
+    <tr>
+        <td>条件付き分散</td>
+        <td>
+            &#92;(V[X\mid Y]=E[X^2\mid Y]-E[X\mid Y]^2&#92;)
+            <ul>
+                <li>&#92;(V\left[Y\right]=E\left[V\left[Y|X\right]\right]+V\left[E\left[Y|X\right]\right]&#92;)&nbsp;が成り立つ(証明略).</li>
+            </ul>
+        </td>
+        <td>
+            &#92;(V\left[Y|X\right],\ V_Y\left[Y|X\right]&#92;)
+        </td>
+    </tr>
+    <tr>
+        <td><ul class="min100"><li>規格化</li><li>正規化</li></ul></td>
+        <td>
+        ある関数が規格化条件を満足するように定数倍すること. 平均を引いて, 標準偏差で割る(&#92;(\dfrac{X-\mu}{\sigma}&#92;))<sup id="fnref-5"><a class="footnote-ref" href="#fn-5">5</a></sup>こと.
+        <ul>
+            <li>連続的確率変数を扱う場合にのみ使われる言葉.</li>
+            <li>例えば, &#92;(f(x)=x&#92;) は &#92;([0,1]&#92;) 上で &#92;(\int_0^1xdx=\dfrac{1}{2}&#92;) となってしまうため, 規格化条件を満たさないが,
+            全体を 2 倍して &#92;(f(x)=2x&#92;) とすると, 全区間で積分して &#92;(1&#92;) になるので規格化条件を満たす. 従って, &#92;(f(x)=2x&#92;)&nbsp;は確率度関数となる.</li>
+        </ul>
+        </td>
+        <td>
+        N/A
+        </td>
+    </tr>
+    <tr>
+        <td><ul class="min100"><li>分散</li><li>標本分散</li></ul></td>
+        <td>
+        期待値とのずれを表す指標の 1 つ. ずれの総計で各々が相殺しないように二乗和をとり, その個数 &#92;(n&#92;) で割った値. すなわち,
+        &#92;[\dfrac{1}{n}\displaystyle\sum_{i=1}^n(X_i-E\left[X\right])^2=E\left[(X-E\left[X\right])^2\right]&#92;]
+        <ul>
+            <li>ここで, 確率変数 &#92;(X_1,X_2,\cdots,X_n&#92;) の確率分布がすべて等しいとき,
+            &#92;(\displaystyle\dfrac{1}{n}\sum^{n}_{i=1}\left(X_i-\overline{X}\right)^2=\overline{X^2}-\overline{X}^2&#92;)&nbsp;と高校数学でよくみる形式でかける.</li>
+            <li>定数の分散は &#92;(0&#92;) である: &#92;(V\left[a\right]=E\left[\left(a-E\left[a\right]\right)^2\right]=E\left[\left(a-a\right)^2\right]&#92;) だから&nbsp;&#92;[E\left[0\right]=0\label{eq:exaxiom5}\tag{v}&#92;]</li>
+            <li>定数 &#92;(a&#92;) と確率変数 &#92;(X&#92;) の和の分散は, 確率変数 &#92;(X&#92;) の分散である:
+            \begin{eqnarray}
+            V\left[a+X\right]&=&E\left[\left(a+X-E\left[a+X\right]\right)^2\right] &#92;\
+            &=&E\left[\left(a+X-E\left[a\right]-E\left[X\right]\right)^2\right] &#92;\
+            &=&E\left[\left(a+X-a-E\left[X\right]\right)^2\right]&#92;\
+            &=&E\left[\left(X-E\left[X\right]\right)^2\right]
+            \end{eqnarray} だから&nbsp;&#92;[V\left[a+X\right]=V\left[X\right]\label{eq:exaxiom6}\tag{vi}&#92;]
+            </li>
+            <li>定数 &#92;(b&#92;) と確率変数 &#92;(X&#92;) の積の分散は, 確率変数 &#92;(X&#92;) の分散と &#92;(b&#92;) の二乗の積である:
+            \begin{eqnarray}
+            V\left[bX\right]&=&E\left[\left(bX-E\left[bX\right]\right)^2\right] &#92;\
+            &=&E\left[\left(bX-bE\left[X\right]\right)^2\right] &#92;\
+            &=&E\left[\left\{b\left(X-E\left[X\right]\right)\right\}^2\right] &#92;\
+            &=&E\left[b^2\left(X-E\left[X\right]\right)^2\right] &#92;\
+            &=&b^2E\left[\left(X-E\left[X\right]\right)^2\right]
+            \end{eqnarray} だから&nbsp;&#92;[V\left[bX\right]=b^2V\left[X\right]\label{eq:exaxiom7}\tag{vii}&#92;]
+            </li>
+            <li>定数 &#92;(b&#92;) と確率変数 &#92;(X&#92;) の積と &#92;(a&#92;) の和の分散は, 確率変数 &#92;(X&#92;) の分散と定数 &#92;(b&#92;) の二乗の積である:
+            &#92;(\eqref{eq:exaxiom6}, \eqref{eq:exaxiom7}&#92;) より&nbsp;&#92;[V\left[bX+a\right]=b^2V\left[X\right]\label{eq:exaxiom8}\tag{viii}&#92;]</li>
+        </ul>
+        </td>
+        <td>
+        <ul>
+            <li>確率変数 &#92;(X&#92;) の分散:&nbsp;&#92;(V\left[X\right]&#92;)</li>
+            <li>母集団の分散:&nbsp;&#92;(\sigma^2&#92;)</li>
+            <li>標本分散:&nbsp;&#92;(s^2&#92;)</li>
+            <li>標本平均の分散<sup id="fnref-6"><a class="footnote-ref" href="#fn-6">6</a></sup>:&nbsp;&#92;(V\left[\overline{X}\right]=\dfrac{\sigma^2}{n}&#92;)</li>
+        </ul>
+        </td>
+    </tr>
+    <tr>
+      <td><ul><li>分散</li><li>不偏分散</li></ul></td>
+      <td>標本数 &#92;(n&#92;) で割ったのに対し, &#92;(n-1&#92;) で割った値. 標本分散の期待値が母分散に等しくなるように補正したもの
+      (詳細は<a href="#unbiasedVariance">下記</a>): &#92;(\displaystyle\dfrac{1}{n-1}\sum^n_{i=1}\left(X_i-E\left[X\right]\right)^2&#92;)</td>
+      <td>&#92;(U^2,\hat{\sigma}^2&#92;)</td>
+    </tr>
+    <tr>
+      <td>標準偏差</td>
+      <td>分散の計算で行われた二乗を外した形.</td>
+      <td>&#92;(\sqrt{V[X]},\sigma,s&#92;). 各記号は, 分散の記号と同様にして用いられる慣習がある.</td>
+    </tr>
+</tbody>
+</table>
+</div>
+
+<h3>不偏分散</h3>
+<p>上記の表で示した通り, 不偏分散は, 標本分散の期待値が母分散に等しくなるように補正したもののことをいう.
+標本分散は, 標本のばらつきの指標を得ることが主な目的であったのに対して, 不偏分散は, 標本から母分散の推定値を得ることが主な目的であり, その点において両者は異なる.
+その目的に従って, 標本分散の期待値 \(E\left[s^2\right]\) は, 母分散の \(\dfrac{n-1}{n}\) 倍となっているという事実(\(E\left[s^2\right]=\dfrac{n-1}{n}\sigma^2\not =\sigma^2\))から,
+標本分散を \(\dfrac{n}{n-1}\) 倍する(しかしながら, サンプル数 \(n\) が十分に大きいとき, 両者は近似的に等しくなることが<a href="#lawOfLargeNumbers">大数の弱法則</a>よりいえる).&nbsp;この形が不偏分散である. </p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="unbiasedVariance" class="disabled">不偏分散</a></div>
+  <div class="panel-body" style="overflow:scroll">
+&#92;[\displaystyle\dfrac{1}{n-1}\sum^n_{i=1}\left(X_i-E\left[X\right]\right)^2&#92;]
+  </div>
+</div>
+
+<p>以下, \(E\left[s^2\right]=\dfrac{n-1}{n}\sigma^2\)&nbsp;を証明する.</p>
+<p><strong>証明</strong>:<br></p>
+<p>いま \(\rm i.i.d\) 標本 \(X_1,X_2,\cdots,X_n\) について考えると,
+この標本分散は上記の表で示した通り \(\displaystyle s^2=\overline{X^2}-\overline{X}^2=\dfrac{1}{n}\sum^{n}_{i=1}\left(X_i-\overline{X}\right)^2\) で, 
+母分散は \(\sigma^2=E\left[\left(X-\mu\right)^2\right]\) である. ここで, \(X_i-\overline{X}=X_i-\mu-\overline{X}+\mu\)&nbsp;とおくと,</p>
+<div class="math">\begin{eqnarray}
+&amp;=&amp;\dfrac{1}{n}\left[\left\{\left(X_1-\mu\right)-\left(\overline{X}-\mu\right)\right\}^2+\cdots+\left\{\left(X_n-\mu\right)-\left(\overline{X}-\mu\right)\right\}^2\right] \\\
+&amp;=&amp;\dfrac{1}{n}\left\{\left(X_1-\mu\right)^2-2\left(X_1-\mu\right)\left(\overline{X}-\mu\right)+\left(\overline{X}-\mu\right)^2+\cdots+\left(X_n-\mu\right)^2-2\left(X_n-\mu\right)\left(\overline{X}-\mu\right)+\left(\overline{X}-\mu\right)^2\right\} \\\
+&amp;=&amp;\dfrac{1}{n}\sum_{i=1}^n\left(X_i-\mu\right)^2-2\dfrac{1}{n}\sum_{j=1}^{n}\left(X_j-\mu\right)\left(\overline{X}-\mu\right)+\left(\overline{X}-\mu\right)^2 \\\
+&amp;=&amp;\dfrac{1}{n}\sum_{i=1}^n\left(X_i-\mu\right)^2-2\left(\overline{X}-\mu\right)^2+\left(\overline{X}-\mu\right)^2 \\\
+&amp;=&amp;\dfrac{1}{n}\sum_{i=1}^n\left(X_i-\mu\right)^2-\left(\overline{X}-\mu\right)^2 
+\end{eqnarray}</div>
+<p>である.&nbsp;この期待値は </p>
+<div class="math">\begin{eqnarray}
+E\left[s^2\right]&amp;=&amp;\dfrac{1}{n}\sum_{i=1}^nE\left[\left(X_i-\mu\right)^2\right]-E\left[\left(\overline{X}-\mu\right)\right] \\\
+&amp;=&amp;\sigma^2-E\left[\left(\overline{X}-\mu\right)^2\right] \label{eq:second}\tag{1}
+\end{eqnarray}</div>
+<p>で, \(\eqref{eq:second}\)&nbsp;の第二項は標本平均分散だから,</p>
+<div class="math">\begin{eqnarray}
+E\left[s^2\right]&amp;=&amp;\sigma^2-\dfrac{\sigma^2}{n}\\\
+&amp;=&amp;\dfrac{n-1}{n}\sigma^2
+\end{eqnarray}</div>
+<p>\(\square\)</p>
+<h3>正規分布,&nbsp;ガウス分布</h3>
+<p style="text-align:center"><img width="350px" src="../../../../../images/2018/September/25/norm.png" alt="normfig" /></p>
+
+<p>上図<sup id="fnref-7"><a class="footnote-ref" href="#fn-7">7</a></sup>のような, 連続型の確率分布が左右対称である分布を正規分布といい, 
+その陰関数は \(f(x)=\dfrac{1}{\sqrt{2\pi}}\exp\left(-\dfrac{1}{2}\left(\dfrac{x-\mu}{\sigma}\right)^2\right)\) であり, これを \(N(\mu,\sigma)\) とも書く.
+また,&nbsp;その確率密度関数は</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="ProbabilityDensityFunctionOfTheNormalDistribution" class="disabled">正規分布の確率密度関数</a></div>
+  <div class="panel-body" style="overflow:scroll">
+標準偏差 &#92;(\sigma&#92;), 母平均 &#92;(\mu&#92;), 分散 &#92;(\sigma^2&#92;) に対して,
+&#92;[f(x)=\dfrac{1}{\sqrt{2\pi}\sigma}\exp\left(-\dfrac{(x-\mu)^2}{2\sigma^2}\right)\label{eq:first}\tag{2}&#92;]
+  </div>
+</div>
+
+<p>である.</p>
+<p>また \(\mu=0,\sigma=1\) である正規分布をとくに標準正規分布といい(上図青で描かれた分布がそれに該当する),
+その場合の陰関数は \(f(x)=\dfrac{1}{\sqrt{2\pi}}\exp\left(-\dfrac{1}{2}x^2\right)\) となる.
+また, これを \(N(\mu,\sigma)=N(0,1)\) とも書く.
+ここで一度, 式 \(\eqref{eq:first}\) が規格化条件を満たすことを確認する. 
+確認には, <a href="https://falgon.github.io/roki.log/posts/2018/%209月/26/GaussianIntegral/#SimilarGaussianIntegral1">ガウス積分の公式</a>を用いる.</p>
+<p><strong>命題</strong>: \(\eqref{eq:first}\) は規格化条件を満たす.<br>
+<strong>証明</strong>: \(\eqref{eq:first}\)&nbsp;が規格化条件を満たすことは次の等号式を満たすことである.</p>
+<p>\[\displaystyle\int_{-\infty}^{\infty}f(x)dx=\dfrac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{\infty}\exp\left(-\dfrac{(x-\mu)^2}{2\sigma^2}\right)dx\]</p>
+<p>ここで, \(x-\mu=y\) と変数変換すると \[\dfrac{1}{\sqrt{2\pi}\sigma}\int_{-\infty}^{\infty}\exp\left(-\dfrac{y^2}{2\sigma^2}\right)dy\]
+この積分部分は<a href="https://falgon.github.io/roki.log/posts/2018/%209月/26/GaussianIntegral/#SimilarGaussianIntegral1">ガウス積分の公式</a>より,
+\(\sqrt{2\sigma^2\pi}\) となり \(f(x)\) を全区間で積分すると 1 となる. よって, \(\eqref{eq:first}\) は規格化条件を満たす.&nbsp;\(\square\)</p>
+<p>正規分布においては, 区間 \([-\sigma,\sigma]\) を 1 シグマ区間という.
+平均 \(\pm{1\sigma}\) 内に収まる確率は <span class="math">\(68\)</span> %,  平均 \(\pm{2\sigma}\) 内に収まる確率は <span class="math">\(95\)</span> %, 平均 \(\pm{3\sigma}\) 内に収まる確率は <span class="math">\(99.7\)</span> %&nbsp;であると知られている.</p>
+<h3>大数の法則</h3>
+<p>大数の法則は, </p>
+<div class="panel panel-default">
+  <div class="panel-heading theo"><a name="lawOfLargeNumbers" class="disabled">大数の法則</a></div>
+  <div class="panel-body" style="overflow:scroll">
+  期待値 &#92;(\mu&#92;) の &#92;(\rm i.i.d&#92;) 無限列 &#92;(X_1,X_2,\cdots&#92;) の標本平均 &#92;(\displaystyle\overline{X}=\dfrac{1}{n}\sum_{i=1}^{n}X_i&#92;) と定数 &#92;(^\forall c\gt 0&#92;) に対して,
+  &#92;[\lim_{n\to\infty}P\left(\left|\overline{X}_{n}-\mu\right|\gt c\right)=0&#92;]
+  がいえる. これを大数の弱法則という.
+  また &#92;[ P\left(\lim_{n\to\infty}\overline{X}_n=\mu\right)=1 &#92;]
+  がいえる. これを大数の強法則という.
+  </div>
+</div>
+
+<p>である. なお, この法則を確率論の用語で, \(\overline{X}_n\) が \(\mu\) に確率収束するという.
+端折って解釈すると, ある母集団から無作為抽出するサンプル数を十分に大きくしたとき, それらから成る標本の平均は, 母平均そのものとみなしてもよいという主張である. 
+例えば, サイコロの目の理論的な平均値は \(\frac{\sum^{6}_{i=1} i}{6}=3.5\) であるが,
+サイコロを例えば 2 回降っただけではこの通りの平均値にならないかもしれない.
+しかしながら, これを無限回行えば, その平均は \(3.5\) に限りなく近くということである.
+ここでは簡単のために大数の弱法則についてのみの証明とする. そのために, まずマルコフの不等式,&nbsp;チェビシェフの不等式の証明を行う.</p>
+<div class="panel panel-default">
+  <div class="panel-heading theo"><a name="MarkovsInequality" class="disabled">マルコフの不等式</a></div>
+  <div class="panel-body" style="overflow:scroll">
+  任意の確率変数 &#92;(X&#92;) と定数 &#92;(c\gt 0&#92;) に対して, &#92;[ P\left(\left|X\right|\geq c\right)\leq \dfrac{E\left[\left|X\right|\right]}{c}&#92;]
+  </div>
+</div>
+
+<p><strong>証明</strong>:<br></p>
+<p>\(X\) を連続型確率変数とすると, 確率密度関数 \(f_X(x)\)&nbsp;に対して,</p>
+<div class="math">\begin{eqnarray}
+cP\left(\left|X\right|\geq c\right)&amp;=&amp;c\int^{\infty}_{c}f_X(x)dx \\\
+&amp;\leq&amp;\int^{\infty}_{c}\left|x\right|f_X(x)dx \\\
+&amp;\leq&amp;\int^c_0\left|x\right|f_X(x)dx+\int^\infty_c\left|x\right|f_X(x)dx \\\
+&amp;=&amp;\int^\infty_0\left|x\right|f_X(x)dx \\\ 
+&amp;=&amp;E[\left|X\right|]
+\end{eqnarray}</div>
+<p>\(\therefore P\left(\left|X\right|\geq c\right)\leq\dfrac{E[\left|X\right|]}{c}\). 
+\(X\) が離散型確率変数である場合は総計により同様にして求まる.&nbsp;\(\square\)</p>
+<div class="panel panel-default">
+  <div class="panel-heading theo"><a name="ChebyshevInequality" class="disabled">チェビシェフの不等式</a></div>
+  <div class="panel-body" style="overflow:scroll">
+  &#92;(E[Y]=\mu,V[Y]=\sigma^2&#92;) とするとき, &#92;(^\forall a\gt 0&#92;) に対して, &#92;[P\left(\left|Y-\mu\right|\geq a\sigma\right)\leq\dfrac{1}{a^2}\Leftrightarrow P\left(\left|Y-\mu\right|\geq a\right)\leq\dfrac{\sigma^2}{a^2}&#92;]
+  </div>
+</div>
+
+<p><strong>証明</strong>:<br></p>
+<p><a href="#MarkovsInequality">マルコフの不等式</a>より, \(X=(Y-\mu)^2,c=a^2\sigma^2\)&nbsp;とすると
+</p>
+<div class="math">\begin{eqnarray}
+P\left(\left(Y-\mu\right)^2\geq a^2\sigma^2\right)&amp;\leq&amp;\dfrac{E\left[\left(Y-\mu\right)^2\right]}{a^2\sigma^2} \\\
+&amp;=&amp;\dfrac{\sigma^2}{a^2\sigma^2} \\\
+&amp;=&amp;\dfrac{1}{a^2}
+\end{eqnarray}</div>
+<p>\(\therefore P\left(\left|Y-\mu\right|\geq a\sigma\right)\leq\dfrac{1}{a^2}\). 
+\(c=a^2\) とすると, 同様にして \(P\left(\left|Y-\mu\right|\geq a\right)\leq\dfrac{\sigma^2}{a^2}\).&nbsp;\(\square\)</p>
+<p>準備が整ったので, 以下<a href="#lawOfLargeNumbers">大数の弱法則</a>を証明する.</p>
+<p><strong>証明</strong>:<br></p>
+<p>確率変数 \(\overline{Y}\) を \(\rm i.i.d\) 標本平均 \(\displaystyle\dfrac{1}{n}\sum_{i=1}^{n}Y_i\) とすると, 期待値の線型性より
+\(E\left[\overline{Y}\right]=\mu,V\left[\overline{Y}\right]=\dfrac{\sigma^2}{n}\). 
+ここで, <a href="#ChebyshevInequality">チェビシェフの不等式</a>より \(P\left(\left|\overline{Y}-\mu\right|\geq a\right)\leq\dfrac{\dfrac{\sigma^2}{n}}{a^2}\) だから,
+\(n\to\infty\) のとき, 右辺は \(0\) に収束する.&nbsp;\(\square\)</p>
+<h3>中心極限定理</h3>
+<p>中心極限定理は</p>
+<div class="panel panel-default">
+  <div class="panel-heading theo"><a name="centralLimitTheorem" class="disabled">中心極限定理</a></div>
+  <div class="panel-body" style="overflow:scroll">
+  平均 &#92;(\mu&#92;), 分散 &#92;(\sigma^2&#92;) の母集団から無作為抽出された標本平均 &#92;(\overline{X}_n&#92;) は, 母集団の分布に無関係に, &#92;(n&#92;) が十分に大きいとき,
+  近似的に平均 &#92;(\mu&#92;), 分散 &#92;(\dfrac{\sigma^2}{n}&#92;)(標準偏差 &#92;(\dfrac{\sigma}{\sqrt{n}}&#92;)) に従う. 
+  &#92;(\Leftrightarrow \rm i.i.d&#92;) 標本 &#92;(X_1,X_2,\cdots,X_n&#92;) があって, &#92;(E\left[X_i\right]=\mu,V\left[X_i\right]=\sigma^2&#92;) で, &#92;(n\to\infty&#92;) のとき,
+  &#92;(\overline{X}_n&#92;) の分布は &#92;(N\left(\mu,\dfrac{\sigma^2}{n}\right)&#92;) に近く.
+  </div>
+</div>
+
+<p>という定理である. <a href="#lawOfLargeNumbers">大数の弱法則</a>とこの中心極限定理ともにサンプル平均 \(\overline{X}_n\) の振る舞いに関する定理であるが,
+後者においては, サンプル平均と, 真の平均との誤差について論ずる定理である点が異なる. 
+つまり, <a href="#lawOfLargeNumbers">大数の弱法則</a>より \(\overline{X}_n\approx\mu\) であることはわかったが, その差 \(\overline{X}_n-\mu\) はどのような挙動となるのか,
+また \(0\) に近づいていくのはわかったが, どのように近づいていくのかについて論じているのが, <a href="#centralLimitTheorem">中心極限定理</a>である<sup id="fnref-8"><a class="footnote-ref" href="#fn-8">8</a></sup>.
+中心極限定理は, それが正規分布に近似するといっているので,
+起きた事象の珍しさを測るための指標として用いることができ, これが統計における検定に役立つ.
+また, すべての平均と分散が定義できるような分布<sup id="fnref-9"><a class="footnote-ref" href="#fn-9">9</a></sup>に対していえることから,&nbsp;様々な事象が正規分布に従うことを正当化するための理論的根拠としてよく用いられる.</p>
+<h3>参考文献</h3>
+<ul>
+<li>「<a href="http://www.math.kobe-u.ac.jp/HOME/higuchi/h23kogi/h23kouki/p1-11.pdf">第 2 章 独立確率変数列の極限定理</a>」 2018 年 10 月 29&nbsp;日アクセス.</li>
+<li>「<a href="https://shoichimidorikawa.github.io/Lec/ProbDistr/cauchy.pdf">コーシー分布</a>」 2018 年 10 月 29&nbsp;日アクセス.</li>
+<li>「<a href="https://mathtrain.jp/gaussdistribution">正規分布の基礎的な知識まとめ - 高校数学の美しい物語</a>」 2018 年 9 月 27&nbsp;日アクセス.</li>
+<li>「<a href="https://mathtrain.jp/centrallimit" name="ref1">大数の法則と中心極限定理の意味と関係 - 高校数学の美しい物語</a>」 2018 年 10 月 29&nbsp;日アクセス.</li>
+<li>「<a href="https://mathtrain.jp/condexpectation">条件付き期待値，分散の意味と有名公式 - 高校数学の美しい物語</a>」 2018 年 11 月 12&nbsp;日アクセス.</li>
+<li>「<a href="https://mcm-www.jwu.ac.jp/~konno/pdf/statha3.pdf">3.3 条件付き期待値</a>」 2018 年 11 月 12&nbsp;日アクセス.</li>
+</ul>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn-1">
+<p>\(\sigma\)-加法族は, 完全加法族, 可算加法族, \(\sigma\)-集合代数, \(\sigma\)-集合体ともいわれる.&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn-2">
+<p>簡単のため, 確率変数 \(X, Y\) に対して \(E\left[X,Y\right]=E\left[X\right]+E\left[Y\right]\) を示して証明とする. ここで, \(\sum_i:=\sum^n_{i=1},\sum_j:=\sum^n_{j=1}\) とし, 確率変数 \(X\) がその取り得る値 \(x_i\) となる確率を \(P(x_i)\), 同様に \(Y\) がその取り得る値 \(y_j\) となる確率を \(P(y_j)\) とする. また, そのどちらもが同時に発生する確率を \(P(x_i,y_j)\) とする. <div class="math">\begin{eqnarray} E\left[X+Y\right]&amp;=&amp;\sum_i\sum_j\left(x_i+y_j\right)P(x_i,y_j) \\\ &amp;=&amp;\sum_i\sum_j x_iP(x_i,y_j)+\sum_i\sum_j y_jP(x_i,y_j) \\\ &amp;=&amp;\sum_i x_i\sum_j P(x_i,y_j)+\sum_j y_j\sum_i P(x_i,y_j) \\\ &amp;=&amp;\sum_i x_iP(x_i)\sum_j y_jP(y_j) \\\ &amp;=&amp; E\left[X\right]+E\left[Y\right] \end{eqnarray}</div> 連続的確率変数に対しても, 積分の線型性から同様. \(\square\)&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn-3">
+<p>\(\eqref{eq:exaxiom3}\) および<a href="#LinearityExpectedValue">期待値の線形性</a>より <div class="math">\begin{eqnarray}E\left[\overline{X}\right]&amp;=&amp;E\left[\dfrac{1}{n}\sum^n_{i=1}X_i\right] \\\ &amp;=&amp;\dfrac{1}{n}E\left[X_1+\cdots+X_n\right] \\\ &amp;=&amp;\dfrac{1}{n}n\mu \\\ &amp;=&amp;\mu \end{eqnarray}</div> \(\square\)&#160;<a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn-4">
+<p>簡単のため, 連続型確率変数 \(X,Y\) に対する <span class="math">\(E\left[Y\right]=E\left[E\left[Y|X\right]\right]\)</span> を示して証明とする. <span class="math">\(E\left[Y\right]\)</span> は条件付き期待値の定義から <div class="math">$$E\left[Y\right]=\int^\infty_{-\infty}\int^\infty_{-\infty}yf(x,y)dxdy$$</div> ここで, \(f(x,y)\) は \(X,Y\) の同時確率密度関数である. 従って, <div class="math">\begin{eqnarray}E\left[Y\right]&amp;=&amp;\int^\infty_{-\infty}\int^\infty_{-\infty}yf(x,y)dxdy \\\ &amp;=&amp;\int^\infty_{-\infty}\int^\infty_{-\infty}y\dfrac{f(x,y)}{f(x)}f(x)dxdy \\\ &amp;=&amp;\int^\infty_{-\infty}\left[\int^\infty_{-\infty}yf(y|x)dx\right]f(x)dx \\\ &amp;=&amp; \int^\infty_{-\infty}E\left[X|y\right]f(x)dydx \\\ &amp;=&amp;E\left[E\left[Y|X\right]\right]\end{eqnarray}</div> \(\square\)&#160;<a class="footnote-backref" href="#fnref-4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn-5">
+<p>平均 \(\mu\), 分散 \(\sigma^2\) の確率変数 \(X\) を正則化した変数 \(Z=\dfrac{X-\mu}{\sigma}\) の期待値と分散を確認してみると, 平均は \(\eqref{eq:exaxiom2}, \eqref{eq:exaxiom3}\) より <div class="math">\begin{eqnarray}E\left[Z\right]&amp;=&amp;E\left[\dfrac{X-\mu}{\sigma}\right] \\\ &amp;=&amp;\dfrac{1}{\sigma}E\left[X-\mu\right] \\\ &amp;=&amp; \dfrac{1}{\sigma}\left(E\left[X\right]-\mu\right) \\\ &amp;=&amp;\dfrac{1}{\sigma}\left(\mu-\mu\right) \\\ &amp;=&amp;0\end{eqnarray}</div> 分散は \(\eqref{eq:exaxiom6}, \eqref{eq:exaxiom7}\) より <div class="math">\begin{eqnarray}V\left[Z\right]&amp;=&amp;V\left[\dfrac{X-\mu}{\sigma}\right] \\\ &amp;=&amp;\dfrac{1}{\sigma^2}V\left[X-\mu\right] \\\ &amp;=&amp;\dfrac{1}{\sigma^2}V\left[X\right] \\\ &amp;=&amp;\dfrac{\sigma^2}{\sigma^2} \\\ &amp;=&amp; 1\end{eqnarray}</div> となり標準正規分布に従うことがわかる.&#160;<a class="footnote-backref" href="#fnref-5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn-6">
+<p>\(\eqref{eq:exaxiom7}\) および<a href="#LinearityExpectedValue">期待値の線形性</a>より <div class="math">\begin{eqnarray}V\left[\overline{X}\right]&amp;=&amp;V\left[\dfrac{1}{n}\sum^n_{i=1}X_i\right] \\\ &amp;=&amp;\dfrac{1}{n^2}V\left[X_1+\cdots+X_n\right] \\\ &amp;=&amp;\dfrac{1}{n^2}n\sigma^2 \\\ &amp;=&amp;\dfrac{\sigma^2}{n}\end{eqnarray}</div> \(\square\)&#160;<a class="footnote-backref" href="#fnref-6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn-7">
+<p>matplotlib 等で<a href="https://gist.github.com/falgon/63bfa6f2039ad25379d441831f4bb648">生成</a>. 標準偏差 \(\sigma\) を \([1,5]\) としたとき.&#160;<a class="footnote-backref" href="#fnref-7" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+<li id="fn-8">
+<p><a href="#ref1">参考文献</a>から一部引用: <i>ベーシックな大数の弱法則は中心極限定理から導出することができます。→<a href="http://www.dklevine.com/archive/strong-law.pdf">The Laws of Large Numbers Compared</a>(snip) しかし，より一般的な（仮定を弱めた）大数の弱法則は中心極限定理から導出することはできません。つまり「中心極限定理が大数の法則を包含している」と言うことはできないのです。</i>&#160;<a class="footnote-backref" href="#fnref-8" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+</li>
+<li id="fn-9">
+<p>平均, 分散が定義できない分布の例としてよく挙げられるものの 1 つ: コーシー分布.&#160;<a class="footnote-backref" href="#fnref-9" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js','color.js','enclose.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: false," +
+        "    messageStyle: 'None'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+      </div>
+<!-- /.entry-content -->
+      <footer class="post-info text-muted">
+        <button type="button" class="btn btn-default">          
+          <a href="../../../../../category/math.html"><div class="fa fa-lg fa-folder-open"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/math.html"><div class="fa fa-lg fa-tag"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/probability-theory.html"><div class="fa fa-lg fa-tag"></div> Probability theory</a>
+        </button>
+      </footer>
+      <!-- /.post-info -->
+    <!-- Comment BEGIN -->
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'roki-log';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <!-- Comment END -->
+    </section>
+    </div>
+<footer class="footer">
+      <div class="container">
+          <p class="footer-text">&copy; <a href="../../../../..">roki.log</a> powered by 
+          <a href="https://getpelican.com/">pelican</a> and 
+          <a href="https://github.com/falgon/nikhil-theme">nikhil-theme (forked)</a><br>
+              <small>  <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>, except where indicated otherwise.
+</small>
+            </p>
+   </div>
+</footer>    <script src="../../../../../theme/js/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-116653080-1', 'auto');
+      ga('send', 'pageview');
+       $('#myModal').modal({show: true});
+
+    </script>
+  </body>
+</html>

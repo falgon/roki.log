@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>roki.log - golang</title><link href="https://falgon.github.io/roki.log/" rel="alternate"></link><link href="https://falgon.github.io/roki.log/feeds/golang.rss.xml" rel="self"></link><id>https://falgon.github.io/roki.log/</id><updated>2018-08-15T00:00:00+09:00</updated><entry><title>AWS EC2 の各種環境を自動構築して distcc による分散コンパイルを実行する</title><link href="https://falgon.github.io/roki.log/posts/2018/%208%E6%9C%88/15/aws_ec2_distcc/" rel="alternate"></link><published>2018-08-15T00:00:00+09:00</published><updated>2018-08-15T00:00:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2018-08-15:/roki.log/posts/2018/ 8月/15/aws_ec2_distcc/</id><summary type="html">&lt;p&gt;軽い気持ちでクラウド上の分散コンパイル環境の自動構築から実行の仕組みをつくった記録&lt;/p&gt;</summary><content type="html">&lt;p&gt;クラウド上でなにか作れというような大学の課題で, 
+入力パラメータに応じて &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;EC2&lt;/span&gt; インスタンス及びネットワーク周辺と distcc の環境構築を実行して,
+その上で分散コンパイルをして S3 へアップロードできれば, 
+そこそこクラウドでやった意味があるといえるのかななどと思いつき,&amp;nbsp;軽い気持ちで作ってみた記録.&lt;/p&gt;
+&lt;h3&gt;構成&lt;/h3&gt;
+&lt;p&gt;構成そのものはかなり単純だと思う. はじめに, いくつかのパラメータを指定する. 
+数は多いが, &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;EC2&lt;/span&gt;&amp;nbsp;の環境構築に最低限必要となるような要素に限られているはず.&lt;/p&gt;
+&lt;script src="https://gist-it.appspot.com/https://github.com/falgon/edcc/blob/5f4cd53830691275e5c250ef2051adca9d1162d6/README.md?slice=10:44"&gt;&lt;/script&gt;
+
+&lt;p&gt;ここで指定したパラメータに応じて, 環境を構築する. 
+その際, &lt;span class="caps"&gt;AWS&lt;/span&gt; のユーザーデータ&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;機能を使って, distcc とコンパイラ&lt;sup id="fnref-2"&gt;&lt;a class="footnote-ref" href="#fn-2"&gt;2&lt;/a&gt;&lt;/sup&gt;のセットアップ, 
+ホストインスタンス(実際にコンパイルを実行するインスタンス)の決定,
+各インスタンスの環境構築における進捗の同期等を行い,&amp;nbsp;ビルドスクリプトを実行する.&lt;/p&gt;
+&lt;p&gt;一応,&amp;nbsp;ここに酷いアクティビティ図がある.&lt;/p&gt;
+&lt;div style="height: 400px; overflow-y: scroll;"&gt;
+&lt;img width="700" src="https://raw.githubusercontent.com/falgon/edcc/4a052baece667b6baf6d3e41ff3f0741faee5bed/assets/fig.png" alt="ugly activity diagram"&gt;
+&lt;/div&gt;
+
+&lt;h3&gt;実装&lt;/h3&gt;
+&lt;p&gt;実装は,&amp;nbsp;次のリポジトリで管理している.&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;
+&lt;i class="fab fa-github" style="font-size: large; margin-right: 5px;"&gt;&lt;/i&gt;
+&lt;a href="https://github.com/falgon/edcc"&gt;falgon/edcc - Simple and tiny comprehensive management tool for distributed compilation using distcc on &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;EC2&lt;/span&gt;.&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;まず, 起動したインスタンスのすべてに必要となるパッケージのインストールやセットアップを実行する必要があるが,
+これは構成にて述べたように, &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;EC2&lt;/span&gt; の機能のうちの 1 つである, ユーザーデータ&lt;sup id="fnref2-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;を利用して実行することとした.&lt;/p&gt;
+&lt;p&gt;予め使用言語に対する指定として, Go で実装することを定められていたので, 
+今回の実装を Go で行ったことに対する深い意味合いは特別ないが,
+とりあえずそこまで深く考えず Go の便利な標準パッケージ, &lt;code&gt;text/template&lt;/code&gt;を利用して,
+一程度の情報伝達を行うこととした. 
+&lt;code&gt;text/template&lt;/code&gt;は, かなりお手軽に&lt;a href="https://falgon.github.io/roki.log/posts/2018/%207月/23/ec2failover/"&gt;設定ファイルの生成&lt;/a&gt;のほか,
+トークンの衝突さえなければ, コードに直接埋め込むことができるので, それを元にコードの生成をすることもでき,&amp;nbsp;大変良い.&lt;/p&gt;
+&lt;p&gt;ビルドスクリプトおよびセットアップスクリプトは, それぞれ, 
+ビルド実行のスクリプト&lt;sup id="fnref-3"&gt;&lt;a class="footnote-ref" href="#fn-3"&gt;3&lt;/a&gt;&lt;/sup&gt;と,
+ユーザーデータとして渡される, 
+必要パッケージのセットアップスクリプト&lt;sup id="fnref-4"&gt;&lt;a class="footnote-ref" href="#fn-4"&gt;4&lt;/a&gt;&lt;/sup&gt;のことを示している.
+ビルドスクリプトは, 以下に示す変数を利用して任意に記述してもらう&lt;sup id="fnref-5"&gt;&lt;a class="footnote-ref" href="#fn-5"&gt;5&lt;/a&gt;&lt;/sup&gt;ものとして,
+セットアップスクリプトは, 殆どの場合, 中身を弄る必要はないと思われる.
+今のところ, 各スクリプトは bash スクリプトとして記述する必要がある.
+それぞれで利用できる変数は,&amp;nbsp;次の通りである.&lt;/p&gt;
+&lt;script src="https://gist-it.appspot.com/https://github.com/falgon/edcc/blob/5f4cd53830691275e5c250ef2051adca9d1162d6/README.md?slice=46:63"&gt;&lt;/script&gt;
+
+&lt;p&gt;大体各変数の予測はつくだろうし, 説明にもあるとおりなのだが, 一点, 必ずビルドスクリプト内に記述しなければならないのは,
+&lt;code&gt;{{.build_success}}&lt;/code&gt;または&lt;code&gt;{{.build_failed}}&lt;/code&gt;である.
+これは, &lt;code&gt;{{.Include_WriteStatus}}&lt;/code&gt;を予め記述しておくことで利用できるようになる.
+それぞれビルドの成功, また失敗といった結果を通知するための命令(内部はただの bash 関数)であるが,
+このどちらをも指定しなかった場合, ビルドはまだ終わっていないと認識して, 
+永遠に停止することはない(マネジメントコンソールや awscli&amp;nbsp;などで自分でクリーンナップを行う必要がある.).&lt;/p&gt;
+&lt;p&gt;この仕様は, Travis &lt;span class="caps"&gt;CI&lt;/span&gt; を利用しているときに, 
+ステータスコードが 0 以外の場合においても,&amp;nbsp;処理を続行したいときが個人的には何度かあったことに由来している.&lt;/p&gt;
+&lt;p&gt;また, セットアップの進捗をインスタンス間でどのように同期するかであるが, 
+&lt;span class="caps"&gt;EC2&lt;/span&gt; においても各メタ情報を &lt;span class="caps"&gt;HTTP&lt;/span&gt; リクエストで取得できることを真似て,
+各インスタンスで nginx による &lt;span class="caps"&gt;HTTP&lt;/span&gt; サーバ&lt;sup id="fnref-6"&gt;&lt;a class="footnote-ref" href="#fn-6"&gt;6&lt;/a&gt;&lt;/sup&gt;を稼働させ, そのトップページに自身の状態の &lt;span class="caps"&gt;JSON&lt;/span&gt; を出力しておき,
+それを curl&amp;nbsp;で得るということにした.&lt;/p&gt;
+&lt;p&gt;結局, そのほかの詳細はリポジトリ内の &lt;span class="caps"&gt;README&lt;/span&gt; を見てほしい.&amp;nbsp;実行例は次の通りである.&lt;/p&gt;
+&lt;script src="https://gist-it.appspot.com/https://github.com/falgon/edcc/blob/5f4cd53830691275e5c250ef2051adca9d1162d6/README.md?slice=68:102"&gt;&lt;/script&gt;
+
+&lt;h3&gt;感想&lt;/h3&gt;
+&lt;p&gt;とにかく時間のない中であったので, 
+妥協してしまった点がいくらかあり,
+その点で個人的には悔しい部分があるが, 
+今回の実装で大分総合的に &lt;span class="caps"&gt;EC2&lt;/span&gt; 関係の IaaS やら SaaS 周りを活用できたかと思うので,&amp;nbsp;取り組めたこと自体には満足をしている.&lt;/p&gt;
+&lt;p&gt;別の話題だが,
+講義内で利用する &lt;span class="caps"&gt;AWS&lt;/span&gt; リソースの支払いは, ありがたい事に大学側が持っていてくれていたのだが,
+これでもう講義が終わってしまうので, 犬が西向きゃ尾は東というものであるが,
+続けて自分で本格的に取り組むのには, ある程度の出費が必要となる.
+今のところ, まだ無料利用枠は残っているので, それを利用できることが救いであるが, 
+講義でよく使っていた t2.medium と無料利用枠対象の t2.micro とでは, 
+やはり処理性能に若干の違いを感じる.
+なんだか今回のエントリには, やたらと諺が出てきて自分も奇怪に感じるが, 
+まあこれは, 起きて半畳寝て一畳,&amp;nbsp;天下取っても二合半ということなのだろう.&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;&lt;span class="dquo"&gt;&amp;#8220;&lt;/span&gt;Running Commands on Your Linux Instance at Launch&amp;#8221; &lt;a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html"&gt;https://docs.aws.amazon.com/&lt;span class="caps"&gt;AWSEC2&lt;/span&gt;/latest/UserGuide/user-data.html&lt;/a&gt; 2018 年 8 月 15 日アクセス.&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref2-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-2"&gt;
+&lt;p&gt;デフォルト(&lt;a href="https://github.com/falgon/edcc/blob/5f4cd53830691275e5c250ef2051adca9d1162d6/src/setup.sh"&gt;setup.sh&lt;/a&gt;)では &lt;span class="caps"&gt;GCC&lt;/span&gt; 8.1.0&amp;#160;&lt;a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-3"&gt;
+&lt;p&gt;例として, 厳密性を多いに省けば, Travis &lt;span class="caps"&gt;CI&lt;/span&gt; で実行される, &lt;code&gt;.travis.yml&lt;/code&gt;の&lt;code&gt;script&lt;/code&gt;セクションようなもの.&amp;#160;&lt;a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-4"&gt;
+&lt;p&gt;同じく, Travis &lt;span class="caps"&gt;CI&lt;/span&gt; で実行される, &lt;code&gt;.travis.yml&lt;/code&gt;の&lt;code&gt;install&lt;/code&gt;セクションのようなもの.&amp;#160;&lt;a class="footnote-backref" href="#fnref-4" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-5"&gt;
+&lt;p&gt;&lt;a href="https://github.com/falgon/edcc/tree/5f4cd53830691275e5c250ef2051adca9d1162d6/build_script_example"&gt;build_script_example/&lt;/a&gt;にいくつかのサンプルがある.&amp;#160;&lt;a class="footnote-backref" href="#fnref-5" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-6"&gt;
+&lt;p&gt;このとき 80 番ポートを利用するが, デフォルトの設定では &lt;span class="caps"&gt;VPC&lt;/span&gt; を 10.0.0.0/16, サブネットを 10.0.0.0/24 とし, 80 番ポートのインバウンド設定を, セキュリティグループにより 10.0.0.0/24 と設定するので, 外部からの &lt;span class="caps"&gt;HTTP&lt;/span&gt; アクセスに対して応答することはない. よって, インスタンスの状態がインターネットに漏れてしまうといった懸念は必要ない. なお自動構築時, このサブネット中にすべてのインスタンスを設定するため, 自ずと分散コンパイルを行うインスタンスの最大数は 256 となる. それよりも増やしたいのであれば, 単にパラメータを変えればよいが, あまり台数を増やしても, 然程効果はないと思われる.&amp;#160;&lt;a class="footnote-backref" href="#fnref-6" title="Jump back to footnote 6 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="AWS"></category><category term="golang"></category><category term="Networking"></category></entry><entry><title>AWS SNS + S3 でバケット内の状態を即座に EC2 に反映するまで</title><link href="https://falgon.github.io/roki.log/posts/2018/%208%E6%9C%88/01/aws_sns_s3_ec2/" rel="alternate"></link><published>2018-08-01T00:00:00+09:00</published><updated>2018-08-01T00:00:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2018-08-01:/roki.log/posts/2018/ 8月/01/aws_sns_s3_ec2/</id><summary type="html">&lt;p&gt;&lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;SNS&lt;/span&gt; による &lt;span class="caps"&gt;HTTP&lt;/span&gt; リクエストをトリガーに, S3 バケットの状態を &lt;span class="caps"&gt;EC2&lt;/span&gt;&amp;nbsp;上のコンテンツへ即座に反映するための構造と簡単な実装&lt;/p&gt;</summary><content type="html">&lt;p&gt;ウェブアプリケーションが &lt;span class="caps"&gt;EC2&lt;/span&gt; 上で動作していて,
+そのコンテンツ内容を S3 バケットによって管理しているシチュエーションにおいて, 
+S3 バケットの状態を即座にそのウェブアプリケーションに反映させたいという事例はよくあると思う(ステージング云々は, 一旦置いておくとして).
+本エントリは, &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;SNS&lt;/span&gt; による &lt;span class="caps"&gt;HTTP&lt;/span&gt; リクエストをトリガーに, 
+S3 バケットの状態を &lt;span class="caps"&gt;EC2&lt;/span&gt;&amp;nbsp;上のコンテンツへ即座に反映するための構造と簡単な実装について取り上げる.&lt;/p&gt;
+&lt;h3&gt;システムの全体構造&lt;/h3&gt;
+&lt;p&gt;上記の要件を達成する方法はいくつかあるだろうが,&amp;nbsp;今回は次のような構造を取ることとした.&lt;/p&gt;
+&lt;div style="text-align:center"&gt;
+&lt;img src="../../../../../images/2018/August/UD.png" alt="全体図" width="400"/&gt;
+&lt;/div&gt;
+
+&lt;p&gt;今回 &lt;span class="caps"&gt;EC2&lt;/span&gt; インスタンス上では, Nginx および Go で実装したウェブアプリケーションサーバを Fast-&lt;span class="caps"&gt;CGI&lt;/span&gt; で動かすこととした.
+S3 にコンテンツをアップロードしたり削除等の操作をすると, &lt;span class="caps"&gt;SNS&lt;/span&gt; トピックに対して通知を発行する.
+&lt;span class="caps"&gt;SNS&lt;/span&gt; はこれに対して, 設定したエンドポイント(今回は &lt;span class="caps"&gt;EC2&lt;/span&gt; インスタンス) へ &lt;span class="caps"&gt;HTTP&lt;/span&gt; &lt;span class="caps"&gt;POST&lt;/span&gt; リクエストを発行し, 
+&lt;span class="caps"&gt;EC2&lt;/span&gt; インスタンスはこれに応じて, S3 バケットと同期を実行する.&amp;nbsp;至ってシンプルな構造である. &lt;/p&gt;
+&lt;h3&gt;実装&lt;/h3&gt;
+&lt;p&gt;&lt;span class="caps"&gt;EC2&lt;/span&gt; インスタンスで稼働するシンプルなウェブサーバの実装, および各種設定ファイルは,&amp;nbsp;次のリポジトリの通りである.&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;
+&lt;i class="fab fa-github" style="font-size: large; margin-right: 5px;"&gt;&lt;/i&gt;
+&lt;a href="https://github.com/falgon/tinyGoWebServer"&gt;falgon/tinyGoWebServer - Tiny Go Web Server. &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;SNS&lt;/span&gt; + S3 + &lt;span class="caps"&gt;EC2&lt;/span&gt; + Nginx Fast-&lt;span class="caps"&gt;CGI&lt;/span&gt; technology automatically synchronizes content on S3&amp;nbsp;bucket.&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;なお, S3 バケットとの同期処理が失敗した場合, 別の &lt;span class="caps"&gt;SNS&lt;/span&gt; トピックを用いて, 失敗の旨のメールを管理者に送信するようにしてある.
+リポジトリ内の &lt;span class="caps"&gt;README&lt;/span&gt; にも記してあるが, 同期を実行するスクリプト, およびウェブサーバの実行ファイルは, systemd で管理することを前提として,
+&lt;a href="http://www.pathname.com/fhs/"&gt;Filesystem Hierarchy Standard&lt;/a&gt; に従い,&amp;nbsp;配置することとした.&lt;/p&gt;</content><category term="AWS"></category><category term="golang"></category><category term="Networking"></category></entry><entry><title>VRRP on AWS VPC-EC2</title><link href="https://falgon.github.io/roki.log/posts/2018/%207%E6%9C%88/23/ec2failover/" rel="alternate"></link><published>2018-07-23T06:05:00+09:00</published><updated>2018-07-23T06:05:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2018-07-23:/roki.log/posts/2018/ 7月/23/ec2failover/</id><summary type="html">&lt;p&gt;&lt;span class="caps"&gt;EC2&lt;/span&gt; で &lt;span class="caps"&gt;VRRP&lt;/span&gt;&amp;nbsp;するときのメモ及びユーティリティツールの実装&lt;/p&gt;</summary><content type="html">&lt;p&gt;本エントリでは, &lt;span class="caps"&gt;VPC&lt;/span&gt;-&lt;span class="caps"&gt;EC2&lt;/span&gt; で &lt;span class="caps"&gt;MASTER&lt;/span&gt; 側のヘルスが確認できなくなったときに, &lt;span class="caps"&gt;VRRP&lt;/span&gt; を用いてフェールオーバし, 
+一定度の可用性担保を実現する場合について&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;取り上げる. &lt;span class="caps"&gt;VRRP&lt;/span&gt; の実装としては keepalived&amp;nbsp;を用いることとする.&lt;/p&gt;
+&lt;h3&gt;前提&lt;/h3&gt;
+&lt;p&gt;次のシチュエーションを前提としている.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;インスタンスが 2 つ以上作成済みで, 24, 80 番ポートを &lt;span class="caps"&gt;SG&lt;/span&gt; の設定で開けてあり, どちらにおいても apache2 と keepalived&amp;nbsp;が稼働している.&lt;/li&gt;
+&lt;li&gt;keepalived.conf にそれぞれ &lt;span class="caps"&gt;MASTER&lt;/span&gt; と &lt;span class="caps"&gt;BACKUP&lt;/span&gt; が設定済みで, &lt;span class="caps"&gt;VPC&lt;/span&gt;-&lt;span class="caps"&gt;EC2&lt;/span&gt; のルートテーブルにて, いまの設定にあわせて 1 つに &lt;span class="caps"&gt;VIP&lt;/span&gt;(192.168.1.1/32)&amp;nbsp;が設定してある.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;このシチュエーションがオンプレミス環境上の話であれば, 何の問題もなく, これでフェールオーバが実現できるのだが,
+&lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;EC2&lt;/span&gt; でこれを実現するためには, &lt;span class="caps"&gt;AWS&lt;/span&gt; のルートテーブル側の &lt;span class="caps"&gt;VIP&lt;/span&gt; ターゲットをも貼り直す操作が必要となり,
+この操作については, ある程度自分で実装しなければならない. 
+いくらか調べて見ると, awscli で同様の環境を作っている事例を多く見るのだが, 
+本エントリでは諸事情より &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;SDK&lt;/span&gt; for go を使って,&amp;nbsp;操作することとした.&lt;/p&gt;
+&lt;h3&gt;設定と実装&lt;/h3&gt;
+&lt;p&gt;結論からいえば, keepalived はユニキャストに対応しているので, それらの設定を行い, 互いに監視して,
+&lt;span class="caps"&gt;MASTER&lt;/span&gt; または &lt;span class="caps"&gt;BACKUP&lt;/span&gt; となったときに自動でルートテーブルを操作すれば良い. 
+もう少し細かく言えば, 冗長構成のうち監視対象となるインスタンスのプライベート &lt;span class="caps"&gt;IP&lt;/span&gt;&amp;nbsp;を設定すれば良い.&lt;/p&gt;
+&lt;p&gt;そのついでに, &lt;span class="caps"&gt;VIP&lt;/span&gt; が設定されていることを簡単に取得できるように, &lt;span class="caps"&gt;VIP&lt;/span&gt; が設定されたインスタンスにタグを設定するようにしたい.
+さらに, 毎度 keepalived.conf を作成するのは手間を要するので, 
+冗長構成の中から監視対象や &lt;span class="caps"&gt;VIP&lt;/span&gt; などを自動検出して, keepalived.conf&amp;nbsp;を生成するようにもしたい.&lt;/p&gt;
+&lt;p&gt;ということで,&amp;nbsp;これらの要件を自動化するべく実装した.&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;
+&lt;i class="fab fa-github" style="font-size: large; margin-right: 5px;"&gt;&lt;/i&gt;
+&lt;a href="https://github.com/falgon/VKUVC"&gt;&lt;span class="caps"&gt;VKUVC&lt;/span&gt; - &lt;span class="caps"&gt;VPC&lt;/span&gt;-&lt;span class="caps"&gt;EC2&lt;/span&gt; + Keepalived Utilities = &lt;span class="caps"&gt;VRRP&lt;/span&gt; on&amp;nbsp;Cloud&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;リポジトリには各種説明と, デモビデオへのリンクが貼ってある.&amp;nbsp;もしよければ.&lt;/p&gt;
+&lt;h3&gt;余談&lt;/h3&gt;
+&lt;p&gt;今回 keepalived.conf の生成のために, はじめて&lt;code&gt;text/template&lt;/code&gt;パッケージを用いた.
+といっても簡単な使い方しかしていないので, 今回のような事例の他にも, まだまだ応用範囲は広そうだが, それにしても中々便利であった.
+また今回で golang を使ってなにかモノを作ったのは &lt;a href="https://falgon.github.io/roki.log/posts/2018/%207月/08/awsec2tag/"&gt;2 回目&lt;/a&gt;であるが,
+段々と慣れてきたような気もする. 
+とくに, &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;SDK&lt;/span&gt; に関しては, まあ元々使いやすいのは十分にあるのだが,&amp;nbsp;以前よりも大分勝手がわかってきた気がする.&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;普通にロードバランサもあるので, 選択肢としてこれに限るというわけではない.&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="golang"></category><category term="AWS"></category><category term="Networking"></category></entry><entry><title>EC2 のタグを SDK で操作</title><link href="https://falgon.github.io/roki.log/posts/2018/%207%E6%9C%88/08/awsec2tag/" rel="alternate"></link><published>2018-07-08T12:50:00+09:00</published><updated>2018-07-08T12:50:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2018-07-08:/roki.log/posts/2018/ 7月/08/awsec2tag/</id><summary type="html">&lt;p&gt;&lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;SDK&lt;/span&gt; for go で &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;EC2&lt;/span&gt;&amp;nbsp;のタグを色々と操作する&lt;/p&gt;</summary><content type="html">&lt;p&gt;ついこの間に golang を初めて触り&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;,
+大学の授業過程で &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;EC2&lt;/span&gt; を使っていて, 
+そのタグ機能を色々機械的に操作できれば便利だななどと思い, 
+golang でなにか作る良い機会であるような気がしたので,
+取り敢えず &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;EC2&lt;/span&gt; のタグ機能に関する操作一式をそれなりに揃えたコマンドラインツールを作ってみた. 実装部分にかかった時間は 30 分程度であった. 
+golang に慣れない身でも, &lt;span class="caps"&gt;API&lt;/span&gt;, 標準ライブラリ,&amp;nbsp;ドキュメントが整備されているおかげでサクサクと動くところまで持っていくことができた.&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;
+&lt;i class="fab fa-github" style="font-size: large; margin-right: 5px;"&gt;&lt;/i&gt;
+&lt;a href="https://github.com/falgon/goec2tag"&gt;falgon/goec2tag: Instant &lt;span class="caps"&gt;CLI&lt;/span&gt; tool for mechanically manipulating &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;EC2&lt;/span&gt;&amp;nbsp;tags&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;ほぼリポジトリにおいてある &lt;span class="caps"&gt;README&lt;/span&gt;&amp;nbsp;のままであるが.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ./dst/main --help
+Usage of ./dst/q3:
+  -addT
+        Give the tag to the instance.
+  -endpoint string
+        Endpoint.
+  -filter string
+        This flag is used in conjunction with the showtags flag to filter tags by describing filter statements.
+        &lt;span class="o"&gt;[&lt;/span&gt;Example&lt;span class="o"&gt;]&lt;/span&gt;:
+                 ... -filter &lt;span class="s1"&gt;&amp;#39;name:resource-id,values:i-xxxxxxxx i-yyyyyyyy&amp;#39;&lt;/span&gt;
+  -instances string
+        Instance id or instance tag name.
+  -region string
+        Region name &lt;span class="o"&gt;(&lt;/span&gt;default &lt;span class="s2"&gt;&amp;quot;ap-northeast-1&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+  -rmT
+        Remove tag from instance.
+  -showtags
+        DescribeTags API operation &lt;span class="k"&gt;for&lt;/span&gt; EC2.
+         Describes one or more of the tags &lt;span class="k"&gt;for&lt;/span&gt; your EC2 resources. &lt;span class="nv"&gt;filter&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;...
+  -tags string
+        Tag Key&lt;span class="o"&gt;(&lt;/span&gt;Use &lt;span class="nv"&gt;Key&lt;/span&gt;&lt;span class="o"&gt;=)&lt;/span&gt; and Tag Value&lt;span class="o"&gt;(&lt;/span&gt;Use &lt;span class="nv"&gt;Value&lt;/span&gt;&lt;span class="o"&gt;=)&lt;/span&gt;
+        &lt;span class="o"&gt;[&lt;/span&gt;Example&lt;span class="o"&gt;]&lt;/span&gt;:
+                 ... -tags&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Key=foo,Value=bar Key=hoge,Value=piyo...&amp;#39;&lt;/span&gt;
+$ ./dst/main -showtags
+...
+
+$ ./dst/main -showtags -filter &lt;span class="s2"&gt;&amp;quot;name:resource-id,values:i-xxxxxxxxxxxxxxxxx&amp;quot;&lt;/span&gt; &lt;span class="c1"&gt;# filtering&lt;/span&gt;
+...
+
+$ ./dst/main -instances&lt;span class="o"&gt;=&lt;/span&gt;i-xxxxxxxxxxxxxxxxx -tags&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Key=test,Value=hoge&amp;#39;&lt;/span&gt; -addT &lt;span class="c1"&gt;# adding tag&lt;/span&gt;
+...
+
+$ ./dst/q3 -instances&lt;span class="o"&gt;=&lt;/span&gt;i-xxxxxxxxxxxxxxxxx -tags&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Key=test,Value=hoge&amp;#39;&lt;/span&gt; -rmT &lt;span class="c1"&gt;# remove tag&lt;/span&gt;
+...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;まあ, これは言ってしまえば &lt;span class="caps"&gt;AWS&lt;/span&gt; &lt;span class="caps"&gt;SDK&lt;/span&gt; for go から単に &lt;span class="caps"&gt;API&lt;/span&gt; を叩いただけで, 
+実際に使うのであれば正直 awscli で事足りるから, 存在意義は全くないと思う.
+個人的な収穫としては, 使い慣れていない言語のパラダイムをいくつか知ることはできた.
+とくに golang 標準の flags パッケージ, これは中々便利に感じた.
+自分はもともと C++ ばかり書いていたので, 
+こういうことを C++ で書きたいときは, 
+Boost.Program_options とかの非標準ライブラリを使うことになるか, 
+自作するかになるだろうなあなどと思った. C++20&amp;nbsp;に期待(?).&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;roki (2018) 「roki (2018)「golang 始めたてメモ」&lt;a href="https://falgon.github.io/roki.log/posts/2018/%206月/17/golangtrial/"&gt;https://falgon.github.io/roki.log/posts/2018/%206月/17/golangtrial/&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="golang"></category><category term="AWS"></category><category term="Networking"></category></entry><entry><title>golang 始めたてメモ</title><link href="https://falgon.github.io/roki.log/posts/2018/%206%E6%9C%88/17/golangtrial/" rel="alternate"></link><published>2018-06-17T10:45:00+09:00</published><updated>2018-06-17T10:45:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2018-06-17:/roki.log/posts/2018/ 6月/17/golangtrial/</id><summary type="html">&lt;p&gt;golang&amp;nbsp;始めたてほやほや&lt;/p&gt;</summary><content type="html">&lt;p&gt;大学の授業で &lt;span class="caps"&gt;AWS&lt;/span&gt; の &lt;span class="caps"&gt;API&lt;/span&gt; を触る機会があり, その際に golang を使うようなので(&lt;span class="caps"&gt;API&lt;/span&gt; 一覧には, C++ 版もあるようなので, 個人的には C++ が良かった), 特に意義のないコードを取り敢えずいくつか書いてみている.
+ある程度文法がわかったら,&amp;nbsp;まずはとにかくクイックソートを書くよ.&lt;/p&gt;
+&lt;script src="https://gist.github.com/falgon/fe1ebde33f0da774e3030bfa4e8eb941.js?file=qsort.go" type="text/javascript"&gt;&lt;/script&gt;
+
+&lt;p&gt;初めは&lt;code&gt;append&lt;/code&gt;とスライスを乱用すれば, 関数型言語っぽく再帰が書けてスッキリするので, &lt;code&gt;reverse&lt;/code&gt;を&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kd"&gt;func&lt;/span&gt; &lt;span class="nx"&gt;reverse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;ar&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;rev&lt;/span&gt; &lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="p"&gt;([]&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;
+    &lt;span class="nx"&gt;rev&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;b&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;b&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;rev&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:],&lt;/span&gt; &lt;span class="nb"&gt;append&lt;/span&gt;&lt;span class="p"&gt;([]&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;a&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]},&lt;/span&gt; &lt;span class="nx"&gt;b&lt;/span&gt;&lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;rev&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;ar&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;make&lt;/span&gt;&lt;span class="p"&gt;([]&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;というように書いてみていたのだが, golang は現在のところ, &lt;span class="caps"&gt;TCO&lt;/span&gt; が効かない&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;ようなのでやめた. &lt;/p&gt;
+&lt;p&gt;そして一通り A Tour of Go の Exercise&amp;nbsp;をやってみた.&lt;/p&gt;
+&lt;div class="p-3"&gt;
+&lt;ul class="nav nav-tabs"&gt;
+  &lt;li class="nav-item active"&gt;
+    &lt;a href="#tab1" class="nav-link active" data-toggle="tab"&gt;LoopsandFunctions&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a href="#tab2" class="nav-link" data-toggle="tab"&gt;Slices&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a href="#tab3" class="nav-link" data-toggle="tab"&gt;Maps&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a href="#tab4" class="nav-link" data-toggle="tab"&gt;FibonacciClosure&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a href="#tab5" class="nav-link" data-toggle="tab"&gt;Stringers&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a href="#tab6" class="nav-link" data-toggle="tab"&gt;Erros&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a href="#tab7" class="nav-link" data-toggle="tab"&gt;Readors&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a href="#tab8" class="nav-link" data-toggle="tab"&gt;rot13Reader&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a href="#tab9" class="nav-link" data-toggle="tab"&gt;Images&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a href="#tab10" class="nav-link" data-toggle="tab"&gt;Equivalent Binary&amp;nbsp;Trees&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a href="#tab11" class="nav-link" data-toggle="tab"&gt;Web&amp;nbsp;Crawler&lt;/a&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div class="tab-content"&gt;
+  &lt;div id="tab1" class="tab-pane active"&gt;
+    &lt;script src="https://gist.github.com/falgon/fe1ebde33f0da774e3030bfa4e8eb941.js?file=LoopsandFunctions.go" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+  &lt;div id="tab2" class="tab-pane"&gt;
+    &lt;script src="https://gist.github.com/falgon/fe1ebde33f0da774e3030bfa4e8eb941.js?file=Slices.go" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+  &lt;div id="tab3" class="tab-pane"&gt;
+    &lt;script src="https://gist.github.com/falgon/fe1ebde33f0da774e3030bfa4e8eb941.js?file=Maps.go" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+  &lt;div id="tab4" class="tab-pane"&gt;
+    &lt;script src="https://gist.github.com/falgon/fe1ebde33f0da774e3030bfa4e8eb941.js?file=FibonacciClosure.go" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+  &lt;div id="tab5" class="tab-pane"&gt;
+    &lt;script src="https://gist.github.com/falgon/fe1ebde33f0da774e3030bfa4e8eb941.js?file=Stringers.go" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+  &lt;div id="tab6" class="tab-pane"&gt;
+    &lt;script src="https://gist.github.com/falgon/fe1ebde33f0da774e3030bfa4e8eb941.js?file=Erros.go" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+  &lt;div id="tab7" class="tab-pane"&gt;
+    &lt;script src="https://gist.github.com/falgon/fe1ebde33f0da774e3030bfa4e8eb941.js?file=Readers.go" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+  &lt;div id="tab8" class="tab-pane"&gt;
+    &lt;script src="https://gist.github.com/falgon/fe1ebde33f0da774e3030bfa4e8eb941.js?file=rot13Reader.go" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+  &lt;div id="tab9" class="tab-pane"&gt;
+    &lt;script src="https://gist.github.com/falgon/fe1ebde33f0da774e3030bfa4e8eb941.js?file=Images.go" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+  &lt;div id="tab10" class="tab-pane"&gt;
+    &lt;script src="https://gist.github.com/falgon/fe1ebde33f0da774e3030bfa4e8eb941.js?file=EquivalentBinaryTrees.go" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+  &lt;div id="tab11" class="tab-pane"&gt;
+    &lt;script src="https://gist.github.com/falgon/fe1ebde33f0da774e3030bfa4e8eb941.js?file=WebCrawler.go" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;最後の Web Crawler の問題には他と比べて時間がかかってしまったが,&amp;nbsp;比較的楽しみながらできたので良かったのではないだろうか.&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;参考: &amp;#8220;proposal: Go 2: add become statement to support tail calls #22624&amp;#8221; &lt;a href="https://github.com/golang/go/issues/22624"&gt;https://github.com/golang/go/issues/22624&lt;/a&gt; 2018 年 6 月 17 日アクセス. &amp;#8220;The Go Programming Language - Release History&amp;#8221; &lt;a href="https://golang.org/doc/devel/release.html"&gt;https://golang.org/doc/devel/release.html&lt;/a&gt; 2018 年 6 月 17 日アクセス.&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="golang"></category></entry></feed>

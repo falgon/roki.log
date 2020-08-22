@@ -1,0 +1,1067 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>roki.log - C++</title><link href="https://falgon.github.io/roki.log/" rel="alternate"></link><link href="https://falgon.github.io/roki.log/feeds/cpp.atom.xml" rel="self"></link><id>https://falgon.github.io/roki.log/</id><updated>2018-07-20T00:31:00+09:00</updated><entry><title>Connector/C++ で MySQL を操作</title><link href="https://falgon.github.io/roki.log/posts/2018/%207%E6%9C%88/20/cppdemysql/" rel="alternate"></link><published>2018-07-20T00:31:00+09:00</published><updated>2018-07-20T00:31:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2018-07-20:/roki.log/posts/2018/ 7月/20/cppdemysql/</id><summary type="html">&lt;p&gt;MySQL を Connector/C++&amp;nbsp;で操作する際の忘備録.&lt;/p&gt;</summary><content type="html">&lt;p&gt;学校の関係で MySQL を触る機会が増えてきたので, MySQL の C++&amp;nbsp;向けライブラリを一度触っておこうという忘備録.&lt;/p&gt;
+&lt;div class="p-3"&gt;
+&lt;ul class="nav nav-tabs"&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a href="#tab1" class="nav-link active" data-toggle="tab"&gt;sql_executor.hpp&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a href="#tab2" class="nav-link" data-toggle="tab"&gt;main.cpp&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a href="#tab3" class="nav-link" data-toggle="tab"&gt;Makefile&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li class="nav-item"&gt;
+    &lt;a href="#tab4" class="nav-link" data-toggle="tab"&gt;docker-compose.yml&lt;/a&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div class="tab-content" style="max-height: 510px; overflow: scroll;"&gt;
+  &lt;div id="tab1" class="tab-pane active"&gt;
+    &lt;script src="https://gist.github.com/falgon/2ade37d9ceb914f2c0dbd16c6271d98a.js?file=sql_executor.hpp" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+  &lt;div id="tab2" class="tab-pane"&gt;
+    &lt;script src="https://gist.github.com/falgon/2ade37d9ceb914f2c0dbd16c6271d98a.js?file=main.cpp" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+  &lt;div id="tab3" class="tab-pane"&gt;
+    &lt;script src="https://gist.github.com/falgon/2ade37d9ceb914f2c0dbd16c6271d98a.js?file=Makefile" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+  &lt;div id="tab4" class="tab-pane"&gt;
+    &lt;script src="https://gist.github.com/falgon/2ade37d9ceb914f2c0dbd16c6271d98a.js?file=docker-compose.yml" type="text/javascript"&gt;&lt;/script&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;これを実行すると, 次のように, 実在しそうでしなさそうな, 妙に怪しい雰囲気&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;の一覧が出力される.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="err"&gt;|顧客番号| C001 |氏名| 青山 花子        |郵便番号| 958-3626     |住所| 大分県横浜市瀬谷区台場12丁目23番18号 勝どきコーポ435     |電話番号| 090-3537-6380&lt;/span&gt;
+&lt;span class="err"&gt;|顧客番号| C002 |氏名| 廣川 翔太        |郵便番号| 297-3630     |住所| 群馬県西多摩郡奥多摩町平須賀14丁目5番2号 コーポ台東850   |電話番号| 88-1940-6921&lt;/span&gt;
+&lt;span class="err"&gt;|顧客番号| C003 |氏名| 田辺 浩  |郵便番号| 596-4390     |住所| 大分県いすみ市虎ノ門虎ノ門ヒルズ森タワー31丁目11番1号    |電話番号| 080-4923-6200&lt;/span&gt;
+&lt;span class="err"&gt;|顧客番号| C004 |氏名| 井上 知実        |郵便番号| 903-5859     |住所| 岩手県北区箪笥町7丁目6番2号 高田馬場クレスト753  |電話番号| 090-1267-5646&lt;/span&gt;
+&lt;span class="err"&gt;|顧客番号| C005 |氏名| 浜田 明美        |郵便番号| 644-0375     |住所| 北海道武蔵野市蟇沼41丁目6番4号 パレス南赤田445   |電話番号| 090-3897-3724&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;見てのとおり, docker-compose を使って MySQL コンテナを立てて, そこに要求を投げる.
+内容は, データベースを新たに作成してテーブル, 値を追加して, 追加項目を全て&lt;code&gt;SELECT&lt;/code&gt;するだけ&lt;sup id="fnref-2"&gt;&lt;a class="footnote-ref" href="#fn-2"&gt;2&lt;/a&gt;&lt;/sup&gt;.
+C++ には &lt;span class="caps"&gt;RAII&lt;/span&gt; があるので, コード中でもそうなのだが&lt;code&gt;SET AUTOCOMMIT = 0&lt;/code&gt;,&lt;code&gt;START TRANSACTION&lt;/code&gt;のあとに,
+&lt;code&gt;COMMIT&lt;/code&gt;をし忘れるなんてことを防げるのが良い.
+一応 &lt;span class="caps"&gt;SQL&lt;/span&gt; 文が格納されている Range かイテレータを渡せば順次実行, 単一の &lt;span class="caps"&gt;SQL&lt;/span&gt; を渡せばもちろんそれを実行するようにしている.
+実際に必要に迫られているわけではないのでなんとも言えないが, 現時点では, 
+それなりに気持ちよく書ける程度にラッピングできたような気がする&lt;sup id="fnref-3"&gt;&lt;a class="footnote-ref" href="#fn-3"&gt;3&lt;/a&gt;&lt;/sup&gt;.
+1 点この Connector/C++ に対する不満を申し上げるとすれば, C++11&amp;nbsp;までにしか未だ対応していない点だろう.&lt;/p&gt;
+&lt;p&gt;しかし久しぶりに C++ 書いた.&amp;nbsp;なんだろうこの実家感は.&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;この個人情報と思わしきリストは, コード内のコメントにも書いたが, 偽の個人情報をランダムに生成する Python 製の&lt;a href="https://github.com/joke2k/faker"&gt;ライブラリ&lt;/a&gt;で自動生成したものである. 同ライブラリは日本語だけでなく, 様々な国の様式に沿ったそれらしき文字列を提供してくれるので, &lt;code&gt;hoge&lt;/code&gt;や&lt;code&gt;foo&lt;/code&gt;等に飽きたら, これを使えば良いのではないのだろうか :p&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-2"&gt;
+&lt;p&gt;なお, このインクルードしている Srook というものは, 私の自作ライブラリです. このブログに移行してくる前のブログでは, よく取り扱っていました.&amp;#160;&lt;a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-3"&gt;
+&lt;p&gt;&lt;code&gt;playing::cppconn&lt;/code&gt;とかいうふざけた名前空間だが.&amp;#160;&lt;a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="C++"></category></entry><entry><title>C++ で Data.Tuple.Extra っぽいもの</title><link href="https://falgon.github.io/roki.log/posts/2018/%206%E6%9C%88/14/DTExstdtuple/" rel="alternate"></link><published>2018-06-14T16:50:00+09:00</published><updated>2018-06-14T16:50:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2018-06-14:/roki.log/posts/2018/ 6月/14/DTExstdtuple/</id><summary type="html">&lt;p&gt;Haskell の Data.Tuple.Extra を C++&amp;nbsp;に移植してみる遊び.&lt;/p&gt;</summary><content type="html">&lt;p&gt;ふと, C++ でもこんなような記述,&amp;nbsp;普通に出来るべきなんじゃないかなぁと思った.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kt"&gt;Prelude&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="kt"&gt;:&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="kt"&gt;Data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;Tuple&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;Extra&lt;/span&gt;
+&lt;span class="kt"&gt;Prelude&lt;/span&gt; &lt;span class="kt"&gt;Data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;Tuple&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;Extra&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;uncurry&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt; &lt;span class="n"&gt;first&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt; &lt;span class="n"&gt;dupe&lt;/span&gt; &lt;span class="mi"&gt;42&lt;/span&gt;
+&lt;span class="mi"&gt;126&lt;/span&gt;
+&lt;span class="kt"&gt;Prelude&lt;/span&gt; &lt;span class="kt"&gt;Data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;Tuple&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;Extra&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;uncurry&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;42&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt; &lt;span class="mi"&gt;42&lt;/span&gt;
+&lt;span class="mi"&gt;168&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;取り敢えず, 似たような構文で同じような処理となるように&lt;a href="https://github.com/falgon/SrookCppLibraries/tree/develop/srook/tuple/utility"&gt;作ってみた&lt;/a&gt;.
+C++11 以降では, Variadic templates が使えるので, &lt;a href="http://hackage.Haskell.org/package/extra-1.6.8"&gt;Data.Tuple.Extra&lt;/a&gt; (&lt;a href="http://hackage.Haskell.org/package/base-4.11.1.0/docs/Control-Arrow.html"&gt;Control.Arrow&lt;/a&gt;) の&lt;code&gt;first&lt;/code&gt;, &lt;code&gt;second&lt;/code&gt;関数のように, タプルの 1 番目, 2 番目に作用させるといった関数をそれぞれ別個作る必要はない.
+従って, これを作用させるタプルのインデックス値で指定できるようにしてみた(&lt;code&gt;srook::tuple::utility::nth&lt;/code&gt;). 他のものも同様, なんとなく似た感じになるように,&amp;nbsp;なんとなくやってみた(?).&lt;/p&gt;
+&lt;script src="https://gist-it.appspot.com/github.com/falgon/SrookCppLibraries/blob/develop/tests/tuple/utility/test.cpp"&gt;&lt;/script&gt;
+
+&lt;p&gt;結局, 関数を次々と呼び出す構文をすっきりと見せるために, Range &lt;span class="caps"&gt;TS&lt;/span&gt; のように&lt;code&gt;operator|&lt;/code&gt;をオーバーロードした.
+C++14 以降では Return type deduction が使えるが, やはり型を明示的に書きたかったので, そのあたりでいくらかテンプレートメタプログラミングをした.
+個人的には久しぶりに C++ を書く上で, これが一番 C++ らしさを感じたし, 最も楽しい部分であった. &lt;span style="font-size: x-small"&gt;このブログに移行してきて,&amp;nbsp;初の日記っぽい内容の投稿となった気がする.&lt;/span&gt;&lt;/p&gt;</content><category term="C++"></category></entry><entry><title>シンプルなブリッジのソフトウェア実装</title><link href="https://falgon.github.io/roki.log/posts/2018/%205%E6%9C%88/29/createToybridge/" rel="alternate"></link><published>2018-05-29T19:42:00+09:00</published><updated>2018-05-29T19:42:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2018-05-29:/roki.log/posts/2018/ 5月/29/createToybridge/</id><summary type="html">&lt;p&gt;超シンプルなブリッジのようなものを作ってみた記録.&lt;/p&gt;</summary><content type="html">&lt;p&gt;以前の投稿, &lt;a href="https://falgon.github.io/roki.log/posts/2018/%205月/01/detectPromiscuous/"&gt;ARPパケットに対する挙動からネットワーク上の盗聴者を特定する&lt;/a&gt;にて, 実験を行うにあたりリンクレイヤー上のパケットの受信と送信を行なった. このパケットを別のネットワークインタフェースから送出するようにすればブリッジになるし, &lt;span class="caps"&gt;MAC&lt;/span&gt; アドレステーブルと照合して転送すれば L2 スイッチにもなるとのことで, 一応 Linux&amp;nbsp;上で動くものを作ってみた.&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;
+&lt;i class="fab fa-github" style="font-size: large; margin-right: 5px;"&gt;&lt;/i&gt;
+&lt;a href="https://github.com/falgon/toybridge"&gt;toybridge - The simply Linux network bridge implementation for&amp;nbsp;learning&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;2 枚の &lt;span class="caps"&gt;NIC&lt;/span&gt; が必要であるが, Virtual Box の仮想アダプタを利用すれば良い. 
+実装の本質的な部分は, 異なるディスクリプタへの書き込みのみである.
+これを応用して,&amp;nbsp;複数個のネットワークインタフェースにも対応してみたい.&lt;/p&gt;
+&lt;h3&gt;余談&lt;/h3&gt;
+&lt;p&gt;以下, ブリッジそのものの話題とは少しずれるが, 先に述べた以前の記事での実装と,&amp;nbsp;そのコードのスタイルについて少し触れる.&lt;/p&gt;
+&lt;p&gt;C++ 言語とそのコミュニティにおいては, エラー/例外をどのように扱うべきなのか, 
+そのベストプラクティスは何かという問いの答えについて, 複数の回答, 派閥が存在する&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;. 個人的には, どれもあまり都合の良くないときもあれば, 都合の良いときもあり,&amp;nbsp;一概にこれが最も良いと断言することはナンセンスであると思っている.&lt;/p&gt;
+&lt;p&gt;先に述べた以前の記事での実装もそうだが, 今回のこの実装でも, 自作ライブラリの&lt;code&gt;srook::optional&lt;/code&gt;をふんだんに利用している. 
+その中でも Haskell の &lt;span class="caps"&gt;IO&lt;/span&gt; モナドを意識して定義/オーバーロードした演算子, &lt;code&gt;&amp;gt;&amp;gt;=&lt;/code&gt;, &lt;code&gt;&amp;gt;&amp;gt;&lt;/code&gt;を用いたスタイルで記述している.
+通常のこのようなディスクリプタを取り回すようなプログラムでは, エラーチェックが顕著となりやすく, 本質的な処理と紛れてしまうことがある. 特に, C のライブラリや &lt;span class="caps"&gt;API&lt;/span&gt; を用いる場合は, 戻り値にエラーの状態を持たせることが多いので, 単純に記述すれば&lt;code&gt;if&lt;/code&gt;文のネストになる. そこで, 実験的に C++ に Haskell の &lt;span class="caps"&gt;IO&lt;/span&gt; モナドのようなパラダイムの一部を持ち込んで使ってみたのが, 前回と今回の実装である. 
+なお, Haskell の &lt;span class="caps"&gt;IO&lt;/span&gt; モナドのようなパラダイムを C++ に持ち込もうという発想は, 特別目新しいものではなく&lt;sup id="fnref-2"&gt;&lt;a class="footnote-ref" href="#fn-2"&gt;2&lt;/a&gt;&lt;/sup&gt;, 以前から一部で取り上げられていた話題である. 個人的には, &lt;code&gt;if&lt;/code&gt;文でエラーハンドリングを随時行うよりも, 本質的な処理のみが視覚内に収まってくることから, このスタイルは好みであるが, C++ の標準ライブラリにおける入出力の表現—シフト演算子のオーバーロードが, C++ コミュニティ内であまり好評ではない一面もある&lt;sup id="fnref-3"&gt;&lt;a class="footnote-ref" href="#fn-3"&gt;3&lt;/a&gt;&lt;/sup&gt;. そのような側面から見れば,&amp;nbsp;あまり良いとは言えないのかもしれない.&lt;/p&gt;
+&lt;h3&gt;参考文献&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;小俣光之 (2011) 『ルーター自作でわかるパケットの流れ』技術評論社. &lt;span class="caps"&gt;ISBN978&lt;/span&gt;-4-7741-4745-1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;これに関する詳しい言及は, Herb Sutter 氏による新しい例外機構の提案文書を参照. &lt;a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0709r0.pdf"&gt;[&lt;span class="caps"&gt;P0709R0&lt;/span&gt;]&lt;/a&gt; Herb Sutter. &amp;#8220;Zero-overhead deterministic exceptions: Throwing values&amp;#8221; (&lt;span class="caps"&gt;WG21&lt;/span&gt; paper, 2018-05-02)&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-2"&gt;
+&lt;p&gt;以前旧ブログにて取り上げた記事: &lt;a href="https://roki.hateblo.jp/entry/2017/07/16/%E3%83%A2%E3%83%8A%E3%83%89%E3%81%AE%E6%A6%82%E5%BF%B5%E3%82%92C%2B%2B%E3%81%AB%E5%B0%8E%E5%85%A5%E3%81%97%E3%81%A6%E5%86%97%E9%95%B7%E3%81%AA%E3%82%A8%E3%83%A9%E3%83%BC%E3%83%8F%E3%83%B3%E3%83%89%E3%83%AA"&gt;モナドの概念をC++に導入して冗長なエラーハンドリングを回避する&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-3"&gt;
+&lt;p&gt;この話題に関する言及: &lt;a href="https://stackoverflow.com/questions/16510414/what-does-the-c-operator-do-other-than-shifting#comment23703444_16510441"&gt;Stackoverflow&lt;/a&gt;, &lt;code&gt;&amp;lt;iostream&amp;gt;&lt;/code&gt;のデザインに関する言及: &lt;a href="https://www.quora.com/What-were-C++-designers-thinking-when-they-overloaded-and-for-IO"&gt;Quora&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="C++"></category><category term="Network"></category></entry><entry><title>ARPパケットに対する挙動からネットワーク上の盗聴者を特定する</title><link href="https://falgon.github.io/roki.log/posts/2018/%205%E6%9C%88/01/detectPromiscuous/" rel="alternate"></link><published>2018-05-01T19:42:00+09:00</published><updated>2018-05-06T18:28:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2018-05-01:/roki.log/posts/2018/ 5月/01/detectPromiscuous/</id><summary type="html">&lt;p&gt;&lt;span class="caps"&gt;ARP&lt;/span&gt;, またブロードキャストのメカニズムと &lt;span class="caps"&gt;OS&lt;/span&gt; の実装を利用してプロミスキャスモードの盗聴者の特定及び &lt;span class="caps"&gt;ARP&lt;/span&gt;&amp;nbsp;パケットの自作&lt;/p&gt;</summary><content type="html">&lt;p&gt;通信が暗号化されていればまだ良いが, 自分の送受信しているパケットを同一ネットワーク上の信用できない者/物に
+無断で見られるのはやはり気持ちの良いものではない. 
+本エントリではそのような不届き者の存在を仮定して,&amp;nbsp;その不届き者を比較的簡単に特定するといった試みを行う.&lt;/p&gt;
+&lt;h3&gt;お断り&lt;/h3&gt;
+&lt;p&gt;一応お断りを明記する. &lt;br&gt;
+本エントリでの試行は当然ながら私個人のローカル &lt;span class="caps"&gt;LAN&lt;/span&gt; 上で行なっており, 
+同様の試行を公衆回線上などで行うと迷惑/法に抵触する可能性があるのでやめること.
+本エントリに起因する直接的又は間接的な損害に関して, その理由及び原因を問わず著者(Roki)&amp;nbsp;は一切の責任を負わない.&lt;/p&gt;
+&lt;h3&gt;ネットワーク盗聴を検出する原理&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;[&lt;i&gt;2018/5/6 追記&lt;/i&gt;:&lt;/strong&gt;&lt;br&gt;
+本セクションの内容に関する追記は、末尾セクション追記にて参照.
+&lt;br&gt;&lt;strong&gt;&lt;i&gt;&amp;#8212; 追記ここまで&lt;/i&gt;]&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;ネットワークに接続するためには, 大抵コンピュータに &lt;span class="caps"&gt;NIC&lt;/span&gt; を装着して &lt;span class="caps"&gt;TCP&lt;/span&gt;/&lt;span class="caps"&gt;IP&lt;/span&gt; の設定を済まし, ハブに接続する.
+同プロトコルにおける各コンピュータの通信では, &lt;span class="caps"&gt;IP&lt;/span&gt; アドレスと &lt;span class="caps"&gt;MAC&lt;/span&gt; アドレスによる論理情報と物理情報の組み合わせを利用して, 
+目的のコンピュータに対するパケットの送信を実現する. 通常, その過程で &lt;span class="caps"&gt;NIC&lt;/span&gt; は自分とは無関係であるパケットを破棄する.
+しかし &lt;span class="caps"&gt;NIC&lt;/span&gt; をプロミスキャスモードにすると, 自分とは無関係であるパケットを破棄せずに取り込むようになる. 
+盗聴者はこれを利用して, 同一ネットワーク上を流れる他人のパケットを取得できる.&lt;br&gt;
+&lt;span class="caps"&gt;IP&lt;/span&gt; アドレスと &lt;span class="caps"&gt;MAC&lt;/span&gt; アドレスを関連付けるためには &lt;span class="caps"&gt;ARP&lt;/span&gt;/&lt;span class="caps"&gt;RARP&lt;/span&gt; パケットを送信する.
+&lt;span class="caps"&gt;ARP&lt;/span&gt; パケットは, アドレス解決を必要とするノードによってブロードキャスト送信され, 要求に対応するノードが応答を行う. 
+ブロードキャストは同一セグメント内にしか到達しないため, 他のセグメントと通信する際はルーターに依頼する.
+このとき, 要求に対応しない非プロミスキャスモードであるノードはその &lt;span class="caps"&gt;ARP&lt;/span&gt; 要求を破棄する.
+これに対して, プロミスキャスモードのノードは, 先に述べた通り全てのパケットを取り込む.
+しかし, プロミスキャスモードであっても, 通常この取り込まれた &lt;span class="caps"&gt;ARP&lt;/span&gt; 要求に対する応答を返すことはしない. 
+なぜならば &lt;span class="caps"&gt;NIC&lt;/span&gt; のモードに関わらずソフトウェアによるフィルタが通常 &lt;span class="caps"&gt;OS&lt;/span&gt; 内部で働いている&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;からである. &lt;br&gt;
+ただ, このソフトウェアによるフィルタの実装は甘い&lt;u&gt;場合がある&lt;/u&gt;. 
+ブロードキャストを判定するときに, 正確には &lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt; の 6 バイトを比較しなければならないところを, 
+最初の 1 バイトだけで判定するなどの実装が&lt;u&gt;有りうる&lt;/u&gt;のである.
+例えば, そのような実装となっているソフトウェアを積んだコンピュータが, 同一 &lt;span class="caps"&gt;LAN&lt;/span&gt; 上にプロミスキャスモードで稼働しているとする.
+宛先を &lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;u&gt;xx:xx:xx:xx:xx&lt;/u&gt; としてそのコンピュータの &lt;span class="caps"&gt;MAC&lt;/span&gt; アドレスを目的とする&lt;sup id="fnref-2"&gt;&lt;a class="footnote-ref" href="#fn-2"&gt;2&lt;/a&gt;&lt;/sup&gt; &lt;span class="caps"&gt;ARP&lt;/span&gt; パケットを送ると, 
+&lt;span class="caps"&gt;NIC&lt;/span&gt; が Ethernet の仕様に忠実に従っていた場合, 送られてきた宛先は &lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt; ではないためブロードキャストではないと判断する. よってプロミスキャスモードで稼働していない場合, この &lt;span class="caps"&gt;ARP&lt;/span&gt; 要求は &lt;span class="caps"&gt;NIC&lt;/span&gt; によって破棄される. しかし, プロミスキャスモードである場合はこれを取り込む.
+取り込んだ先に待っているのはソフトウェアによるフィルタであるが, これが甘い場合, それをブロードキャストアドレスとして認識し, &lt;span class="caps"&gt;ARP&lt;/span&gt; 応答を返すのである. ここで重要なのは, &lt;u&gt;&lt;span class="caps"&gt;NIC&lt;/span&gt; とソフトウェアそれぞれでブロードキャストに対する判断が異なっている&lt;/u&gt;ということである.
+これにより, プロミスキャスモードとなっているノードのみが, いま送信した &lt;span class="caps"&gt;ARP&lt;/span&gt; パケットに応答してしまうため,&amp;nbsp;特定ができるかもしれない.&lt;/p&gt;
+&lt;h3&gt;試行&lt;/h3&gt;
+&lt;p&gt;実験環境は次のとおり.&lt;/p&gt;
+&lt;div class="table-responsive"&gt;
+&lt;table class="table table-hover"&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;/&lt;/th&gt;
+&lt;th&gt;盗聴側&lt;/th&gt;
+&lt;th&gt;検出側&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;span class="caps"&gt;OS&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;Ubuntu 16.04 &lt;span class="caps"&gt;LTS&lt;/span&gt; (4.13.0-37-generic)&lt;/td&gt;
+&lt;td&gt;Ubuntu 17.04 (4.13.0-37-generic)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;span class="caps"&gt;NIC&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;プロミスキャスモード(enp4s0f2)&lt;/td&gt;
+&lt;td&gt;通常モード(enp19s0)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;span class="caps"&gt;MAC&lt;/span&gt; アドレス&lt;/td&gt;
+&lt;td&gt;80:fa:5b:xx:xx:xx&lt;/td&gt;
+&lt;td&gt;24:b6:fd:xx:xx:xx&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;span class="caps"&gt;IP&lt;/span&gt; アドレス&lt;/td&gt;
+&lt;td&gt;192.168.12.4&lt;/td&gt;
+&lt;td&gt;192.168.12.3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br&gt;盗聴側の &lt;span class="caps"&gt;MAC&lt;/span&gt; アドレスが検出側で得られれば良い. 実験には, 宛先を少し弄って &lt;span class="caps"&gt;ARP&lt;/span&gt; パケットを送信できるソフトウェアが必要である.
+nping や arping などを少し見て見たが, 宛先 &lt;span class="caps"&gt;MAC&lt;/span&gt; アドレスを弄れるような機能は特になかった(&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt; でない &lt;span class="caps"&gt;ARP&lt;/span&gt; パケットを送る用途は殆どないだろうし, 当然だ)ので, 自分で作った. ついでに, 超簡易 &lt;span class="caps"&gt;ARP&lt;/span&gt; パケットキャプチャも作ってみた. これらは 上記の &lt;span class="caps"&gt;OS&lt;/span&gt; で動作を確認している. 動作テストには tcpdump を用いた&lt;sup id="fnref-3"&gt;&lt;a class="footnote-ref" href="#fn-3"&gt;3&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p style="text-align: center;"&gt;
+&lt;i class="fab fa-github" style="font-size: large; margin-right: 5px;"&gt;&lt;/i&gt;
+&lt;a href="https://github.com/falgon/arp_experiment"&gt;&lt;span class="caps"&gt;ARP&lt;/span&gt; experiment - This ia project for learning to detect computers operation in promiscuous mode on the same network using &lt;span class="caps"&gt;ARP&lt;/span&gt; packet and broadcast&amp;nbsp;mechanism&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;特に何も指定せずに&lt;code&gt;make&lt;/code&gt;すると, 通常の &lt;span class="caps"&gt;ARP&lt;/span&gt; パケットを送信するバイナリが&lt;code&gt;/dst/sendarp&lt;/code&gt;としてビルドされ, &lt;code&gt;-f Makefile_bogus&lt;/code&gt;を指定すると宛先 &lt;span class="caps"&gt;MAC&lt;/span&gt; アドレスを &lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FE&lt;/span&gt; とした &lt;span class="caps"&gt;ARP&lt;/span&gt; パケットを送信するバイナリが同様にしてビルドされる.&lt;br&gt;
+どちらの場合においても, &lt;code&gt;/dst/dump_arp&lt;/code&gt;がビルドされ, これが超簡易 &lt;span class="caps"&gt;ARP&lt;/span&gt; パケットキャプチャだ.
+コマンドラインオプションに&lt;code&gt;-p&lt;/code&gt;を指定すると, &lt;span class="caps"&gt;NIC&lt;/span&gt; をプロミスキャスモードにして動作する. 
+これを上記で示した環境それぞれでビルドし, その挙動を見てみる. 
+なお本実験では直接盗聴側の &lt;span class="caps"&gt;IP&lt;/span&gt; アドレスを指定しているが, 実際では総当たりすることになるだろう&lt;sup id="fnref2-2"&gt;&lt;a class="footnote-ref" href="#fn-2"&gt;2&lt;/a&gt;&lt;/sup&gt;.
+また検出側では自身の本当の &lt;span class="caps"&gt;IP&lt;/span&gt; アドレスと &lt;span class="caps"&gt;MAC&lt;/span&gt; アドレスを利用して試行しているが,&amp;nbsp;実際ではこれらを何かしら偽装することも考えられるだろう.&lt;/p&gt;
+&lt;p&gt;まずは, 通常通り &lt;span class="caps"&gt;ARP&lt;/span&gt;&amp;nbsp;を送信してみる.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;検出側$ sudo ./dst/dump_arp enp19s0 &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
+検出側$ sudo ./dst/sendarp enp19s0 &lt;span class="m"&gt;192&lt;/span&gt;.168.12.4
+ether_header -------------------------
+    &lt;span class="nv"&gt;dhost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;24&lt;/span&gt;:b6:fd:xx:xx:xx
+    &lt;span class="nv"&gt;shost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;80&lt;/span&gt;:fa:5b:xx:xx:xx
+    &lt;span class="nb"&gt;type&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;806&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;ARP&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;盗聴側$ sudo ./dst/dump_arp enp4s0f2 &lt;span class="c1"&gt;# 非プロミスキャスモード&lt;/span&gt;
+    &lt;span class="nv"&gt;dhost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; ff:ff:ff:ff:ff:ff
+    &lt;span class="nv"&gt;shost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;24&lt;/span&gt;:b6:fd:xx:xx:xx
+    &lt;span class="nb"&gt;type&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;806&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;ARP&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;正常にやりとりができているようだ. 続いて, 盗聴側は非プロミスキャスモードのまま,
+検出側から &lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FE&lt;/span&gt; 宛てに &lt;span class="caps"&gt;ARP&lt;/span&gt;&amp;nbsp;パケットを送信してみる.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;検出側$ make -f Makefile_bogus
+検出側$ sudo ./dst/dump_arp enp19s0 &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
+検出側$ sudo ./dst/sendarp enp19s0 &lt;span class="m"&gt;192&lt;/span&gt;.168.12.4 &lt;span class="c1"&gt;# 宛先 FF:FF:FF:FF:FF:FE の ARP パケット&lt;/span&gt;
+&lt;span class="c1"&gt;# ... 対応する出力なし&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;盗聴側$ sudo ./dst/dump_arp enp4s0f2 &lt;span class="c1"&gt;# 非プロミスキャスモード&lt;/span&gt;
+&lt;span class="c1"&gt;# ... 対応する出力なし&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;span class="caps"&gt;NIC&lt;/span&gt; のフィルタリングによって, このパケットは省かれるため応答が返ってくることはない. 
+つまり, 192.168.12.4 は盗聴していないということがわかる. 次に, 盗聴側をプロミスキャスモードにして &lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FE&lt;/span&gt; 宛てに &lt;span class="caps"&gt;ARP&lt;/span&gt;&amp;nbsp;パケットを送信してみる.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;検出側$ sudo ./dst/dump_arp enp19s0 &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;
+検出側$ sudo ./dst/sendarp enp19s0 &lt;span class="m"&gt;192&lt;/span&gt;.168.12.4 &lt;span class="c1"&gt;# 宛先 FF:FF:FF:FF:FF:FE の ARP パケット&lt;/span&gt;
+    &lt;span class="nv"&gt;dhost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;24&lt;/span&gt;:b6:fd:xx:xx:xx
+    &lt;span class="nv"&gt;shost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;80&lt;/span&gt;:fa:5b:xx:xx:xx
+    &lt;span class="nb"&gt;type&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;806&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;ARP&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;盗聴側$ sudo ./dst/dump_arp enp4s0f2 -p &lt;span class="c1"&gt;# プロミスキャスモード&lt;/span&gt;
+    &lt;span class="nv"&gt;dhost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; ff:ff:ff:ff:ff:fe
+    &lt;span class="nv"&gt;shost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;24&lt;/span&gt;:b6:fd:xx:xx:xx
+    &lt;span class="nb"&gt;type&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;806&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;ARP&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;応答が返ってきた. つまり, 192.168.12.4 はプロミスキャスモードであり, 盗聴している可能性を特定できた.
+当然ながら &lt;span class="caps"&gt;OUI&lt;/span&gt; を調べればメーカーがわかるので,&amp;nbsp;結果から盗聴者の目星をつけることができる.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ curl -s -D - http://standards-oui.ieee.org/oui.txt &lt;span class="p"&gt;|&lt;/span&gt; grep 80FA5B -A &lt;span class="m"&gt;4&lt;/span&gt;
+80FA5B     &lt;span class="o"&gt;(&lt;/span&gt;base &lt;span class="m"&gt;16&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;            CLEVO CO.
+                                NO. &lt;span class="m"&gt;129&lt;/span&gt;, XINGDE ROAD
+                                New TAIPEI CITY    &lt;span class="m"&gt;241&lt;/span&gt;
+                                TW
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;追記&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;[&lt;i&gt;2018/5/6 追記&lt;/i&gt;:&lt;/strong&gt;&lt;br&gt;
+&lt;strong&gt;某大学授業のネットワークを専門とする講師にこの件について訪ねたところ, 
+Linux におけるプロトコルスタックの実装に関して詳しい言及が頂けたため, それについてと, 新たにそこから考えられる知見等をここに追記する. 
+情報を提供/ご教示して下さいました先生に, この場を借りて改めて感謝いたします.&lt;/strong&gt;&lt;br&gt;&lt;br&gt;
+上記内容のネットワーク盗聴を検出する原理の中で, &lt;i&gt;取り込んだ先に待っているのはソフトウェアによるフィルタであるが, これが甘い場合, それをブロードキャストアドレスとして認識し, &lt;span class="caps"&gt;ARP&lt;/span&gt; 応答を返す&lt;/i&gt;と述べているが,
+これは厳密に, Linux カーネル v4.13 においては, &lt;strong&gt;マルチキャスト &lt;span class="caps"&gt;MAC&lt;/span&gt; アドレスと誤認し&lt;/strong&gt; &lt;span class="caps"&gt;ARP&lt;/span&gt; 応答を返す. 
+また, その処理として &lt;strong&gt;6 byte 全てをチェックしていないというわけではない&lt;/strong&gt;.&lt;br&gt;
+そもそもブロードキャストアドレスはマルチキャストアドレスの特殊形であるから, Linux の実装においても, それがまず広義のマルチキャストアドレスであるかどうかを判定する&lt;sup id="fnref-4"&gt;&lt;a class="footnote-ref" href="#fn-4"&gt;4&lt;/a&gt;&lt;/sup&gt;. このとき宛先 &lt;span class="caps"&gt;MAC&lt;/span&gt; アドレス &lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FF&lt;/span&gt;:&lt;span class="caps"&gt;FE&lt;/span&gt; は広義のマルチキャストアドレスとして認識し, 次にそれがブロードキャストアドレスであるかどうか&lt;u&gt;6 byte 全てをみて判定する&lt;/u&gt;&lt;sup id="fnref-5"&gt;&lt;a class="footnote-ref" href="#fn-5"&gt;5&lt;/a&gt;&lt;/sup&gt;. 結果的に, これをブロードキャストアドレスではないと判定し, &lt;a href="https://github.com/torvalds/linux/blob/v4.13/net/ethernet/eth.c#L172"&gt;狭議のマルチキャストアドレスとして扱う&lt;/a&gt;.&lt;br&gt;
+なお, Linux では以下のように &lt;span class="caps"&gt;ARP&lt;/span&gt; そのものを無効化することができる. 
+同様の設定であるマシンに対しては,&amp;nbsp;本エントリの方法で検出することはできない.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo ip link &lt;span class="nb"&gt;set&lt;/span&gt; dev &amp;lt;interface name&amp;gt; arp off
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;また, ここまで述べてきたプロトコルスタックによる宛先 &lt;span class="caps"&gt;MAC&lt;/span&gt; アドレスのフィルタリング処理は, 
+&lt;u&gt;ネットワークインタフェース層で規定されるものである&lt;/u&gt;から, Linux におけるプロトコルスタックの実装は, その実装定義の一種であるというように捉えることが最も妥当である.
+&lt;span class="caps"&gt;RFC&lt;/span&gt; 826 では, 同理由によりプロミスキャスモードによって発生しうるあらゆる振る舞いに関して定義しない&lt;sup id="fnref-6"&gt;&lt;a class="footnote-ref" href="#fn-6"&gt;6&lt;/a&gt;&lt;/sup&gt;.
+&lt;br&gt;&lt;strong&gt;&lt;i&gt;&amp;#8212; 追記ここまで&lt;/i&gt;]&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;参照&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://sonickun.hatenablog.com/entry/2014/07/28/223049"&gt;ARPを利用してプロミスキャスモードの盗聴ホストを特定してみた&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://atnetwork.info/ccna2/arp01.html"&gt;＠network Cisco・アライド実機で学ぶ&amp;nbsp;◆ARPとは&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://ja.wikipedia.org/wiki/Address_Resolution_Protocol"&gt;Address Resolution Protocol -&amp;nbsp;Wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;&lt;a href="https://github.com/torvalds/linux/blob/v4.13/net/ipv4/arp.c#L940-L944"&gt;Linux kernel v4.13 (実験環境と同じ)の場合&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-2"&gt;
+&lt;p&gt;つまり盗聴ノードの &lt;span class="caps"&gt;IP&lt;/span&gt; アドレスを指定する. 実際の状況では &lt;span class="caps"&gt;IP&lt;/span&gt; アドレスも当然わかっていないので, 一定範囲内の &lt;span class="caps"&gt;IP&lt;/span&gt; アドレスに関連する &lt;span class="caps"&gt;ARP&lt;/span&gt; 要求を総当たりで送ることになるだろう.&amp;#160;&lt;a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref2-2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-3"&gt;
+&lt;p&gt;&lt;code&gt;-vvv&lt;/code&gt; が非常に便利だ.&amp;#160;&lt;a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-4"&gt;
+&lt;p&gt;&lt;a href="https://github.com/torvalds/linux/blob/v4.13/net/ethernet/eth.c#L168"&gt;net/ethernet/eth.c:168&lt;/a&gt;, &lt;a href="https://github.com/torvalds/linux/blob/v4.13/include/linux/etherdevice.h#L112-L144"&gt;include/linux/etherdevice.h:112~144&lt;/a&gt; がこれに該当する. これを見ると, MACアドレスの先頭 1 オクテットのユニキャスト/マルチキャストフラグをチェックしていることがわかる.&amp;#160;&lt;a class="footnote-backref" href="#fnref-4" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-5"&gt;
+&lt;p&gt;&lt;a href="https://github.com/torvalds/linux/blob/v4.13/include/linux/etherdevice.h#L333-L361"&gt;include/linux/etherdevice.h:309~361&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-5" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-6"&gt;
+&lt;p&gt;というより, プロトコルスイート各種の規定は, その各レイヤーごとの規定を定めるものであって, 各レイヤーごとがどのように連携するかについて規定することが本質ではない.&amp;#160;&lt;a class="footnote-backref" href="#fnref-6" title="Jump back to footnote 6 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</content><category term="Security"></category><category term="C++"></category><category term="Networking"></category></entry><entry><title>C++20 Calender and timezone library</title><link href="https://falgon.github.io/roki.log/posts/2018/%203%E6%9C%88/26/cxx20_calender_and_timezone_library/" rel="alternate"></link><published>2018-03-26T16:50:00+09:00</published><updated>2018-04-16T19:08:00+09:00</updated><author><name>roki</name></author><id>tag:falgon.github.io,2018-03-26:/roki.log/posts/2018/ 3月/26/cxx20_calender_and_timezone_library/</id><summary type="html">&lt;p&gt;The &lt;span class="caps"&gt;ISO&lt;/span&gt; C++ Committee met in Jacksonville, Florida, &lt;span class="caps"&gt;USA&lt;/span&gt; で C++20&amp;nbsp;に追加されたカレンダーライブラリに関するメモ&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;[&lt;i&gt;2018/4/16 追記&lt;/i&gt;:&lt;/strong&gt; 本エントリは, 元々 &lt;a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0355r5.html"&gt;&lt;span class="caps"&gt;P0355R5&lt;/span&gt;&lt;/a&gt; を参考にまとめを行った記事であるが, その後 &lt;a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0355r7.html"&gt;&lt;span class="caps"&gt;P0355R7&lt;/span&gt;&lt;/a&gt;&amp;nbsp;で&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;sun&lt;/code&gt;といった曜日を表すリテラルが全て&lt;code&gt;Sunday&lt;/code&gt;, &lt;code&gt;may&lt;/code&gt;といった月を表すリテラルが全て&lt;code&gt;May&lt;/code&gt;といった形式に変更され, またこれらと&lt;code&gt;std::chrono::last_spec&lt;/code&gt;型の&lt;code&gt;last&lt;/code&gt;&lt;sup id="fnref-12"&gt;&lt;a class="footnote-ref" href="#fn-12"&gt;12&lt;/a&gt;&lt;/sup&gt;が&lt;code&gt;std::literals::chrono_literals&lt;/code&gt;名前空間下から&lt;code&gt;std::chrono&lt;/code&gt;名前空間下に移動された.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;system_clock::to_time_t&lt;/code&gt;と&lt;code&gt;system_clock::from_time_t&lt;/code&gt;を Deprecated としていたが, Deprecated&amp;nbsp;でなくなった.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;といった他に, 細かい文面の改修や, &lt;code&gt;constexpr&lt;/code&gt;がつけられるなどの変更が加えられたため, 本エントリにおいても, それに従い該当箇所を改変している(差分を示すことも考えたが, ただ見難くなるように感じたため, そのようなことはしなかった). これらの変更には対応したつもりだが, 細かい厳密な記述に関しては, やはり P0355 の最新リビジョンを追って確かめてほしい(そして, 間違った箇所があれば指摘くださると嬉しい).
+&lt;strong&gt;&lt;i&gt;&amp;#8212; 追記ここまで&lt;/i&gt;]&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;要旨&lt;/h3&gt;
+&lt;p&gt;先週, 米国フロリダ州ジャクソンビルで &lt;span class="caps"&gt;ISO&lt;/span&gt; C++ 委員会によって, C++技術仕様(&lt;span class="caps"&gt;TS&lt;/span&gt;, 実験的機能ブランチ) と次の国際標準(&lt;span class="caps"&gt;IS&lt;/span&gt;) C++20 に関する作業が行われた.
+同会議で &lt;a href="https://www.reddit.com/r/cpp/comments/854mu9/2018_jacksonville_iso_c_committee_reddit_trip/"&gt;Reddit で紹介されているように&lt;/a&gt;,
+C++20 にいくつかの機能が追加された. そのうちの 1 つである, &lt;a href="https://wg21.link/P0355"&gt;Calender and timezone library&lt;/a&gt; に関する新機能,&amp;nbsp;概要のメモ.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;全機能の網羅性を主軸としたエントリではない(が,&amp;nbsp;独断と偏見により重要に感じた内容は結果的に網羅してしまっている部分もある)ため注意&lt;/li&gt;
+&lt;li&gt;以下, 特に断らない限り, 全てのコード片において&lt;code&gt;using namespace std::chrono;&lt;/code&gt;, &lt;code&gt;using namespace std::chrono_literals;&lt;/code&gt;がされているとする.&lt;/li&gt;
+&lt;li&gt;以下, 特に断らない限り, 各コードブロック以外で言及される&lt;code&gt;内容&lt;/code&gt;といった記述については, 名前空間 &lt;code&gt;std::chrono&lt;/code&gt;を省略する.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;設計&lt;/h3&gt;
+&lt;p&gt;以下の内容が追加される.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;chrono&amp;gt;&lt;/code&gt;に対するカレンダーおよびタイムゾーンライブラリをサポートするための最小限の拡張&lt;/li&gt;
+&lt;li&gt;Proleptic Gregorian calendar(civil&amp;nbsp;calendar)&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.iana.org/time-zones"&gt;&lt;span class="caps"&gt;IANA&lt;/span&gt; Time Zone Database&lt;/a&gt;&amp;nbsp;を基にしたタイムゾーンライブラリ&lt;/li&gt;
+&lt;li&gt;分数秒, タイムゾーンの略語, &lt;span class="caps"&gt;UTC&lt;/span&gt; オフセットの完全サポートおよび&lt;code&gt;strftime&lt;/code&gt;のようなフォーマッティング機能&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.iana.org/time-zones"&gt;&lt;span class="caps"&gt;IANA&lt;/span&gt; Time Zone Database&lt;/a&gt; でサポートされている,&amp;nbsp;閏秒を計算するための複数のクロック&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;カレンダー&lt;/h3&gt;
+&lt;p&gt;本ライブラリ機能によって, 例えば 2016&amp;nbsp;年を次のように表現することができる.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;year&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;このとき, &lt;code&gt;year&lt;/code&gt;は &lt;i&gt;partial-calendar-type (部分カレンダー型)&lt;/i&gt; である.
+他の部分カレンダー型と組み合わせることで, &lt;code&gt;year_month_day&lt;/code&gt;などの &lt;i&gt;full-calendar-type (フルカレンダー型)&lt;/i&gt; を生成することができる.
+フルカレンダー型は, 1 日の制度を持つタイムポイントであり, 部分カレンダー型である&lt;code&gt;year&lt;/code&gt;, &lt;code&gt;month&lt;/code&gt;, &lt;code&gt;day&lt;/code&gt; で構成される.
+これらから&lt;code&gt;year_month_day&lt;/code&gt;が構築されると, 内部で計算は一切起きず, 唯一起きることは, &lt;code&gt;year_month_day&lt;/code&gt; が内部でそれらを格納するということだけである.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;year_month_day&lt;/span&gt; &lt;span class="n"&gt;ymd1&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;month&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="n"&gt;day&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;29&lt;/span&gt;&lt;span class="p"&gt;}};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;この場合, すべての入力がコンパイル時定数であるので, &lt;code&gt;constexpr&lt;/code&gt; にすることができる. さらに, &lt;code&gt;operator/&lt;/code&gt;がオーバーロードされているため,&amp;nbsp;従来の日付の構文が利用できる.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;year_month_day&lt;/span&gt; &lt;span class="n"&gt;ymd1&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;month&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="n"&gt;day&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;29&lt;/span&gt;&lt;span class="p"&gt;}};&lt;/span&gt;
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;ymd2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;29&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;ymd3&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;29&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;ymd4&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;29&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ymd1&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;ymd2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ymd2&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;ymd3&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ymd3&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;ymd4&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ymd1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;year&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ymd1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ymd1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;day&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;29&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;ここで, &lt;code&gt;May&lt;/code&gt;は月を表現する&lt;code&gt;month&lt;/code&gt;型のオブジェクトであり, 他に&lt;code&gt;Jan&lt;/code&gt;, &lt;code&gt;Feb&lt;/code&gt;, &lt;code&gt;Mar&lt;/code&gt;, &lt;code&gt;Apr&lt;/code&gt;, &lt;code&gt;Jun&lt;/code&gt;, &lt;code&gt;Jul&lt;/code&gt;, &lt;code&gt;Aug&lt;/code&gt;, &lt;code&gt;Sep&lt;/code&gt;, &lt;code&gt;Oct&lt;/code&gt;, &lt;code&gt;Nov&lt;/code&gt;, &lt;code&gt;Dec&lt;/code&gt;が,
+&lt;em onclick="obj=document.getElementById('openmonth').style; obj.display=(obj.display=='none')?'block':'none';"&gt;
+&lt;a style="font-style: normal; cursor:pointer;"&gt;次のように定義される(クリックで展開).&lt;/a&gt;
+&lt;/em&gt;
+&lt;div id="openmonth" style="display:none;clear:both;"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt; &lt;span class="n"&gt;January&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt; &lt;span class="n"&gt;February&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt; &lt;span class="n"&gt;March&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt; &lt;span class="n"&gt;April&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt; &lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt; &lt;span class="n"&gt;June&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt; &lt;span class="n"&gt;July&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt; &lt;span class="n"&gt;August&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt; &lt;span class="n"&gt;September&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt; &lt;span class="n"&gt;October&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt; &lt;span class="n"&gt;November&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;11&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt; &lt;span class="n"&gt;December&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/div&gt;
+カレンダーライブラリは, 例えばスカラ型で直接日付を指定するといったことはなく, 明示的な型指定による表現によって実現する.
+なお, 部分カレンダー型(&lt;code&gt;year&lt;/code&gt;, &lt;code&gt;month&lt;/code&gt; に加えて&lt;code&gt;day&lt;/code&gt;型)は, すべて &lt;i&gt;Strong ordering&lt;/i&gt;&lt;sup id="fnref-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt; を満たし,&amp;nbsp;加えて以下のメンバ関数をもつ.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;デフォルトコンストラクタ, &lt;code&gt;unsigned&lt;/code&gt;型(&lt;code&gt;year&lt;/code&gt;型のみ&lt;code&gt;int&lt;/code&gt;型)の値を受け付けるコンストラクタ&lt;/li&gt;
+&lt;li&gt;各型の単位においてそれを前後に進める,&amp;nbsp;{前|後}置{イン|デ}クリメント演算子&lt;/li&gt;
+&lt;li&gt;各型の単位で計算を行う&lt;code&gt;+&lt;/code&gt;, &lt;code&gt;-&lt;/code&gt;の二項演算子&lt;/li&gt;
+&lt;li&gt;二項演算子と同様の計算を行い自身に代入する&lt;code&gt;+=&lt;/code&gt;, &lt;code&gt;-=&lt;/code&gt; の複合代入演算子&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;unsigned&lt;/code&gt;型(&lt;code&gt;year&lt;/code&gt;型のみ&lt;code&gt;int&lt;/code&gt;型)の値への明示的な変換(&lt;code&gt;constexpr explicit operator unsigned() const noexcept;&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;指定された日付が各単位で適切であるかどうかをチェックする&lt;code&gt;ok&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;year&lt;/code&gt;型は, これに加えて, &lt;code&gt;is_leap&lt;/code&gt;, &lt;code&gt;min&lt;/code&gt;, &lt;code&gt;max&lt;/code&gt; メンバ関数をもつ. &lt;code&gt;is_leap&lt;/code&gt;は, 指定された年が閏年であるか判定できる. &lt;code&gt;min&lt;/code&gt;, &lt;code&gt;max&lt;/code&gt;は内部型の最小値と最大値を返す.
+また, 上記の通り&lt;code&gt;y&lt;/code&gt;といったリテラル接尾語が定義される.&lt;br&gt;
+また&lt;code&gt;day&lt;/code&gt;型は, &lt;code&gt;d&lt;/code&gt;といったリテラル接尾語が定義される.&lt;/p&gt;
+&lt;p&gt;フルカレンダー型は, &lt;code&gt;sys_days&lt;/code&gt;という型へ変換できる. これは,&amp;nbsp;次のように定義されている.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;year_month_day&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;sys_days&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="k"&gt;noexcept&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;フルカレンダー型は,&lt;code&gt;sys_days&lt;/code&gt;型に変換することで,&lt;code&gt;system_clock::time_point&lt;/code&gt;ファミリとの間で変換でき, これにより完全な相互運用が可能である. &lt;code&gt;sys_days&lt;/code&gt; は
+&lt;em onclick="obj=document.getElementById('opensys_days').style; obj.display=(obj.display=='none')?'block':'none';"&gt;
+&lt;a style="font-style: normal; cursor:pointer;"&gt;次のように定義される(クリックで展開).&lt;/a&gt;
+&lt;/em&gt;
+&lt;div id="opensys_days" style="display:none;clear:both;"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;days&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;duration&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int32_t&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ratio_multiply&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ratio&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;24&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;hours&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;period&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;sys_time&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;time_point&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;system_clock&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;sys_days&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sys_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;days&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/div&gt;
+
+&lt;p&gt;加えて, &lt;code&gt;sys_days&lt;/code&gt;には次の特性がある.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;sys_days&lt;/code&gt;は, &lt;code&gt;system_clock::time_point&lt;/code&gt;がマイクロ秒, またはナノ秒のカウントだけであるのと同様に, &lt;code&gt;system_clock&lt;/code&gt;の基点(エポック)からの日数を示す.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sys_days&lt;/code&gt;は, 切り捨てエラーなしで暗黙的に&lt;code&gt;system_clock::time_point&lt;/code&gt;に変換される.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;system_clock::time_point&lt;/code&gt;は, 切り捨てエラーが含まれるため, 暗黙的に&lt;code&gt;sys_days&lt;/code&gt;に変換されない.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;system_clock::time_point_cast&lt;/code&gt; または&lt;code&gt;floor&lt;/code&gt;を使用した明示的な変換によって&lt;code&gt;system_clock::time_point&lt;/code&gt;から&lt;code&gt;sys_days&lt;/code&gt;へ変換することができる.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;内部で保持する部分カレンダー型&lt;code&gt;year&lt;/code&gt;, &lt;code&gt;month&lt;/code&gt;, &lt;code&gt;day&lt;/code&gt; をそれぞれ&lt;code&gt;y_&lt;/code&gt;, &lt;code&gt;m_&lt;/code&gt;, &lt;code&gt;d_&lt;/code&gt; としたとき,
+&lt;code&gt;year_month_day&lt;/code&gt;から&lt;code&gt;sys_days&lt;/code&gt;への変換時には(すなわち上記の&lt;code&gt;operator sys_days()&lt;/code&gt;の呼び出し),&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;year_month_day::ok()&lt;/code&gt;が&lt;code&gt;true&lt;/code&gt;の場合, &lt;code&gt;sys_days&lt;/code&gt;の基点から&lt;code&gt;*this&lt;/code&gt;までの日数を保持する&lt;code&gt;sys_days&lt;/code&gt;を返す&lt;/li&gt;
+&lt;li&gt;そうでない場合, &lt;code&gt;y_.ok() &amp;amp;&amp;amp; m_.ok() == true&lt;/code&gt; ならば &lt;code&gt;sys_days{y_/m_/last}&lt;/code&gt; から &lt;code&gt;days&lt;/code&gt;(&lt;code&gt;duration&amp;lt;int32_t, ratio_multiply&amp;lt;ratio&amp;lt;24&amp;gt;, hours::period&amp;gt;&amp;gt;&lt;/code&gt;) の数だけ&lt;code&gt;sys_days{y_,m_,last}.day()&lt;/code&gt;からオフセットされた&lt;code&gt;sys_days&lt;/code&gt;を返す&lt;/li&gt;
+&lt;li&gt;そうでない場合,&amp;nbsp;未規定である&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ここで&lt;code&gt;year_month_day::ok&lt;/code&gt;は,
+&lt;code&gt;y_.ok() &amp;amp;&amp;amp; m_.ok() == true&lt;/code&gt; &lt;span class="math"&gt;\(\land\)&lt;/span&gt; &lt;code&gt;1d&lt;/code&gt; &lt;span class="math"&gt;\(\leq\)&lt;/span&gt; &lt;code&gt;d_&lt;/code&gt; &lt;span class="math"&gt;\(\leq\)&lt;/span&gt; &lt;code&gt;(y_/m_/last).day()&lt;/code&gt; であるとき &lt;code&gt;true&lt;/code&gt; を, そうでない場合, &lt;code&gt;false&lt;/code&gt; を返すメンバ関数である.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;system_clock&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;time_point&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;sys_days&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;29&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt; &lt;span class="c1"&gt;// Convert date to time_point&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;time_since_epoch&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="mi"&gt;464&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="mi"&gt;480&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="mo"&gt;000&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="mo"&gt;000&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="mo"&gt;000u&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;ymd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;year_month_day&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;floor&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;days&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;)};&lt;/span&gt; &lt;span class="c1"&gt;// Convert time_point to date&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ymd&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;29&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;sys_days&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;29&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="n"&gt;min&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 2016-05-29 07:30 UTC&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;year_month_day&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;sys_days&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;2017&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;January&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;}}&lt;/span&gt;  &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;December&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;31&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;year_month_day&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;sys_days&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;2017&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;January&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;31&lt;/span&gt;&lt;span class="p"&gt;}}&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;2017&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;January&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;31&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;year_month_day&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;sys_days&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;2017&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;January&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;32&lt;/span&gt;&lt;span class="p"&gt;}}&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;2017&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;February&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;上述した, &lt;code&gt;days&lt;/code&gt;の他に, &lt;code&gt;weeks&lt;/code&gt;, &lt;code&gt;months&lt;/code&gt;, &lt;code&gt;years&lt;/code&gt; が
+&lt;em onclick="obj=document.getElementById('openpartialcal').style; obj.display=(obj.display=='none')?'block':'none';"&gt;
+&lt;a style="font-style: normal; cursor:pointer;"&gt;次のように定義される(クリックで展開).&lt;/a&gt;
+&lt;/em&gt;
+&lt;div id="openpartialcal" style="display:none;clear:both;"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;weeks&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;duration&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="cm"&gt;/* signed integer type of at least 22 bits */&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ratio_multiply&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ratio&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;days&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;period&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;years&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;duration&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="cm"&gt;/* signed integer type of at least 17 bits */&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ratio_multiply&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;ratio&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;146097&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;400&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;days&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;period&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;months&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;duration&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="cm"&gt;/* signed integer type of at least 20 bits */&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ratio_divide&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;years&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;period&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ratio&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;days&lt;/code&gt;, &lt;code&gt;weeks&lt;/code&gt;, &lt;code&gt;months&lt;/code&gt;, &lt;code&gt;years&lt;/code&gt;型は, それぞれ少なくとも &lt;span class="math"&gt;\(\pm\)&lt;/span&gt;40000&amp;nbsp;年の範囲をカバーする.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;hours&lt;/code&gt;のリテラル接尾語が&lt;code&gt;h&lt;/code&gt;, &lt;code&gt;minutes&lt;/code&gt;のリテラル接尾語が&lt;code&gt;min&lt;/code&gt;, というように, 今までのリテラル接尾語は&lt;code&gt;duration&lt;/code&gt;型へ対応していたが, 新規に追加される &lt;code&gt;y&lt;/code&gt;, &lt;code&gt;d&lt;/code&gt;といったリテラル接尾語は, &lt;code&gt;years&lt;/code&gt;, &lt;code&gt;days&lt;/code&gt;に対応するリテラル接尾語ではなく, 上述したように, &lt;code&gt;year&lt;/code&gt;, &lt;code&gt;day&lt;/code&gt;の部分カレンダー型に対応するリテラル接尾語である.&lt;/li&gt;
+&lt;li&gt;1 年を, 365.2425 日(グレゴリオ暦の平均長)と定義し, 1 月を, 30.436875 日&lt;span class="math"&gt;\(\left(\dfrac{1}{12}\right)\)&lt;/span&gt; と定義するため,  システム時刻(&lt;code&gt;time_point&lt;/code&gt;)を利用した算出結果と, &lt;code&gt;year_month_day&lt;/code&gt; を利用した算出結果は異なる.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;date1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sys_days&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;1997&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;months&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt; &lt;span class="c1"&gt;// 1996-12-28 19:34:30&lt;/span&gt;
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;date2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sys_days&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;1997&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;December&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;29&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;years&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt; &lt;span class="c1"&gt;// 1996-12-28 18:10:48&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;現実のカレンダーの利用方法として, たとえば「2016 年の 5 月 29 日」を, 「2016 年の 5 月第 5 日曜日」ということもよくあり,&amp;nbsp;これを表現することもできる.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;system_clock&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;time_point&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;sys_days&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;Sunday&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt; &lt;span class="c1"&gt;// Convert date to time_point&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;time_since_epoch&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="mi"&gt;464&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="mi"&gt;480&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="mo"&gt;000&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="mo"&gt;000&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="mo"&gt;000u&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;ymd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;year_month_weekday&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;floor&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;days&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;)};&lt;/span&gt; &lt;span class="c1"&gt;// Convert time_point to date&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ymd&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;Sunday&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;29&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;year_month_day&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;Sunday&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="p"&gt;});&lt;/span&gt;
+
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;wdi&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Sunday&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt; &lt;span class="c1"&gt;// wdi is the 5th Sunday of an as yet unspecified month&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;wdi&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;weekday&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;Sunday&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;wdi&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;is_same&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;decltype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Sunday&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weekday&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;is_same&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;decltype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;wdi&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;()),&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weekday_indexed&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;ここで, &lt;code&gt;Sunday&lt;/code&gt;は&lt;code&gt;weekday&lt;/code&gt;型であり, 日曜日を表現するリテラルとして定義され, 他にも&lt;code&gt;Monday&lt;/code&gt;, &lt;code&gt;Tuesday&lt;/code&gt;, &lt;code&gt;Wednesday&lt;/code&gt;, &lt;code&gt;Thursday&lt;/code&gt;, &lt;code&gt;Friday&lt;/code&gt;, &lt;code&gt;Saturday&lt;/code&gt;が
+&lt;em onclick="obj=document.getElementById('openweekday').style; obj.display=(obj.display=='none')?'block':'none';"&gt;
+&lt;a style="font-style: normal; cursor:pointer;"&gt;次のように定義される(クリックで展開).&lt;/a&gt;
+&lt;/em&gt;
+&lt;div id="openweekday" style="display:none;clear:both;"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weekday&lt;/span&gt; &lt;span class="n"&gt;Sunday&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weekday&lt;/span&gt; &lt;span class="n"&gt;Monday&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weekday&lt;/span&gt; &lt;span class="n"&gt;Tuesday&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weekday&lt;/span&gt; &lt;span class="n"&gt;Wednesday&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weekday&lt;/span&gt; &lt;span class="n"&gt;Thursday&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weekday&lt;/span&gt; &lt;span class="n"&gt;Friday&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weekday&lt;/span&gt; &lt;span class="n"&gt;Saturday&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;/div&gt;
+&lt;code&gt;weekday&lt;/code&gt;型は, &lt;i&gt;Strong equality&lt;/i&gt;&lt;sup id="fnref2-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt; を満たし, 加えて,&amp;nbsp;次のメンバ関数を持つ.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;デフォルトコンストラクタ, &lt;code&gt;unsigned&lt;/code&gt;, &lt;code&gt;sys_days&lt;/code&gt;, 後に取り上げている&lt;code&gt;local_days&lt;/code&gt;型のオブジェクトを受け付けるコンストラクタ&lt;/li&gt;
+&lt;li&gt;曜日を前後に進める{前|後}置{イン|デ}クリメント演算子&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;weekday&lt;/code&gt;, &lt;code&gt;days&lt;/code&gt;型のオブジェクトを受け付けて曜日の計算を行う&lt;code&gt;+&lt;/code&gt;, &lt;code&gt;-&lt;/code&gt;の二項演算子&lt;/li&gt;
+&lt;li&gt;二項演算子と同様の計算を行い自身に代入する&lt;code&gt;+=&lt;/code&gt;, &lt;code&gt;-=&lt;/code&gt; の複合代入演算子&lt;/li&gt;
+&lt;li&gt;指定された曜日が適切であるかどうかをチェックする&lt;code&gt;ok&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;operator []&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;operator []&lt;/code&gt;は, &lt;code&gt;unsigned&lt;/code&gt;型を引数として呼び出すと, &lt;code&gt;weekday_indexed&lt;/code&gt;型のオブジェクトが返され, &lt;code&gt;last_spec&lt;/code&gt;型のオブジェクトを引数として呼び出すと, &lt;code&gt;weekday_last&lt;/code&gt;型のオブジェクトが返される.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;weekday_indexed&lt;/code&gt;型は, 月の第 1, 第 2, 第 3, 第 4 または第 5 曜日を表すために使用され, 上記の通り, &lt;code&gt;weekday&lt;/code&gt;メンバ関数, &lt;code&gt;index&lt;/code&gt;メンバ関数を持つ他, &lt;code&gt;ok&lt;/code&gt;メンバ関数を持つ.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;weekday_last&lt;/code&gt;型は, 月の最後の&lt;code&gt;weekday&lt;/code&gt;を表すために使用され, &lt;code&gt;weekday&lt;/code&gt;メンバ関数, &lt;code&gt;ok&lt;/code&gt;メンバ関数を持つ,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;last_spec&lt;/code&gt;型は, 最終日を表すために使用され, 同型のオブジェクト&lt;code&gt;last&lt;/code&gt;が&lt;code&gt;chrono&lt;/code&gt;名前空間下に定義される.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;例えば次のようにして, ある月の最終日, 最終 &lt;span class="math"&gt;\(X\)&lt;/span&gt;&amp;nbsp;曜日などを表現することができる.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;today&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;year_month_day&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;floor&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;days&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;system_clock&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;now&lt;/span&gt;&lt;span class="p"&gt;())};&lt;/span&gt;
+&lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;last_day&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;today&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;year&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;today&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;last&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// last day of this month&lt;/span&gt;
+&lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;last_Sunday&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;today&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;year&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;today&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;Sunday&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;last&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt; &lt;span class="c1"&gt;// last Sundayday of this month&lt;/span&gt;
+
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;is_same&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;decltype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Sunday&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]),&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weekday_indexed&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;is_same&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;decltype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Sunday&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;last&lt;/span&gt;&lt;span class="p"&gt;]),&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weekday_last&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;他に, 年を未指定とし, 特定の月日を表す, &lt;code&gt;month_day&lt;/code&gt;, 月の最終日を表す&lt;code&gt;month_day_last&lt;/code&gt;, &lt;span class="math"&gt;\(N\)&lt;/span&gt; 番目の曜日を表す&lt;code&gt;month_weekday&lt;/code&gt;, 月の最終曜日を表す&lt;code&gt;month_weekday_last&lt;/code&gt;と,
+日を未指定とし, 特定の年月を表す, &lt;code&gt;year_month&lt;/code&gt;, 前述した&lt;code&gt;year_month_day&lt;/code&gt;, 特定の年月の最終日を表す&lt;code&gt;year_month_day_last&lt;/code&gt;, 特定の年月の &lt;span class="math"&gt;\(N\)&lt;/span&gt; 番目の曜日を表す&lt;code&gt;year_month_weekday&lt;/code&gt;,
+特定の年月の最終曜日を表す&lt;code&gt;year_month_weekday_last&lt;/code&gt; が提供される.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;md&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;February&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;is_same&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;decltype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;md&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month_day&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;mdl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;February&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;last&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;// mdl is the last day of February of an as yet unspecified year&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mdl&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;February&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;is_same&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;decltype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mdl&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month_day_last&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;constxpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;mw&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;February&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;Sunday&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;is_same&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;decltype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mw&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month_weekday&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;mwl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;February&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;Sunday&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;last&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;is_same&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;decltype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mwl&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month_weekday_last&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;ym&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;February&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;is_same&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;decltype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ym&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;year_month&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;ymd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;February&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;is_same&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;decltype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ymd&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;year_month_day&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;ymdl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;February&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;last&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;is_same&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;decltype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ymdl&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;year_month_day_last&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;ymw&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;February&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;Sunday&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;is_same&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;decltype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ymw&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;year_month_weekday&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;ymwl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;February&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;last&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;static_assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;is_same&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;decltype&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ymwl&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;year_month_day_last&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;フルカレンダー型, 部分カレンダー型, &lt;code&gt;sys_days&lt;/code&gt;型の全てで, &lt;code&gt;operator &amp;lt;&amp;lt;&lt;/code&gt;のオーバーロードによる &lt;span class="caps"&gt;IO&lt;/span&gt; ストリームへの出力機能が提供される他, 非メンバ関数として, &lt;code&gt;to_stream&lt;/code&gt;, &lt;code&gt;from_stream&lt;/code&gt; が提供される.
+これらはそれぞれ, 指定されたフォーマットの通りに出力する機能と,&amp;nbsp;指定されたフォーマットを使用して入力ストリームから解析する機能を持つ.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;sys_days&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;Sunday&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 2016-05-29&lt;/span&gt;
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;to_stream&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;%b/%d/%Y %A %T&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;sys_days&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;29&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="n"&gt;min&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// May/29/2016 Sunday 00:30:00&lt;/span&gt;
+
+&lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;is&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;istringstream&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;2016-5-26&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;sys_days&lt;/span&gt;&lt;span class="p"&gt;{};&lt;/span&gt;
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;from_stream&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;in&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;%F&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;is&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fail&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 2016-05-26&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;また, &lt;code&gt;time_of_day&lt;/code&gt;クラスが提供される. これは, &lt;code&gt;hours&lt;/code&gt;, &lt;code&gt;minutes&lt;/code&gt;, &lt;code&gt;seconds&lt;/code&gt;, &lt;code&gt;duration&amp;lt;Rep, Period&amp;gt;&lt;/code&gt; の 4 つに対する特殊化が行われており,
+それぞれ午前 0 時からの時間, 時間:分, 時間:分:秒, 時間:分:秒:&lt;span class="math"&gt;\(X\)&lt;/span&gt;&amp;nbsp;といった書式設定ができる.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;time_of_day&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;hours&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;todh&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;todh&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make12&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;todh&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 1am&lt;/span&gt;
+&lt;span class="n"&gt;todh&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make24&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;todh&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 0100&lt;/span&gt;
+
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;time_of_day&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;minutes&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;todm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="n"&gt;min&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;todm&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make12&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;todm&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 1:30am&lt;/span&gt;
+&lt;span class="n"&gt;todm&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make24&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;todm&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 01:30&lt;/span&gt;
+
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;time_of_day&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;seconds&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;tods&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="n"&gt;min&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;tods&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make12&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;tods&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 1:30:30am&lt;/span&gt;
+&lt;span class="n"&gt;tods&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make24&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;tods&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 01:30:30&lt;/span&gt;
+
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chdono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;time_of_day&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;milliseconds&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;todms&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="n"&gt;min&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="n"&gt;ms&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="n"&gt;todms&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make12&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;todms&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 1:30:30.030am&lt;/span&gt;
+&lt;span class="n"&gt;todms&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make24&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;todms&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 01:30:30.030&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;タイムゾーン&lt;/h3&gt;
+&lt;p&gt;タイムゾーンライブラリは, &lt;a href="http://www.iana.org/time-zones"&gt;&lt;span class="caps"&gt;IANA&lt;/span&gt; Time Zone Database&lt;/a&gt; のパーサーとして提供される&lt;sup id="fnref-2"&gt;&lt;a class="footnote-ref" href="#fn-2"&gt;2&lt;/a&gt;&lt;/sup&gt;.
+&lt;a href="http://www.iana.org/time-zones"&gt;&lt;span class="caps"&gt;IANA&lt;/span&gt; Time Zone Database&lt;/a&gt; には, &lt;span class="caps"&gt;UTC&lt;/span&gt; からのオフセットと地域の省略名&lt;sup id="fnref-3"&gt;&lt;a class="footnote-ref" href="#fn-3"&gt;3&lt;/a&gt;&lt;/sup&gt;が含まれており, さらに該当する場合, 夏時間(サマータイム)のルールも含まれる.
+これを表現した, &lt;code&gt;tzdb&lt;/code&gt;, またバージョンごとの&lt;code&gt;tzdb&lt;/code&gt;のリストとなっている&lt;code&gt;tzdb_list&lt;/code&gt;を介して, 任意の&lt;code&gt;tzdb&lt;/code&gt;にアクセスすることができる.
+&lt;code&gt;tzdb_list&lt;/code&gt;はシングルトンであり, 非メンバ関数&lt;code&gt;get_tzdb_list&lt;/code&gt;からその参照を得て利用する.
+&lt;em onclick="obj=document.getElementById('opentimezones').style; obj.display=(obj.display=='none')?'block':'none';"&gt;
+&lt;a style="font-style: normal; cursor:pointer;"&gt;関連する宣言を下記に抜粋する(クリックで展開).&lt;/a&gt;
+&lt;/em&gt;
+&lt;div id="opentimezones" style="display:none;clear:both;"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+
+&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;local_t&lt;/span&gt; &lt;span class="p"&gt;{};&lt;/span&gt;
+&lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;local_time&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;time_point&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;local_t&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;local_seconds&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;local_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;seconds&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;local_days&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;local_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;days&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sys_info&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;sys_seconds&lt;/span&gt;   &lt;span class="n"&gt;begin&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;sys_seconds&lt;/span&gt;   &lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;seconds&lt;/span&gt;       &lt;span class="n"&gt;offset&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;minutes&lt;/span&gt;       &lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;string&lt;/span&gt;        &lt;span class="n"&gt;abbrev&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;local_info&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;enum&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;unique&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nonexistent&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ambiguous&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;sys_info&lt;/span&gt; &lt;span class="n"&gt;first&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;sys_info&lt;/span&gt; &lt;span class="n"&gt;second&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="k"&gt;enum&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;choose&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;earliest&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;latest&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;time_zone&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;time_zone&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;time_zone&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;time_zone&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;time_zone&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="k"&gt;noexcept&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sys_info&lt;/span&gt;   &lt;span class="n"&gt;get_info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sys_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;st&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;   &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;local_info&lt;/span&gt; &lt;span class="n"&gt;get_info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;local_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="n"&gt;sys_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;common_type&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;seconds&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="n"&gt;to_sys&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;local_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="n"&gt;sys_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;common_type&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;seconds&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="n"&gt;to_sys&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;local_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;choose&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="n"&gt;local_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;typename&lt;/span&gt; &lt;span class="n"&gt;common_type&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;seconds&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="n"&gt;to_local&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sys_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;tzdb&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;string&lt;/span&gt;            &lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;time_zone&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;zones&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;link&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;      &lt;span class="n"&gt;links&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;leap&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;      &lt;span class="n"&gt;leaps&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;time_zone&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nf"&gt;locate_zone&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;string_view&lt;/span&gt; &lt;span class="n"&gt;tz_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;time_zone&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nf"&gt;current_zone&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;tzdb_list&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;atomic&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;tzdb&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;head_&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;nullptr&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;  &lt;span class="c1"&gt;// exposition only&lt;/span&gt;
+&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;const_iterator&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;tzdb&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;front&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="k"&gt;noexcept&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;const_iterator&lt;/span&gt; &lt;span class="nf"&gt;erase_after&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;const_iterator&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;noexcept&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="n"&gt;const_iterator&lt;/span&gt; &lt;span class="nf"&gt;begin&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="k"&gt;noexcept&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;const_iterator&lt;/span&gt; &lt;span class="nf"&gt;end&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;   &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="k"&gt;noexcept&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="n"&gt;const_iterator&lt;/span&gt; &lt;span class="nf"&gt;cbegin&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="k"&gt;noexcept&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;const_iterator&lt;/span&gt; &lt;span class="nf"&gt;cend&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;   &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="k"&gt;noexcept&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;local_time&lt;/code&gt;は&lt;code&gt;local_t&lt;/code&gt;という空の擬似クロック型が指定されており, これは当然 C++ の Clock ライブラリコンセプトを満たしていないが,&amp;nbsp;未定義のタイムゾーンに関するローカル時刻であることを示す.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sys_info&lt;/code&gt;構造体は, &lt;code&gt;time_zone&lt;/code&gt;と&lt;code&gt;sys_time&lt;/code&gt;, または&lt;code&gt;local_time&lt;/code&gt;の組み合わせ, および&lt;code&gt;zoned_time&lt;/code&gt;から取得することができる. 実質的には, &lt;code&gt;time_zone&lt;/code&gt;と&lt;code&gt;sys_time&lt;/code&gt;のペアであり, 低レベル &lt;span class="caps"&gt;API&lt;/span&gt; を表現する. &lt;code&gt;sys_time&lt;/code&gt;から&lt;code&gt;local_time&lt;/code&gt;への通常の変換では, 暗黙的にこの構造体が使用される.&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;begin&lt;/code&gt;, &lt;code&gt;end&lt;/code&gt;フィールドは, &lt;code&gt;time_zone&lt;/code&gt;および&lt;code&gt;time_point&lt;/code&gt;について&lt;code&gt;offset&lt;/code&gt;と&lt;code&gt;abbrev&lt;/code&gt;が&lt;span class="math"&gt;\([\)&lt;/span&gt;&lt;code&gt;begin&lt;/code&gt;, &lt;code&gt;end&lt;/code&gt;&lt;span class="math"&gt;\()\)&lt;/span&gt;&amp;nbsp;であることを示す.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;offset&lt;/code&gt;フィールドは, 関連する&lt;code&gt;time_zone&lt;/code&gt;および&lt;code&gt;time_point&lt;/code&gt;に有効な &lt;span class="caps"&gt;UTC&lt;/span&gt; オフセットを示す(&lt;code&gt;offset = local_time - sys_time&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;save&lt;/code&gt;フィールドは, 通常&lt;code&gt;local_time&lt;/code&gt;と&lt;code&gt;sys_time&lt;/code&gt;の変換では必要のない&amp;#8221;余分な&amp;#8221;情報であるが, サマータイムの対応で必要となる. &lt;code&gt;save != 0min&lt;/code&gt;の場合, この &lt;code&gt;sys_info&lt;/code&gt; はサマータイムの時間帯にあると判断する. &lt;code&gt;offset - save&lt;/code&gt;によって, この&lt;code&gt;time_zone&lt;/code&gt;がサマータイムに対応できていない可能性を導出できる. しかし, この情報は正式なものではなく, そのような情報を確実に取得する唯一の方法は, &lt;code&gt;save == 0min&lt;/code&gt;である&lt;code&gt;sys_info&lt;/code&gt;を返す&lt;code&gt;time_point&lt;/code&gt;と, 確認したい&lt;code&gt;time_zone&lt;/code&gt;を照会することである.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;abbrev&lt;/code&gt;フィールドは, 関連する&lt;code&gt;time_zone&lt;/code&gt;および&lt;code&gt;time_point&lt;/code&gt;に使用される現在の略語を示す. 略語は, &lt;code&gt;time_zone&lt;/code&gt;間で一意でないため, 略語を&lt;code&gt;time_zone&lt;/code&gt;と &lt;span class="caps"&gt;UTC&lt;/span&gt;&amp;nbsp;のオフセットに確実にマッピングすることはできない&lt;/li&gt;
+&lt;li&gt;&lt;span class="caps"&gt;IO&lt;/span&gt; ストリームに対応している. &lt;code&gt;zoned_time zt = { "Asia/Tokyo", system_clock::now() }; std::cout &amp;lt;&amp;lt; zt.get_info() &amp;lt;&amp;lt; '\n';&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;local_info&lt;/code&gt;構造体は, 低レベル &lt;span class="caps"&gt;API&lt;/span&gt; を表す. &lt;code&gt;local_time&lt;/code&gt;から&lt;code&gt;sys_time&lt;/code&gt;への通常の変換では, 暗黙的にこの構造体が使用される.&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;local_time&lt;/code&gt;から&lt;code&gt;sys_time&lt;/code&gt;への変換が唯一(サマータイムでない)で, &lt;code&gt;result == unique&lt;/code&gt; である場合, &lt;code&gt;first&lt;/code&gt;が正しい&lt;code&gt;sys_info&lt;/code&gt;がセットされ, &lt;code&gt;second&lt;/code&gt;が 0&amp;nbsp;で初期化される.&lt;/li&gt;
+&lt;li&gt;変換が存在しない(&lt;code&gt;result == noexistent&lt;/code&gt;)&lt;sup id="fnref4-6"&gt;&lt;a class="footnote-ref" href="#fn-6"&gt;6&lt;/a&gt;&lt;/sup&gt;場合, &lt;code&gt;first&lt;/code&gt;は&lt;code&gt;local_time&lt;/code&gt;の直前で終了する&lt;code&gt;sys_info&lt;/code&gt;がセットされ, &lt;code&gt;second&lt;/code&gt;は&lt;code&gt;local_time&lt;/code&gt;の直後に開始する&lt;code&gt;sys_info&lt;/code&gt;がセットされる.&lt;/li&gt;
+&lt;li&gt;変換が曖昧(&lt;code&gt;result == ambiguous&lt;/code&gt;)&lt;sup id="fnref5-6"&gt;&lt;a class="footnote-ref" href="#fn-6"&gt;6&lt;/a&gt;&lt;/sup&gt;な場合, &lt;code&gt;first&lt;/code&gt;は&lt;code&gt;local_time&lt;/code&gt;の直後に終了する&lt;code&gt;sys_info&lt;/code&gt;がセットされ, &lt;code&gt;second&lt;/code&gt;は&lt;code&gt;local_time&lt;/code&gt;の直前で開始する&lt;code&gt;sys_info&lt;/code&gt;がセットされる.&lt;/li&gt;
+&lt;li&gt;&lt;span class="caps"&gt;IO&lt;/span&gt; ストリームに対応している. &lt;code&gt;std::cout &amp;lt;&amp;lt; get_tzdb().current_zone()-&amp;gt;get_info(local_days{2016y/May/29d}) &amp;lt;&amp;lt; '\n';&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;time_zone&lt;/code&gt;構造体は, 特定の地域の全てのタイムゾーン遷移を表現する. データベースの初期化の過程で, 現在地のタイムゾーン, およびタイムゾーンの情報をなんらかの方法&lt;sup id="fnref-4"&gt;&lt;a class="footnote-ref" href="#fn-4"&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;sup id="fnref2-5"&gt;&lt;a class="footnote-ref" href="#fn-5"&gt;5&lt;/a&gt;&lt;/sup&gt;で構築する. &lt;i&gt;Strong ordering&lt;/i&gt;&lt;sup id="fnref5-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt; を満たす.&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;name&lt;/code&gt;メンバ関数によって, &lt;code&gt;time_zone&lt;/code&gt;の名前&lt;sup id="fnref2-3"&gt;&lt;a class="footnote-ref" href="#fn-3"&gt;3&lt;/a&gt;&lt;/sup&gt;を取得できる.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;get_info&lt;/code&gt;メンバ関数によって, &lt;code&gt;sys_info&lt;/code&gt;, &lt;code&gt;local_info&lt;/code&gt;を取得できる.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;to_sys&lt;/code&gt;メンバ関数によって, &lt;code&gt;sys_time&lt;/code&gt;, &lt;code&gt;local_time&lt;/code&gt;を取得できる.&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;time_zone::to_sys(local_time&amp;lt;Duration&amp;gt; tp) const;&lt;/code&gt;: 少なくとも&lt;code&gt;seconds&lt;/code&gt;と同じぐらいの&lt;code&gt;sys_time&lt;/code&gt;であり, 引数の精度がさらに高ければそれに合わせられる. &lt;code&gt;tp&lt;/code&gt;から&lt;code&gt;sys_time&lt;/code&gt;への変換が曖昧&lt;sup id="fnref-6"&gt;&lt;a class="footnote-ref" href="#fn-6"&gt;6&lt;/a&gt;&lt;/sup&gt;である場合, &lt;code&gt;ambiguous_local_time&lt;/code&gt;例外をスローする&lt;sup id="fnref-7"&gt;&lt;a class="footnote-ref" href="#fn-7"&gt;7&lt;/a&gt;&lt;/sup&gt;. &lt;code&gt;tp&lt;/code&gt;から&lt;code&gt;sys_time&lt;/code&gt;への変換が存在しない&lt;sup id="fnref2-6"&gt;&lt;a class="footnote-ref" href="#fn-6"&gt;6&lt;/a&gt;&lt;/sup&gt;場合, &lt;code&gt;nonexistent_local_time&lt;/code&gt;例外をスローする&lt;sup id="fnref-8"&gt;&lt;a class="footnote-ref" href="#fn-8"&gt;8&lt;/a&gt;&lt;/sup&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;time_zone::to_sys(local_time&amp;lt;Duration&amp;gt; tp, choose z) const;&lt;/code&gt;: 少なくとも&lt;code&gt;seconds&lt;/code&gt;と同じぐらいの&lt;code&gt;sys_time&lt;/code&gt;であり, 引数の精度がさらに高ければそれに合わせられる. &lt;code&gt;tp&lt;/code&gt;から&lt;code&gt;sys_time&lt;/code&gt;への変換が曖昧&lt;sup id="fnref3-6"&gt;&lt;a class="footnote-ref" href="#fn-6"&gt;6&lt;/a&gt;&lt;/sup&gt;があいまいである場合, &lt;code&gt;z == choose::earliest&lt;/code&gt;の場合は, サマータイム以前の&lt;code&gt;sys_time&lt;/code&gt;を返し, &lt;code&gt;z == choose::latest&lt;/code&gt;の場合は, サマータイム以後の&lt;code&gt;sys_time&lt;/code&gt;を返す. &lt;code&gt;tp&lt;/code&gt; が 2 つの &lt;span class="caps"&gt;UTC&lt;/span&gt; &lt;code&gt;time_point&lt;/code&gt;の間に存在しない時間を表す場合, 2 つの &lt;span class="caps"&gt;UTC&lt;/span&gt; &lt;code&gt;time_point&lt;/code&gt;は同じになり, &lt;span class="caps"&gt;UTC&lt;/span&gt; &lt;code&gt;time_point&lt;/code&gt;が返される.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;time_zone::to_local(sys_time&amp;lt;Duration&amp;gt; tp) const;&lt;/code&gt;: &lt;code&gt;tp&lt;/code&gt; と自身の&lt;code&gt;time_zone&lt;/code&gt;に関連づけられた&lt;code&gt;local_time&lt;/code&gt;を返す.    &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tzdb&lt;/code&gt;は, 前述した通り, タイムゾーンデータベースを表現する.&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;version&lt;/code&gt;は, そのデータベースバージョンを表す. &lt;code&gt;zones&lt;/code&gt;, &lt;code&gt;links&lt;/code&gt;, &lt;code&gt;leaps&lt;/code&gt;は, 検索の高速化のために,&amp;nbsp;構築時に昇順ソートされる.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;locate_zone&lt;/code&gt;メンバ関数から, 与えられた&lt;code&gt;string_view&lt;/code&gt;オブジェクトと&lt;code&gt;name()&lt;/code&gt;が等価である&lt;code&gt;time_zone&lt;/code&gt;が見つかった場合, その&lt;code&gt;time_zone&lt;/code&gt;へのポインタを取得できる. そうでない場合, 与えられた&lt;code&gt;string_view&lt;/code&gt;と&lt;code&gt;link.name()&lt;/code&gt;(ここで, &lt;code&gt;link&lt;/code&gt;は後述している&lt;code&gt;time_zone&lt;/code&gt;の代替名を表現するクラスである)が等価である&lt;code&gt;link&lt;/code&gt;が見つかった場合, &lt;code&gt;zone.name() == link.target()&lt;/code&gt;の&lt;code&gt;time_zone&lt;/code&gt;ポインタが取得できる. そうでない場合, &lt;code&gt;runtime_error&lt;/code&gt;例外を送出する. 例外送出以外でこの関数から処理が返るとき, 返される戻り値は必ず有効な&lt;code&gt;time_zone&lt;/code&gt;へのポインタである.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;current_zone&lt;/code&gt;メンバ関数から,&amp;nbsp;コンピューターに設定されたローカルタイムゾーンを取得できる.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tzdb_list&lt;/code&gt;は, &lt;code&gt;tzdb&lt;/code&gt;のアトミックポインターをもつ, &lt;code&gt;tzdb&lt;/code&gt;のシングルトンリストである.　複数のバージョンのデータベースを, 同リストを介して一度に使用することができる. 例:&lt;code&gt;for (auto&amp;amp;&amp;amp; v : get_tzdb_list()) { std::cout &amp;lt;&amp;lt; v &amp;lt;&amp;lt; '\n'; }&lt;/code&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;front&lt;/code&gt;メンバ関数によって, 先頭&lt;code&gt;tzdb&lt;/code&gt;の参照を得ることができる. これは, &lt;code&gt;reload_tzdb&lt;/code&gt;非メンバ関数に対してスレッドセーフである.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;erase_after&lt;/code&gt;メンバ関数によって, 与えられたイテレータの後に参照する&lt;code&gt;tzdb&lt;/code&gt;を消去する. 消去された要素の次の要素を指すイテレータが返される. そのような要素が存在しない場合, メンバ関数&lt;code&gt;end&lt;/code&gt;を呼び出し, その結果を返す. なお, ここで消去された&lt;code&gt;tzdb&lt;/code&gt;を参照することを除いて, ポインター, 参照, イテレータは無効にならない. また, メンバ関数&lt;code&gt;begin&lt;/code&gt;を呼び出し, それによって参照される&lt;code&gt;tzdb&lt;/code&gt;を消去することはできない.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;begin&lt;/code&gt;メンバ関数によって, コンテナ内の最初の&lt;code&gt;tzdb&lt;/code&gt;を参照するイテレータ取得できる. &lt;code&gt;cbegin&lt;/code&gt;メンバ関数は&lt;code&gt;begin&lt;/code&gt;メンバ関数の&lt;code&gt;const&lt;/code&gt;版である.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;end&lt;/code&gt;メンバ関数によって, コンテナ内の最後の&lt;code&gt;tzdb&lt;/code&gt;より 1 つ後ろの位置を参照するイテレータを取得できる. &lt;code&gt;cend&lt;/code&gt;メンバ関数は&lt;code&gt;end&lt;/code&gt;メンバ関数の&lt;code&gt;const&lt;/code&gt;版である.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;get_tzdb_list&lt;/code&gt;非メンバ関数によって, 同リストの参照を得ることができる. 同メンバ関数への呼び出しがデータベースへの最初のアクセスである場合, データベースを初期化する. この呼び出しによってデータベースが初期化された場合, &lt;code&gt;tzdb&lt;/code&gt;を一つ持つ&lt;code&gt;tzdb_list&lt;/code&gt;が構築される. 同メンバ関数を一度に複数のスレッドから呼び出しても競合せず, スレッドセーフである. 何らかの理由で有効なリストの参照を返せず, 1 つ以上の有効な&lt;code&gt;tzdb&lt;/code&gt;を含む場合, &lt;code&gt;runtime_error&lt;/code&gt;例外を送出する.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;get_tzdb&lt;/code&gt;非メンバ関数によって, 同リストの先頭&lt;code&gt;tzdb&lt;/code&gt;の参照を得ることができる(&lt;code&gt;get_tzdb_list().front()&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;locate_zone&lt;/code&gt;非メンバ関数によって, 次の値を得ることができる. なお, これがデータベースへの最初のアクセスである場合, データベースを初期化する. &lt;code&gt;get_tzdb().locate_zone(tz_name);&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;current_zone&lt;/code&gt;非メンバ関数によって, 次の値を得ることができる. &lt;code&gt;get_tzdb().current_zone();&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;i&gt;ローカル&lt;/i&gt;タイムゾーンデータベースは、アプリケーションがデータベースに最初にアクセスするとき, たとえば&lt;code&gt;current_zone()&lt;/code&gt;を介して実装によって提供される.
+アプリケーションが実行されている間, 実装はタイムゾーンデータベースの更新を選択することがある.
+このアップデートは, アプリケーションによって次に挙げる関数を呼び出さない限り, アプリケーションに影響を与えることはない.
+この潜在的に更新されたタイムゾーンデータベースは, &lt;i&gt;リモート&lt;/i&gt;タイムゾーンデータベースと呼ぶ.
+&lt;em onclick="obj=document.getElementById('openremotetimezone').style; obj.display=(obj.display=='none')?'block':'none';"&gt;
+&lt;a style="font-style: normal; cursor:pointer;"&gt;次のように定義される(クリックで展開).&lt;/a&gt;
+&lt;/em&gt;
+&lt;div id="openremotetimezone" style="display:none;clear:both;"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+
+&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;tzdb&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;reload_tzdb&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="nf"&gt;remote_version&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;reload_tzdb&lt;/code&gt;非メンバ関数は, 最初にリモートタイムゾーンデータベースのチェックを行い, ローカルデータベースとリモートデータベースのバージョンが同じである場合はなにもしない. それ以外の場合, リモートデータベースは, &lt;code&gt;get_tzdb_list&lt;/code&gt;非メンバ関数によってアクセスされる&lt;code&gt;tzdb_list&lt;/code&gt;の先頭にプッシュされる. いずれの場合も, &lt;code&gt;get_tzdb_list().front()&lt;/code&gt; が返される. この関数は, &lt;code&gt;get_tzdb_list().front()&lt;/code&gt;と&lt;code&gt;get_tzdb_list().erase_after()&lt;/code&gt;に対してスレッドセーフである. 何らかの理由で有効な&lt;code&gt;tzdb&lt;/code&gt;の参照が戻されない場合, &lt;code&gt;runtime_error&lt;/code&gt;例外が送出される.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;remote_version&lt;/code&gt;非メンバ関数は, 最新のリモートデータベースバージョンの文字列(&lt;code&gt;std::string&lt;/code&gt;)を返す. リモートバージョンが利用できない場合, 空の文字列が返される. 空でない場合, これを&lt;code&gt;get_tzdb_list().version&lt;/code&gt;と比較して,&amp;nbsp;ローカルデータベースとリモートデータベースが同等かどうかをチェックできる.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;zoned_traits&lt;/code&gt;, &lt;code&gt;zoned_time&lt;/code&gt;を利用することで, &lt;code&gt;sys_days&lt;/code&gt;, &lt;code&gt;local_days&lt;/code&gt;といった&lt;code&gt;time_point&lt;/code&gt;を&lt;code&gt;tzdb&lt;/code&gt;データベースと関連付けることができる.
+&lt;em onclick="obj=document.getElementById('openzoned_traits').style; obj.display=(obj.display=='none')?'block':'none';"&gt;
+&lt;a style="font-style: normal; cursor:pointer;"&gt;次のように定義される(クリックで展開).&lt;/a&gt;
+&lt;/em&gt;
+&lt;div id="openzoned_traits" style="display:none;clear:both;"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;chrono&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+
+&lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;T&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;zoned_traits&lt;/span&gt; &lt;span class="p"&gt;{};&lt;/span&gt;
+&lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;gt;&lt;/span&gt;
+&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;zoned_traits&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;time_zone&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;time_zone&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;default_zone&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;time_zone&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nf"&gt;locate_zone&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;string_view&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;zoned_traits&lt;/code&gt;によって, &lt;code&gt;zoned_time&lt;/code&gt;のデフォルトコンストラクタの動作をカスタマイズすることができる.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;zoned_traits&amp;lt;const time_zone*&amp;gt;::default_zone();&lt;/code&gt; は, &lt;code&gt;std::chrono::locate_zone("UTC")&lt;/code&gt; を返す.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zoned_traits&amp;lt;const time_zone*&amp;gt;::locate_zone(string_view name);&lt;/code&gt; は, &lt;code&gt;std::chrono::locate_zone(name)&lt;/code&gt; を返す.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;zoned_time&lt;/code&gt;は, &lt;code&gt;Duration&lt;/code&gt;の精度で, &lt;code&gt;time_zone&lt;/code&gt;と&lt;code&gt;time_point&lt;/code&gt;の論理区切りを表す. &lt;i&gt;Strong equality&lt;/i&gt;&lt;sup id="fnref3-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;を満たす.
+&lt;em onclick="obj=document.getElementById('openzoned_time').style; obj.display=(obj.display=='none')?'block':'none';"&gt;
+&lt;a style="font-style: normal; cursor:pointer;"&gt;次のように定義される(クリックで展開).&lt;/a&gt;
+&lt;/em&gt;
+&lt;div id="openzoned_time" style="display:none;clear:both;"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Duration&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TimeZonePtr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;time_zone&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;zoned_time&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;duration&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;common_type_t&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;seconds&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;TimeZonePtr&lt;/span&gt;        &lt;span class="n"&gt;zone_&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;// exposition only&lt;/span&gt;
+    &lt;span class="n"&gt;sys_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;tp_&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;    &lt;span class="c1"&gt;// exposition only&lt;/span&gt;
+
+&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+             &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;sys_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;st&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;explicit&lt;/span&gt; &lt;span class="nf"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TimeZonePtr&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;explicit&lt;/span&gt; &lt;span class="nf"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;string_view&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Duration2&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration2&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;zt&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;noexcept&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TimeZonePtr&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;sys_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;st&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;string_view&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;sys_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;st&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TimeZonePtr&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;local_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;string_view&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;local_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TimeZonePtr&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;local_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;choose&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;string_view&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;local_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;tp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;choose&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Duration2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TimeZonePtr2&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TimeZonePtr&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;TimeZonePtr2&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;zt&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Duration2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TimeZonePtr2&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TimeZonePtr&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;TimeZonePtr2&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;zt&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;choose&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;string_view&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;zt&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;string_view&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;zt&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;choose&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;sys_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;st&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;local_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;ut&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+             &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;sys_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;   &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;explicit&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="n"&gt;local_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="n"&gt;TimeZonePtr&lt;/span&gt;          &lt;span class="nf"&gt;get_time_zone&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;local_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;get_local_time&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;sys_time&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;duration&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;   &lt;span class="n"&gt;get_sys_time&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;   &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;sys_info&lt;/span&gt;             &lt;span class="nf"&gt;get_info&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;       &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;invariant な&lt;code&gt;zoned_time&amp;lt;Duration&amp;gt;&lt;/code&gt;は常に有効な&lt;code&gt;time_zone&lt;/code&gt;を参照し,&amp;nbsp;曖昧でない時間を表す.&lt;/li&gt;
+&lt;li&gt;デフォルコンストラクタは, &lt;code&gt;zone_&lt;/code&gt;を&lt;code&gt;zoned_traits::default_zone()&lt;/code&gt;で初期化し, &lt;code&gt;tp_&lt;/code&gt;をデフォルト構築して&lt;code&gt;zoned_time&lt;/code&gt;を構築する.&lt;/li&gt;
+&lt;li&gt;コピーコンストラクタは, 関連する&lt;code&gt;time_zone&lt;/code&gt;を転送する. &lt;code&gt;Duration&lt;/code&gt;が&lt;code&gt;noexcept&lt;/code&gt;コピーコンストラクタである場合, &lt;code&gt;zoned_time&amp;lt;Duration&amp;gt;&lt;/code&gt;は&lt;code&gt;noexcept&lt;/code&gt;コピーコンストラクタである.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zoned_time(const sys_time&amp;lt;Duration&amp;gt;&amp;amp; st)&lt;/code&gt;: &lt;code&gt;zone_&lt;/code&gt;を&lt;code&gt;zoned_traits::default_zone&lt;/code&gt;で初期化し, &lt;code&gt;tp_&lt;/code&gt;を&lt;code&gt;st&lt;/code&gt;で初期化して&lt;code&gt;zoned_time&lt;/code&gt;を構築する.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zoned_time(TimeZonePtr z)&lt;/code&gt;: &lt;code&gt;std::move(z)&lt;/code&gt;で&lt;code&gt;zone_&lt;/code&gt;を初期化し, &lt;code&gt;zoned_time&lt;/code&gt;を構築する. このとき, &lt;code&gt;z&lt;/code&gt;は有効な&lt;code&gt;time_zone&lt;/code&gt;を指していなければならない.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zoned_time(string_view name)&lt;/code&gt;: &lt;code&gt;zoned_traits::locate_zone(name)&lt;/code&gt;で&lt;code&gt;zone_&lt;/code&gt;を初期化し, &lt;code&gt;tp_&lt;/code&gt;をデフォルト構築して&lt;code&gt;zoned_time&lt;/code&gt;を構築する.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zoned_time(const zoned_time&amp;lt;Duration2, TimeZonePtr&amp;gt;&amp;amp; y) noexcept&lt;/code&gt;: &lt;code&gt;x == y&lt;/code&gt;となる&lt;code&gt;zoned_time&lt;/code&gt;, &lt;code&gt;x&lt;/code&gt;を構築する.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zoned_time(TimeZonePtr z, const sys_time&amp;lt;Duration&amp;gt;&amp;amp; st)&lt;/code&gt;: &lt;code&gt;zone_&lt;/code&gt;を&lt;code&gt;std::move(z)&lt;/code&gt;で初期化し, &lt;code&gt;tp_&lt;/code&gt;を&lt;code&gt;st&lt;/code&gt;で初期化して&lt;code&gt;zoned_time&lt;/code&gt;を構築する. このとき, &lt;code&gt;z&lt;/code&gt;は有効な&lt;code&gt;time_zone&lt;/code&gt;を指していなければならない.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zoned_time(string_view name, const sys_time&amp;lt;Duration&amp;gt;&amp;amp; st)&lt;/code&gt;: &lt;code&gt;{zoned_traits&amp;lt;TimeZonePtr&amp;gt;::locate_zone(name), st}&lt;/code&gt;と同等の構築を行う.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zoned_time(TimeZonePtr z, const local_time&amp;lt;Duration&amp;gt;&amp;amp; tp)&lt;/code&gt;: &lt;code&gt;zone_&lt;/code&gt;を&lt;code&gt;std::move(z)&lt;/code&gt;で初期化し, &lt;code&gt;tp_&lt;/code&gt;を&lt;code&gt;zone_-&amp;gt;to_sys(t)&lt;/code&gt;で初期化して&lt;code&gt;zoned_time&lt;/code&gt;を構築する. このとき, &lt;code&gt;z&lt;/code&gt;は有効な&lt;code&gt;time_zone&lt;/code&gt;を指していなければならない.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zoned_time(string_view name, const local_time&amp;lt;Duration&amp;gt;&amp;amp; tp)&lt;/code&gt;: &lt;code&gt;{zoned_traits&amp;lt;TimeZonePtr&amp;gt;::locate_zone(name), tp}&lt;/code&gt;と同等の構築を行う.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zoned_time(TimeZonePtr z, const local_time&amp;lt;Duration&amp;gt;&amp;amp; tp, choose c)&lt;/code&gt;:  &lt;code&gt;zoned_&lt;/code&gt;を&lt;code&gt;std::moev(z)&lt;/code&gt;で初期化し, &lt;code&gt;tp&lt;/code&gt;を&lt;code&gt;zone_-&amp;gt;to_sys(t, c)&lt;/code&gt;で初期化して&lt;code&gt;zoned_time&lt;/code&gt;を構築する. このとき, &lt;code&gt;z&lt;/code&gt;は有効な&lt;code&gt;time_zone&lt;/code&gt;を指していなければならない.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zoned_time(string_view name, const local_time&amp;lt;Duration&amp;gt;&amp;amp; tp, choose c)&lt;/code&gt;: &lt;code&gt;{zoned_traits&amp;lt;TimeZonePtr&amp;gt;::locate_zone(name), tp, c}&lt;/code&gt;と同等の構築を行う.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zoned_time(TimeZonePtr z, const zoned_time&amp;lt;Duration2, TimeZonePtr2&amp;gt;&amp;amp; y)&lt;/code&gt;: &lt;code&gt;zone_&lt;/code&gt;を&lt;code&gt;std::move(z)&lt;/code&gt;で初期化し, &lt;code&gt;tp_&lt;/code&gt;を&lt;code&gt;z.tp_&lt;/code&gt;で初期化して&lt;code&gt;zoned_time&lt;/code&gt;を構築する. このとき, &lt;code&gt;z&lt;/code&gt;は有効な&lt;code&gt;time_zone&lt;/code&gt;を指していなければならない.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zoned_time(TimeZonePtr z, const zoned_time&amp;lt;Duration2, TimeZonePtr2&amp;gt;&amp;amp; y, choose)&lt;/code&gt;: &lt;code&gt;{z, y}&lt;/code&gt;と同等の構築を行う. このとき, &lt;code&gt;z&lt;/code&gt;は有効な&lt;code&gt;time_zone&lt;/code&gt;を指していなければならない. &lt;code&gt;choose&lt;/code&gt;パラメータを渡すことができるが,&amp;nbsp;これによって挙動が変わることはない.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zoned_time(string_view name, const zoned_time&amp;lt;Duration&amp;gt;&amp;amp; y)&lt;/code&gt;: &lt;code&gt;{zoned_traits&amp;lt;TimeZonePtr&amp;gt;::locate_zone(name), y}&lt;/code&gt;と同等の構築を行う.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;zoned_time(string_view name, const zoned_time&amp;lt;Duration&amp;gt;&amp;amp; y, choose c)&lt;/code&gt;: &lt;code&gt;{locate_zone(name), y, c}&lt;/code&gt;と同等の構築を行う. &lt;code&gt;choose&lt;/code&gt;パラメータを渡すことができるが,&amp;nbsp;これによって挙動が変わることはない.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;operator=(const local_time&amp;lt;Duration&amp;gt;&amp;amp; lt)&lt;/code&gt;: 代入後, &lt;code&gt;get_local_time() == lt&lt;/code&gt;となるよう代入し&lt;code&gt;*this&lt;/code&gt;を返す. この代入は, &lt;code&gt;get_time_zone&lt;/code&gt;の戻り値には影響しない.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;operator sys_time&amp;lt;duration&amp;gt;() const&lt;/code&gt;: &lt;code&gt;get_sys_time()&lt;/code&gt;を返す.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;operator local_time&amp;lt;duration&amp;gt;() const&lt;/code&gt;: &lt;code&gt;get_local_time()&lt;/code&gt; を返す.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;get_time_zone&lt;/code&gt;メンバ関数によって, &lt;code&gt;zone_&lt;/code&gt;のポインタを取得できる.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;get_local_time&lt;/code&gt;メンバ関数によって, 構築時に設定されたタイムゾーンでの&lt;code&gt;local_time&lt;/code&gt;オブジェクトを取得できる(&lt;code&gt;retunr zone_-&amp;gt;to_local(tp_);&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;get_sys_time&lt;/code&gt;メンバ関数によって, 構築時に設定されたタイムゾーンでの&lt;code&gt;sys_time&lt;/code&gt;オブジェクトを取得できる(&lt;code&gt;return tp_;&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;get_info&lt;/code&gt;メンバ関数によって, 構築時に設定されたタイムゾーンでの&lt;code&gt;sys_info&lt;/code&gt;オブジェクトを取得できる(&lt;code&gt;return zone_-&amp;gt;get_info(tp_);&lt;/code&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;同ライブラリを利用して, 例えば次のように, ある日時の東京の時間帯を得ることができる&lt;sup id="fnref-5"&gt;&lt;a class="footnote-ref" href="#fn-5"&gt;5&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;tp1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;sys_days&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;29&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="n"&gt;min&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;153&lt;/span&gt;&lt;span class="n"&gt;ms&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 2016-05-29 07:30:06.153 UTC&lt;/span&gt;
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;zoned_time&lt;/span&gt; &lt;span class="n"&gt;zt1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Asia/Tokyo&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tp1&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;zt1&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 2016-05-29 16:30:06.153 JST&lt;/span&gt;
+
+&lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;tp2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;local_days&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;2016&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;May&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;29&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="n"&gt;min&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;153&lt;/span&gt;&lt;span class="n"&gt;ms&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 2016-05-29 07:30:06.153 JTC&lt;/span&gt;
+&lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;zt2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;zoned_time&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Asia/Tokyo&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tp2&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;zt&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// 2016-05-29 07:30:06.153 JST&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;leap&lt;/code&gt;は, タイムゾーンデータベースの初期化時に構築され, タイムゾーンデータベースに格納されるクラスであり, 主に閏秒を扱うクラスである. 同クラスは, &lt;i&gt;Strong ordering&lt;/i&gt;&lt;sup id="fnref4-1"&gt;&lt;a class="footnote-ref" href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;を満たす.
+&lt;em onclick="obj=document.getElementById('openclassleap').style; obj.display=(obj.display=='none')?'block':'none';"&gt;
+&lt;a style="font-style: normal; cursor:pointer;"&gt;次のように定義される(クリックで展開).&lt;/a&gt;
+&lt;/em&gt;
+&lt;div id="openclassleap" style="display:none;clear:both;"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;leap&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;sys_seconds&lt;/span&gt; &lt;span class="n"&gt;date_&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  &lt;span class="c1"&gt;// exposition only&lt;/span&gt;
+&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;leap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;leap&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;            &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;leap&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;leap&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="c1"&gt;// Undocumented constructors&lt;/span&gt;
+    &lt;span class="n"&gt;sys_seconds&lt;/span&gt; &lt;span class="nf"&gt;date&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;date&lt;/code&gt;メンバ関数によって, &lt;code&gt;date_&lt;/code&gt;を取得できる. &lt;code&gt;date_&lt;/code&gt;には閏秒挿入の日付が格納されている.&lt;/li&gt;
+&lt;li&gt;閏秒挿入の全ての日付を&lt;code&gt;for (auto&amp;amp; l : get_tzdb().leaps) std::cout &amp;lt;&amp;lt; l.date() &amp;lt;&amp;lt; '\n';&lt;/code&gt;で確認できる.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;またタイムゾーンデータベースの構築時に作成される, &lt;code&gt;time_zone&lt;/code&gt;の代替名を表現する&lt;code&gt;link&lt;/code&gt;というクラスも提供される.&lt;/p&gt;
+&lt;h3&gt;Clock&lt;/h3&gt;
+&lt;p&gt;新たに &lt;code&gt;utc_clock&lt;/code&gt;, &lt;code&gt;tai_clock&lt;/code&gt;, &lt;code&gt;gps_clock&lt;/code&gt;, &lt;code&gt;file_clock&lt;/code&gt; の 4 つのクロック, 
+また, その&lt;code&gt;time_point&lt;/code&gt;型のエイリアス(&lt;code&gt;utc_time&lt;/code&gt;, &lt;code&gt;utc_seconds&lt;/code&gt;, &lt;code&gt;tai_time&lt;/code&gt;, &lt;code&gt;tai_seconds&lt;/code&gt;, &lt;code&gt;gps_time&lt;/code&gt;, &lt;code&gt;gps_seconds&lt;/code&gt;)&amp;nbsp;が提供される.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;utc_clock&lt;/code&gt; は, 協定世界時(&lt;span class="caps"&gt;UTC&lt;/span&gt;)を表現するクロックであり, 1970 年 1 月 1 日木曜日午後 00:00:00 分からの時間を測定する. これには,&amp;nbsp;閏秒が含まれる.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tai_clock&lt;/code&gt;は, 国際原始時計(&lt;span class="caps"&gt;TAI&lt;/span&gt;)を表現するクロックであり, 1958 年 1 月 1 日 00:00:00 からの時間を測定し, この日の &lt;span class="caps"&gt;UTC&lt;/span&gt;(1957-12-31 23:59:50 &lt;span class="caps"&gt;UTC&lt;/span&gt;)よりも 10 秒前にオフセットされている. これには, 閏秒が含まれない&lt;sup id="fnref-9"&gt;&lt;a class="footnote-ref" href="#fn-9"&gt;9&lt;/a&gt;&lt;/sup&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;gps_clock&lt;/code&gt;は &lt;span class="caps"&gt;GPS&lt;/span&gt; 時刻を表現するクロックであり, &lt;span class="caps"&gt;UTC&lt;/span&gt; 1980 年 1 月 6 日 00:00:00 からの時間を測定する. 閏秒は含まれない&lt;sup id="fnref-10"&gt;&lt;a class="footnote-ref" href="#fn-10"&gt;10&lt;/a&gt;&lt;/sup&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;file_clock&lt;/code&gt;は, C++20 で追加されたエイリアス, &lt;code&gt;using file_time_type = std::chrono::time_point&amp;lt;std::chrono::file_clock&amp;gt;;&lt;/code&gt;で利用されるファイルクロックである&lt;sup id="fnref-11"&gt;&lt;a class="footnote-ref" href="#fn-11"&gt;11&lt;/a&gt;&lt;/sup&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;試用&lt;/h3&gt;
+&lt;p&gt;同ライブラリを利用した任意月のカレンダーを出力するプログラムは, &lt;a href="http://d.hatena.ne.jp/yohhoy/20180322/p1"&gt;既にあった&lt;/a&gt;のだが, 特別何か別のものは思いつかないので,
+とりあえず,&amp;nbsp;任意年の全ての月のカレンダーを出力するプログラムを書いて試用.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;algorithm&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;array&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;chrono&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;iomanip&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;utility&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+
+&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;ns&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+
+&lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;class&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;weeks_init&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;template&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;weeks_init&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;index_sequence&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;weeks_init&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weekday&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;...(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;()()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="k"&gt;noexcept&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{{&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weekday&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;}...&lt;/span&gt; &lt;span class="p"&gt;}};&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;weeks&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;weeks_init&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;make_index_sequence&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;()();&lt;/span&gt;
+
+&lt;span class="kr"&gt;inline&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;print_weeks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ostream&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;sc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;copy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;begin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weeks&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weeks&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ostream_iterator&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;sc&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weekday&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;  &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+    &lt;span class="n"&gt;os&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="c1"&gt;// namespace ns&lt;/span&gt;
+
+&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;print_calendar_year&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;explicit&lt;/span&gt; &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="n"&gt;print_calendar_year&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;year&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;noexcept&lt;/span&gt;
+        &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;y_&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;
+
+    &lt;span class="k"&gt;friend&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ostream&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ostream&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;print_calendar_year&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;this_&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono_literals&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;sc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;constexpr&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;width&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1u&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;uweek&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sc&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weekday&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;sc&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;sys_days&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;this_&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;y_&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sc&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;January&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;}});&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="mi"&gt;12u&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;lastday&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;this_&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;y_&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sc&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sc&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;last&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;day&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+            &lt;span class="n"&gt;os&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;setw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ns&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;weeks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;width&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;sc&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;month&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;ns&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;print_weeks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;os&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;setw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;width&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+
+            &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="n"&gt;k&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(;&lt;/span&gt; &lt;span class="n"&gt;k&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;uweek&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;setw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;width&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot; &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sc&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;day&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt; &lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="n"&gt;lastday&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;os&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;setw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;width&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                    &lt;span class="n"&gt;k&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                    &lt;span class="n"&gt;os&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="p"&gt;}&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;uweek&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;year&lt;/span&gt; &lt;span class="n"&gt;y_&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;print_calendar_year&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;chrono&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;year&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;2000&lt;/span&gt;&lt;span class="p"&gt;}}&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;a href="https://wandbox.org/permlink/qdkXXRJFNGPTdDg2"&gt;実行結果&lt;/a&gt;. &lt;br&gt;&lt;/p&gt;
+&lt;p&gt;タイムゾーンに関するサンプルは, &lt;a href="https://howardhinnant.github.io/date/tz.html"&gt;元の実装のドキュメント&lt;/a&gt;で多く取り上げられている. フライトタイムの計算や, &lt;span class="caps"&gt;IANA&lt;/span&gt;&amp;nbsp;タイムゾーンデータベースを利用しないカスタムタイムゾーンを作成する例などが掲示されている.&lt;/p&gt;
+&lt;h3&gt;感想&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;とてもよく作り込まれていて,&amp;nbsp;使いやすそうに感じる. &lt;/li&gt;
+&lt;li&gt;C++ にこのような高レベル &lt;span class="caps"&gt;API&lt;/span&gt; が導入されるのは,&amp;nbsp;少し新鮮.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="footnote"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;
+&lt;p&gt;この一つ前の &lt;span class="caps"&gt;ISO&lt;/span&gt; C++ 委員会による国際会議で C++20 に追加された &lt;a href="http://open-std.org/JTC1/SC22/WG21/docs/papers/2017/p0515r2.pdf"&gt;P0515 Consistent comparison&lt;/a&gt; で挙げられている comparison category types での呼称を用いている. 参照: &lt;a href="https://roki.hateblo.jp/entry/2017/11/27/Consistent/three-way_comparison"&gt;Consistent/three-way comparison&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref2-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref3-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref4-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref5-1" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-2"&gt;
+&lt;p&gt;タイムゾーンライブラリの型とその関係性を示した&lt;a href="https://howardhinnant.github.io/date/tz_types.jpeg"&gt;図&lt;/a&gt;を, 作者のドキュメントページから見ることができる.&amp;#160;&lt;a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-3"&gt;
+&lt;p&gt;&lt;a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"&gt;List of tz database time zones&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref2-3" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-4"&gt;
+&lt;p&gt;&lt;a href="https://github.com/HowardHinnant/date"&gt;元の実装&lt;/a&gt;を見ると, 現在地のタイムゾーン取得においては, &lt;a href="https://github.com/HowardHinnant/date/blob/38c5ca38bb73b292b72e088c31595add564d31f6/src/tz.cpp#L321-L372"&gt;Linux および Mac では特定ファイル(/usr/share/zoneinfo, /usr/share/zoneinfo/uclibc) を読み込み&lt;/a&gt;, &lt;a href="https://github.com/HowardHinnant/date/blob/38c5ca38bb73b292b72e088c31595add564d31f6/src/tz.cpp#L3615-L3631"&gt;Windows ではレジストリ値を読み込んでいる&lt;/a&gt;. レジストリ値から取得されたネイティブな現在のタイムゾーン名が標準のものと一致する保証はなく, 特に Windows の場合, 得られる名前は必ず標準と異なるものであるため, 標準の名前と関連づけるマッピングが行われる. 元の実装では, Windows の場合ではタイムゾーンデータベースの取得の際に, &lt;a href="http://unicode.org/repos/cldr/trunk/common/supplemental/windowsZones.xml"&gt;xml ファイル&lt;/a&gt; を&lt;a href="https://github.com/HowardHinnant/date/blob/38c5ca38bb73b292b72e088c31595add564d31f6/src/tz.cpp#L3263-L3271"&gt;取得している&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref-4" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-5"&gt;
+&lt;p&gt;&lt;a href="https://github.com/HowardHinnant/date"&gt;元の実装&lt;/a&gt;を見ると, &lt;span class="caps"&gt;OS&lt;/span&gt; のタイムゾーンデータベースを利用せず, リモート &lt;span class="caps"&gt;API&lt;/span&gt; があるときは &lt;a href="https://github.com/HowardHinnant/date/blob/38c5ca38bb73b292b72e088c31595add564d31f6/src/tz.cpp#L3243-L3273"&gt;&lt;span class="caps"&gt;OS&lt;/span&gt; 依存またはサードパーティ製のライブラリを利用してデータを取得&lt;/a&gt;し, そうでないとき &lt;span class="caps"&gt;OS&lt;/span&gt; のタイムゾーンデータベースを利用する. &lt;a href="https://github.com/HowardHinnant/date"&gt;元の実装&lt;/a&gt;で &lt;span class="caps"&gt;OS&lt;/span&gt; のタイムゾーンデータベースを試用する際には, &lt;code&gt;DUSE_OS_TZDB=1&lt;/code&gt;をセットしてビルドする. Windows 環境がないので筆者にはわからないが, &lt;a href="https://github.com/HowardHinnant/date/blob/e7e1482087f58913b80a20b04d5c58d9d6d90155/CMakeLists.txt#L51"&gt;Windows では &lt;span class="caps"&gt;OS&lt;/span&gt; のタイムゾーンデータベースを利用できないようだ&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref-5" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref2-5" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-6"&gt;
+&lt;p&gt;サマータイムの開始と終了で, 存在しないローカル時間(&lt;code&gt;nonexistent_local_time&lt;/code&gt;)と重複するローカル時間(&lt;code&gt;ambiguous_local_time&lt;/code&gt;)という概念が生じる.&amp;#160;&lt;a class="footnote-backref" href="#fnref-6" title="Jump back to footnote 6 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref2-6" title="Jump back to footnote 6 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref3-6" title="Jump back to footnote 6 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref4-6" title="Jump back to footnote 6 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;a class="footnote-backref" href="#fnref5-6" title="Jump back to footnote 6 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-7"&gt;
+&lt;p&gt;2016-11-06 01:30:00 &lt;span class="caps"&gt;EDT&lt;/span&gt; は, 2016-11-06 05:30:00 &lt;span class="caps"&gt;UTC&lt;/span&gt; と 2016-11-06 06:30:00 &lt;span class="caps"&gt;UTC&lt;/span&gt;
+ になりうる. &lt;code&gt;try { auto zt = zoned_time{"America/New_York", local_days{Sunday[1]/November/2016} + 1h + 30min}; } catch (const ambiguous_local_time&amp;amp;) { }&lt;/code&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-7" title="Jump back to footnote 7 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-8"&gt;
+&lt;p&gt;2016-03-13 02:30:00 &lt;span class="caps"&gt;EDT&lt;/span&gt; は, 2016-03-13 02:00:00 &lt;span class="caps"&gt;EST&lt;/span&gt; と 2016-03-13 03:00:00 &lt;span class="caps"&gt;EDT&lt;/span&gt; の間にあるため存在しない. どちらも, 2016-03-13 07:00:00 &lt;span class="caps"&gt;UTC&lt;/span&gt; と等価である. &lt;code&gt;try { auto zt = zoned_time{"America/New_York", local_days{Sunday[2]/March/2016} + 2h + 30min}; } catch (const noexistent_local_time&amp;amp;) {}&lt;/code&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-8" title="Jump back to footnote 8 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-9"&gt;
+&lt;p&gt;閏秒が &lt;span class="caps"&gt;UTC&lt;/span&gt; に挿入される度に, &lt;span class="caps"&gt;UTC&lt;/span&gt; は &lt;span class="caps"&gt;TAI&lt;/span&gt; の 1 秒遅れとなる. 1961 年発祥の旧 &lt;span class="caps"&gt;UTC&lt;/span&gt;, 1972 年の特別調整, 1972 年から 2017 年 1 月まで行われた27 回の閏秒調整の過程を踏み, &lt;span class="caps"&gt;UTC&lt;/span&gt; は現在 &lt;span class="caps"&gt;TAI&lt;/span&gt; に対して 37 秒遅れている. 参考: &lt;a href="http://jjy.nict.go.jp/mission/page1.html"&gt;http://jjy.nict.go.jp/mission/page1.html&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref-9" title="Jump back to footnote 9 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-10"&gt;
+&lt;p&gt;&lt;code&gt;tai_clock&lt;/code&gt;同様, &lt;span class="caps"&gt;UTC&lt;/span&gt; に閏秒が挿入されるたびに &lt;span class="caps"&gt;UTC&lt;/span&gt; の 1 秒後を表現することとなる. 2017 年時点で, &lt;span class="caps"&gt;UTC&lt;/span&gt; は &lt;span class="caps"&gt;GPS&lt;/span&gt; の 18 秒前 にある. 余談: &lt;a href="https://nyanchew.com/jp/gps%E3%81%AF%E3%81%A9%E3%81%AE%E3%82%88%E3%81%86%E3%81%AB%E3%81%97%E3%81%A6%E3%81%86%E3%82%8B%E3%81%86%E7%A7%92%E3%82%92%E6%8C%BF%E5%85%A5%E3%81%99%E3%82%8B%E3%81%8B"&gt;&lt;span class="caps"&gt;GPS&lt;/span&gt; が &lt;span class="caps"&gt;UTC&lt;/span&gt; との差分を計算する方法に関して&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref-10" title="Jump back to footnote 10 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-11"&gt;
+&lt;p&gt;&lt;code&gt;file_time_type&lt;/code&gt;は C++17 時点で既にエイリアスとして追加されているが, &lt;code&gt;using file_time_type = std::chrono::time_point&amp;lt;/*trivial-clock*/&amp;gt;;&lt;/code&gt;と記されており, 具体的なクロック型は明記されていなかった.&amp;#160;&lt;a class="footnote-backref" href="#fnref-11" title="Jump back to footnote 11 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn-12"&gt;
+&lt;p&gt;&lt;a href="https://twitter.com/yohhoy/status/985830560013500416"&gt;yohhoy&lt;/a&gt; さんに&lt;code&gt;last&lt;/code&gt;の属する名前空間に関する追加情報を頂いた. ありがとうございます.&amp;#160;&lt;a class="footnote-backref" href="#fnref-12" title="Jump back to footnote 12 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js','color.js','enclose.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: false," +
+        "    messageStyle: 'None'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="C++"></category></entry></feed>

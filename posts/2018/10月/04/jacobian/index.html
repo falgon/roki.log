@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>ヤコビアン - roki.log</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../../../theme/style.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="../../../../../favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/solid.css" integrity="sha384-TbilV5Lbhlwdyc4RuIV/JhD8NR+BfMrvz4BL5QFa2we1hQu6wvREr3v6XSRfCTRp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/brands.css" integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css" integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../../../../theme/js/css_browser_selector.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="roki" />
+        <link href="../../../../../theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+        <link href="../../../../../theme/typogrify.css" rel="stylesheet">
+    <link href="https://falgon.github.io/roki.log/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="roki.log Full Atom Feed" />
+    <link href="https://falgon.github.io/roki.log/feeds/math.rss.xml" type="application/atom+xml" rel="alternate" title="roki.log Categories Atom Feed" />
+
+  </head>
+  <body id="index" class="archive" style="font-family: '游明朝', 'Yu Mincho' , '游明朝体' , 'YuMincho' , 'ヒラギノ明朝 Pro W3' , 'Hiragino Mincho Pro' , 'HiraMinProN-W3', 'HGS明朝E' , 'ＭＳ Ｐ明朝' , 'MS PMincho', serif;">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">👋New blog information / ブログ移転のお知らせ</h4>
+      </div>
+      <div class="modal-body">
+      This blog has been moved to <a href="https://roki.dev/roki.log">new one (roki.dev/roki.log)</a> for 
+      serving you better view. This blog is no longer updated.
+      Thank you for migrating and re-registering your bookmarks.
+      <hr >
+      このブログは, 
+      <a href="https://roki.dev/roki.log">新ブログ (roki.dev/roki.log)</a> 
+      に移転しました。このページの今後の更新はありませんが,
+      移行用, 記録用に残されています。
+      もし宜しければ, 移行, またはブックマークの再登録をよろしくお願いいたします。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+       </div>
+    </div>
+  </div>
+</div>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../../..">roki.log</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li>
+                    <a href="../../../../../pages/about"><i class="fas fa-info-circle" style="margin-right: 4px;"></i>About</a>
+            </li>
+            <li>
+            </li>
+            
+            <li><a href="../../../../../tags.html"><i class="fas fa-tags" style="margin-right: 4px;"></i>Tags</a></li>
+            <li><span>
+                <form class="navbar-search" action="https://falgon.github.io/roki.log/search.html">
+                    <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+    <section id="content" class="article content">
+      <header>
+        <h2 class="entry-title">
+          ヤコビアン
+        </h2>
+        
+        <div class="text-muted">木 04 10月 2018</div>
+      </header>
+<!-- .entry-content -->
+      <div class="entry-content">
+        <p>以前のエントリ, <a href="/roki.log/posts/2018/%209/26/GaussianIntegral/">ガウス積分の公式とその証明</a>で, 
+暗に極座標での微小面積が <span class="math">\(rdrd\theta\)</span>
+であるとして書いていたので, その内容についても一応書いておこうというのと,
+筆者自身の学習/再整理も兼ねて, ヤコビアンに関して書くこととした(<i>ただ, 筆者は数学科でも化学科でも, ましてや理学部系の人でもありません. 極力ないようにはしていますが, もし間違い等ありましたらご教示くださるとありがたいです</i>).</p>
+<h3>極座標の微小面積</h3>
+<p>まず唐突であるが, 直交座標から極座標へ移行する際に,&nbsp;その微小面積はどうなるかについて考察する.</p>
+<div style="text-align:center">
+<img width="500px" src="../../../../../images/2018/September/26/cube_and_cross_section.png" alt="立方体とその断面" />
+</div>
+
+<p>上図<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup>は, \(1\times 1\times 1\) の立方体があって, その断面をそれぞれ極座標と直交座標で示しているだけであるが,
+この断面図のマスの広がり方を見るだけで, 少なくとも極座標における微小面積が \(drd\theta\) とはならないことに納得できる.
+単に \(drd\theta\) としてしまうと, \(r\)&nbsp;が大きくなればなるほど微小面積も伸びて大きくなっていってしまうだろうというラフな想像がつく.</p>
+<p>ここで微小面積を導出するために, \(r,\theta\) をともに少しだけ動かして, その幅をそれぞれ \(\Delta r,\Delta \theta\) で表した, 次のような配置を考える<sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup>.</p>
+<div style="text-align:center">
+<img src="../../../../../images/2018/September/26/smallarea.png" alt="微小面積の導出fig" />
+</div>
+
+<p>\(r\) の距離と \(\theta\) の角度で構成された面積, 
+つまり上図の \(\Delta s\) が微小面積に対応することがわかる. \(\Delta s\) の面積は, 
+単に全体の扇形の面積から, \(r\) と \(\Delta\theta\)&nbsp;で構成された扇形の面積を引けばよいので,</p>
+<p>\[\Delta s=\dfrac{1}{2}\left(r+\Delta r\right)^2\Delta\theta-\dfrac{1}{2}r^2\Delta\theta
+=r\Delta r\Delta\theta+\dfrac{1}{2}\left(\Delta&nbsp;r\right)^2\Delta\theta\]</p>
+<p>\(\displaystyle\lim_{\Delta\theta,\Delta r\to 0} \) を考えれば,
+微小量 \(\Delta r\Delta\theta\) の高次の項を無視してよい.
+よってこれを微小増分に書き換えれば, \(\Delta s\) は \(rdrd\theta\)&nbsp;となることがいえる.</p>
+<p>&#8230;というように, ここまでは幾何学的なイメージを用いて,
+直交座標と極座標間における微小面積の遷移について考察したが,
+異なる座標系への変換をしようとする度にいちいち図などを用いて考察するのは面倒であり,
+従って, より機械的/一般的にこれを実行する手法について考えることは自然な流れと言える.
+よって,&nbsp;以降はそれを主題として話を進めていく.</p>
+<p>ところで微積分では, 今もそうして行ったように, 極限の概念を多大に用いるので,&nbsp;ここで本題に入る前にその定義に関して触れておくこととする.</p>
+<h3>\(\epsilon-\delta\)&nbsp;論法</h3>
+<p>\(\epsilon-\delta\) 論法とは簡単にいえば, 無限小, 無限大といった実数の範囲では定義できない曖昧な概念を, 実数値のみを用いて議論する方法で,&nbsp;同論法上で極限の式との同値関係を示した定義が次のとおりである.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="epsilonDelta-definitionOfLimit" class="disabled">&#92;(\epsilon-\delta&#92;) 論法の定義する極限の式との同値関係</a></div>
+  <div class="panel-body" style="overflow:scroll">
+  &#92;(f&#92;) を実数の部分集合 &#92;(D&#92;) で定義された実数値関数, &#92;(c&#92;) を &#92;(D&#92;) の極限点, &#92;(L&#92;) を実数としたとき,
+  &#92;[\displaystyle
+  \lim_{x\to c}f(x)=L\Leftrightarrow\left(^\forall\epsilon\gt 0,^\exists\delta\gt 0,^\forall x\in D,0\lt\left|x-c\right|\lt\delta\Rightarrow\left|f(x)-L\right|\lt\epsilon\right)&#92;]
+  </div>
+</div>
+
+<p>\(D=[a,b]\) または \(D=\mathbb{R}\) ならば, 閉じた実区間と実数直線は完全集合となり, \(c\) は自動的に極限点であるという条件が満たされるので,
+簡単のためにこれを \(D=\mathbb{R}\) として書き直すと, \(\epsilon-\delta\)&nbsp;論法は</p>
+<p>\[^\forall\epsilon\gt 0,^\exists\delta\gt 0,\ {\rm s.t.}\ ^\forall x\in\mathbb{R},&nbsp;\left|x-c\right|\lt\delta\Rightarrow\left|f(x)-L\right|\lt\epsilon\]</p>
+<p>となる. 日本語で記述すると「任意の実数 \(^\forall x\in\mathbb{R}\) に対して, \(\left|x-c\right|\lt\delta\) を満たすならば, すべての正の実数 \(\epsilon\) に対して
+\(\left|f(x)-L\right|\lt\epsilon\) を満たすような \(\delta\) が存在する.」となる. 
+つまりこの言葉で, 関数 \(f(x)\) が \(x=c\) で連続であることの定義をいうことができるのである.
+これをグラフで表すと, 次のように描けるだろう.
+関数 \(y=f(x)\) のとる値を赤の線として, \(x=c\) のときの Y 座標の値を \(L\) とし,
+いま \(\epsilon\) を適当に取ってきて, \(c\) からの幅 \(\delta\) を \(L\)&nbsp;との幅よりも小さくなるようにとると</p>
+<div style="text-align:center">
+<img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/L%C3%ADmite_01.svg" alt="limite" width="300px" />
+<p style="font-size: 0.3rem;">By User:HiTe [<a href="https://en.wikipedia.org/wiki/en:public_domain">Public domain</a>], <a href="https://commons.wikimedia.org/wiki/File:L%C3%ADmite_01.svg">from Wikimedia&nbsp;Commons</a></p>
+</div>
+
+<p>となり, これは, さきに書いた論理式を満たすことがわかる. 上図の \(\epsilon\) を見ると, この値はそこそこの大きさがあるように見えるが,
+これをさらに小さい値で取ったとしても, \(\delta\) をそれよりもさらに小さい幅で取ることができる(=上の論理式が満たされる).
+従って, 上で描いた関数 \(f(x)\) は \(x=c\) で連続であると言える. 逆に, \(\delta\) をそれよりもさらに小さい幅で取ることができないのならば, それは連続でないといえることもわかる.
+いまこれらを言うのに, 極限の概念を用いることはなかった.
+このようにして, 表向きに極限を用いずとも, 関数の連続性の定義ができたということが, \(\epsilon-\delta\) 論法の主要な存在意義の 1 つである<sup id="fnref-3"><a class="footnote-ref" href="#fn-3">3</a></sup>.</p>
+<p>ところで, この「任意の実数 \(^\forall x\in\mathbb{R}\) に対して, \(\left|x-c\right|\lt\delta\) を満たすならば, すべての正の実数 \(\epsilon\) に対して
+\(\left|f(x)-L\right|\lt\epsilon\) を満たすような \(\delta\) が存在する.」というのは, \(x\) を \(c\) に近づけていくとき, \(f(x)\) 自体が \(L\) と同じであろうがなかろうが,
+\(L\) でない他のどのような値と比べても, より \(L\) に近づいていくものであるともいえる. 
+そのようにより近づいていく値を, その値そのものと同値であるとみなすことが, \(\epsilon-\delta\) 論法における極限であるともいえるのである.
+つまり, \(\epsilon-\delta\) 論法は, <strong>どんなに小さな任意の \(\epsilon\) を考えても, \(\left|x-c\right|\lt\delta\) であるとき,
+\(\left|f(x)-L\right|\lt\epsilon\) になるような \(\delta\) があるならば, 関数 \(f(x)\) の \(x\to c\) の極限値 \(\displaystyle\lim_{x\to c}f(x)\) を \(L\) と同値とみなす</strong>.</p>
+<h3>より一般的な変数変換</h3>
+<p>極限に関して厳密な定義ができたところで, 本題に入るが,
+問題そのものを的確に把握することは, 問題を解く上で最も重要な過程であるので,&nbsp;異なる座標系への移行という行為が一体どういうことなのかについてここで整理しておく. </p>
+<h4>異なる座標系への移行とは何か</h4>
+<p>唐突であるが, \(D\) を \(x,y\) 平面の閉領域として, \[
+\int\int_{D}(x-y)e^{x+y}dxdy, D=\left\{(x,y)|0\leq x+y\leq 2, 0\leq x-y\leq 2\right\}
+\] 
+の積分値を計算せよと言われたら, どのように解けば良いのだろうか. 
+そのまま計算するよりも, \(u=x+y,v=x-y\) とおくと楽なので, 
+いま\(D\) に変わる新しい領域 \(E\) を \(u,v\) 平面の閉領域として \[
+\int\int_{E}ve^ududv, E=\left\{(u,v)|0\leq u\leq 2,0\leq v\leq 2\right\}
+\]
+と書きたくなるが, この積分値は元の領域と等しくない<sup id="fnref-4"><a class="footnote-ref" href="#fn-4">4</a></sup>. 1 次元のときの変数変換を思い出せば, 例えば \(x=\phi(t)\) と変数変換したときに, 
+\[\displaystyle\int_{x_1}^{x_2}f(x)dx\not =\int_{t_1}^{t^2}f(\phi(t))dt\] で \[\displaystyle\int_{x_1}^{x_2}f(x)dx =\int_{t_1}^{t^2}f(\phi(t))\phi&#8217;(t)dt\]
+だったのと同様, 変数変換における双方の対応関係から成る比率で, 埋めあわせをしなければならなかった.
+2 重積分においてこの比率は, 元の領域との<strong>面積比</strong>に相当することになる.
+つまり, その一般解を得ることで,&nbsp;異なる座標系間での移行が可能となるのである.</p>
+<h4>幾何学的なアプローチ</h4>
+<p>微積分学的な言葉を使ったアプローチを行う前に,&nbsp;図形的意味を重視してまず書くこととする.</p>
+<p>そもそも重積分というのは, ある座標系における微小面積と, ある関数 \(f\) との値の積の総和の極限を取ることであった.
+\(u,v\) 座標系というものがあれば, その座標系/定義域における微小面積で, 今述べた操作を行うのである.
+というわけで, まず直交座標から一般の座標系への写像となる関数を, \(x=\phi(u,v), y=\psi(u,v)\)&nbsp;として考察することとする.</p>
+<p>早速であるが, \(u\) とそこから少し動いた \(u+\Delta u\), \(v\) とそこから少し動いた \(v+\Delta v\) から成る四角形について考える.
+これが, \(u,v\) 座標系における微小面積である. 
+この四角形のそれぞれの頂点は, 直交座標の言葉で(\(\phi, \psi\)&nbsp;関数を使って),
+</p>
+<div class="math">\begin{array}{l}
+O\left(\phi(u,v),\psi(u,v)\right) \\\
+A\left(\phi(u+\Delta u, v), \psi(u+\Delta u,v)\right) \\\
+B\left(\phi(u,v+\Delta v), \psi(u,v+\Delta v)\right) \\\
+C\left(\phi(u+\Delta u,v+\Delta v), \psi(u+\Delta,v+\Delta v)\right)
+\end{array}</div>
+<p>
+などと書き表わせる(頂点それぞれに, 適当に記号を割り振った. また, わかり易さのために頂点 \(C\) を書いたが,&nbsp;今回これは使わない).</p>
+<p>さて, これらの頂点から成る四角形は, 極限の基で近似的に平行四辺形となるということを予めここで言ってしまおう. 
+従って, その平行四辺形の面積 \(S\) を求めるために, <span class="math">\(\left(\overrightarrow{OA}, \overrightarrow{OB}\right)\)</span> の行列式を求めることとする<sup id="fnref-5"><a class="footnote-ref" href="#fn-5">5</a></sup>.
+まず, <span class="math">\(\overrightarrow{OA}\)</span> について考える. これは単に, \(A\) の座標から \(O\) の座標を引けば良いが, これは<a href="#PartialDerivative">偏微分</a>そのもので,&nbsp;線形近似により,</p>
+<div class="math">\begin{eqnarray}
+\phi(u+\Delta u, v)-\phi(u,v)&amp;\approx&amp;\dfrac{\partial \phi}{\partial u}\Delta u \\\
+\psi(u+\Delta u, v)-\psi(u,v)&amp;\approx&amp;\dfrac{\partial \psi}{\partial u}\Delta u
+\end{eqnarray}</div>
+<p>と書ける. 従って, <span class="math">\(\overrightarrow{OB}\)</span>&nbsp;についても同様に,</p>
+<div class="math">\begin{eqnarray}
+\overrightarrow{OA}&amp;\approx&amp;\left(\dfrac{\partial \phi}{\partial u}\Delta u,\dfrac{\partial \psi}{\partial u}\Delta u\right) \\\
+\overrightarrow{OB}&amp;\approx&amp;\left(\dfrac{\partial \phi}{\partial v}\Delta v,\dfrac{\partial \psi}{\partial v}\Delta v\right)
+\end{eqnarray}</div>
+<p>と書ける. あとは,&nbsp;これらから成る行列の行列式の絶対値を求めれば良いから,</p>
+<div class="math">\begin{eqnarray}
+S&amp;\approx&amp;\left|{\rm det}\left(
+\begin{array}{cc}
+\dfrac{\partial \phi}{\partial u}\Delta u&amp;\dfrac{\partial \phi}{\partial v}\Delta v \\\
+\dfrac{\partial \psi}{\partial u}\Delta u&amp;\dfrac{\partial \psi}{\partial v}\Delta v
+\end{array}
+\right)\right| \\\
+&amp;\approx&amp;\left|{\rm det}\left(
+\begin{array}{cc}
+\dfrac{\partial \phi}{\partial u}&amp;\dfrac{\partial \phi}{\partial v} \\\
+\dfrac{\partial \psi}{\partial u}&amp;\dfrac{\partial \psi}{\partial v}
+\end{array}
+\right)\right|\Delta u\Delta v
+\end{eqnarray}</div>
+<p>\(\Delta u, \Delta v\) の無限小の極限をとり,&nbsp;微小増分の式に書き換えれば,</p>
+<div class="math">\begin{eqnarray}
+&amp;\approx&amp;\left|{\rm det}\left(
+\begin{array}{cc}
+\dfrac{\partial \phi}{\partial u}&amp;\dfrac{\partial \phi}{\partial v} \\\
+\dfrac{\partial \psi}{\partial u}&amp;\dfrac{\partial \psi}{\partial v}
+\end{array}
+\right)\right|dudv\label{eq:jacobian}\tag{1}
+\end{eqnarray}</div>
+<p>\(\eqref{eq:jacobian}\) の行列式の絶対値がヤコビアンである.
+いま求めた式 \(\eqref{eq:jacobian}\) は,&nbsp;後に述べている全微分といわれる操作に相当している.</p>
+<h4>全微分</h4>
+<p>全微分は, 偏微分に関してもう一度考えることで納得できる.
+(先に線形代数的アプローチで, 偏微分は自明なものとして使ってしまったが)そもそも偏微分はなんだったかといえば, 多変数関数の特定の変数以外を定数と捉えて微分することであった.&nbsp;つまり, </p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="PartialDerivative" class="disabled">偏微分</a></div>
+  <div class="panel-body" style="overflow:scroll">
+&#92;(U&#92;) を &#92;(R^n&#92;) の開部分集合とし, 函数 &#92;(f:U\to R&#92;) に対して,
+&#92;({\bf x}=\left(x_1, \cdots, x_n\right) \in U&#92;) の &#92;(i&#92;) 番目の変数 &#92;(x_i&#92;) における
+&#92;(f&#92;) の偏微分は &#92;[\displaystyle
+\dfrac{\partial}{\partial x_i}f({\bf x}) := \lim_{\Delta x_i\to 0}\dfrac{f\left(x_1,\cdots,x_i+\Delta x_i,\cdots,x_n\right)-f\left(x_1,\cdots,x_i,\cdots,x_n\right)}{\Delta x_i}&#92;]
+  </div>
+</div>
+
+<p>である. 要するに, \(f\) が 2&nbsp;変数関数であれば, 
+</p>
+<div class="math">\begin{eqnarray}
+\frac{\partial f(x, y)}{\partial x} &amp;:=&amp; \lim_{\Delta \to 0} \frac{f(x + \Delta, y) - f(x, y)}{\Delta}\\\
+\frac{\partial f(x, y)}{\partial y} &amp;:=&amp; \lim_{\Delta \to 0} \frac{f(x, y + \Delta) - f(x, y)}{\Delta}
+\end{eqnarray}</div>
+<p>である. これを踏まえて, 2 変数関数における全微分を導出することを考える.
+簡単に言ってしまえば, 
+偏微分が 2 変数以上の関数のただ 1 つを変数とみなして, 
+その微小変化に対する変化量を求めることであったのに対し,
+全微分は, 全ての変数の微小変化に対する変化量を求めることである.
+まず変数 \(x, y\) が各々で微小量 \(\Delta x,\Delta y\) だけ変化するとき, 
+その全体の変化量 \(\Delta f\)&nbsp;を次のように表せる.</p>
+<div class="math">\begin{eqnarray}
+\Delta f&amp;=&amp;f(x+\Delta x, y+\Delta y)-f(x,y) \\\
+&amp;=&amp;f(x+\Delta x, y+\Delta y)-f(x,y+\Delta y)+f(x,y+\Delta y)-f(x,y) \label{eq:first}\tag{2}
+\end{eqnarray}</div>
+<p>式 \(\eqref{eq:first}\)&nbsp;の改行位置を変えるとわかりやすいが,</p>
+<div class="math">\begin{eqnarray}
+\Delta f&amp;=&amp;f(x+\Delta x, y+\Delta y)-f(x,y+\Delta y) \label{eq:second}\tag{3}\\\
+&amp;+&amp;f(x,y+\Delta y)-f(x,y) \label{eq:third}\tag{4}
+\end{eqnarray}</div>
+<p>いま, それぞれの部分に着目すると, \(\eqref{eq:second}\) 部分は \(x\) のみを変化させたときの \(f\) の変化量で,
+\(\eqref{eq:third}\) 部分は \(y\) のみを変化させたときの \(f\) の変化量となっていることがわかる.
+この式 \(\eqref{eq:first}\)&nbsp;をさらに変形させると,</p>
+<div class="math">\begin{eqnarray}
+\displaystyle
+\Delta f&amp;=&amp;\dfrac{f(x+\Delta x, y+\Delta y)-f(x,y+\Delta y)}{\Delta x}\Delta x \\\
+&amp;+&amp;\dfrac{f(x,y+\Delta y)-f(x,y)}{\Delta y}\Delta y
+\end{eqnarray}</div>
+<p>この式が微分の定義式と酷似していることに気づけば, 
+\(\Delta x,\Delta y\) の無限小の極限をとり,&nbsp;微小増分の式に書き換えて,</p>
+<div class="math">\begin{eqnarray}
+\displaystyle
+df&amp;=&amp;\lim_{dx,dy\to 0}\dfrac{f(x+dx, y+dy)-f(x,y+dy)}{dx}dx \label{eq:fourth}\tag{5} \\\
+&amp;+&amp;\lim_{dx,dy\to 0}\dfrac{f(x,y+dy)-f(x,y)}{dy}dy \label{eq:fifth}\tag{6}
+\end{eqnarray}</div>
+<p>\(\displaystyle\lim_{dx,dy\to 0}\) を考えると,
+\(\eqref{eq:fourth}\) 部分はもはや \(\displaystyle\lim_{dx,dy\to 0}\dfrac{f(x+dx, y)-f(x,y)}{dx}\) と同然であるので,
+すべての値 \(\eqref{eq:fourth},\eqref{eq:fifth}\) が, 特定以外の変数を変化させない微分となっていることがわかる.
+ここで, 記号 \(\partial\) を導入して, いまの式を \[df=\dfrac{\partial f}{\partial x}dx+\dfrac{\partial f}{\partial y}dy\label{eq:sixth}\tag{7}\] と書くと, 
+これが全微分/完全微分の定義になる. 
+多変数関数 \(f\) の無限小変化を式 \(\eqref{eq:sixth}\) のように表せるとき, 多変数関数 \(f\)&nbsp;はその変数において全微分可能であるという.</p>
+<h4>全積分とヤコビアン</h4>
+<p>先に \(x=\phi(u,v), y=\psi(u,v)\) としていたので, \(x,y\)&nbsp;の全微分は
+</p>
+<div class="math">\begin{eqnarray}
+dx&amp;=&amp;\dfrac{\partial\phi}{\partial u}du+\dfrac{\partial\phi}{\partial v}dv \\\
+dy&amp;=&amp;\dfrac{\partial\psi}{\partial u}du+\dfrac{\partial\psi}{\partial v}dv
+\end{eqnarray}</div>
+<p>となる.&nbsp;いまこれを行列で表すと,</p>
+<div class="math">\begin{eqnarray}
+\begin{pmatrix}
+dx \\\
+dy
+\end{pmatrix}=
+\begin{pmatrix}
+\dfrac{\partial\phi}{\partial u}&amp;\dfrac{\partial\phi}{\partial u} \\\
+\dfrac{\partial\psi}{\partial v}&amp;\dfrac{\partial\psi}{\partial v}
+\end{pmatrix}
+\begin{pmatrix}
+du \\\
+dv
+\end{pmatrix}
+\end{eqnarray}</div>
+<p>となる.&nbsp;この行列の行列式 </p>
+<div class="math">\begin{eqnarray}
+{\rm det}
+\left(
+\begin{array}{cc}
+\dfrac{\partial\phi}{\partial u}&amp;\dfrac{\partial\phi}{\partial v} \\\
+\dfrac{\partial\psi}{\partial u}&amp;\dfrac{\partial\psi}{\partial v}
+\end{array}
+\right)
+\end{eqnarray}</div>
+<p>はヤコビアンといわれ(\(\eqref{eq:jacobian}\) と同じ), \(\dfrac{\partial(\phi,\psi)}{\partial{u,v}}\), また \({\rm J}(u, v)\) と表される.&nbsp;一般に,</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="Jacobian" class="disabled">ヤコビアン</a></div>
+  <div class="panel-body" style="overflow:scroll">
+  &#92;(n&#92;) 変数関数の全微分を行列で表した式
+\begin{eqnarray}
+\begin{pmatrix}
+f_1 &#92;\
+\vdots &#92;\
+f_n
+\end{pmatrix}=
+\begin{pmatrix}
+\dfrac{\partial f_1}{\partial x_1}&\cdots&\dfrac{\partial f_1}{\partial x_n} &#92;\
+\vdots&\ddots&\vdots &#92;\
+\dfrac{\partial f_n}{\partial x_1}&\cdots&\dfrac{\partial f_n}{\partial x_n}
+\end{pmatrix}
+\begin{pmatrix}
+dx_1 &#92;\
+\vdots &#92;\
+dx_n
+\end{pmatrix}
+\end{eqnarray}
+の行列の行列式
+\begin{eqnarray}
+{\rm det}\left(
+\begin{array}{ccc}
+\dfrac{\partial f_1}{\partial x_1}&\cdots&\dfrac{\partial f_1}{\partial x_n} &#92;\
+\vdots&\ddots&\vdots &#92;\
+\dfrac{\partial f_n}{\partial x_1}&\cdots&\dfrac{\partial f_n}{\partial x_n}
+\end{array}\right)
+\end{eqnarray}
+を &#92;(\dfrac{\partial(f_1,\cdots,f_n)}{\partial(x_1,\cdots,x_n)}&#92;) また &#92;({\rm J}(x_1,\cdots,x_n)&#92;) と書く.
+  </div>
+</div>
+
+<p>冒頭で述べた直交座標から極座標への変換をこのヤコビアンを使って導くならば,&nbsp;まず二次元直交座標系から二次元極座標系への対応関係は, </p>
+<div class="math">\begin{eqnarray}
+\begin{pmatrix}
+x \\ y
+\end{pmatrix}= 
+\begin{pmatrix}
+r \cos\theta \\  r \sin\theta
+\end{pmatrix}
+\end{eqnarray}</div>
+<p>で, 二次元極座標の変数は \(r, \theta\)&nbsp;なのでこれをヤコビアンに与えて,</p>
+<div class="math">\begin{eqnarray}
+J(r,\theta)={\rm det}\left(\begin{array}{cc}
+\cos\theta &amp; -r\sin\theta \\\
+\sin\theta &amp; r\cos\theta
+\end{array}\right)=r
+\end{eqnarray}</div>
+<p>一般の 2&nbsp;重積分は</p>
+<p>\[\int\int_D f(x,y)dxdy=\int\int_E f\left(\phi(u,v),\psi(u,v)\right)J(u,v)dudv\] なので, 
+極座標における全体の微小面積は \(rdrd\theta\) となり, 冒頭で行った図形的解釈のもとに導き出した解と一致することがわかる.&nbsp;「異なる座標系への移行とは何か」の冒頭で挙げた例題</p>
+<p>\[\int\int_{D}(x-y)e^{x+y}dxdy, D=\left\{(x,y)|0\leq x+y\leq 2, 0\leq x-y\leq&nbsp;2\right\}\]</p>
+<p>も, \(u=x+y, v=x-y\)&nbsp;とおいてヤコビアンに与えれば,</p>
+<div class="math">\begin{eqnarray}
+{\rm J}(u,v)&amp;=&amp;{\rm det}\left(\begin{array}{rr} \dfrac{1}{2}&amp;\dfrac{1}{2} \\\
+\dfrac{1}{2}&amp;-\dfrac{1}{2}\end{array}\right)&amp;=&amp;-\dfrac{1}{2}
+\end{eqnarray}</div>
+<p>絶対値を考えれば良いので,</p>
+<div class="math">\begin{eqnarray}
+&amp;=&amp;\left|{\rm det}\left(\begin{array}{rr} \dfrac{1}{2}&amp;\dfrac{1}{2} \\\ \dfrac{1}{2}&amp;-\dfrac{1}{2}\end{array}\right)\right|&amp;=&amp;\dfrac{1}{2}
+\end{eqnarray}</div>
+<div class="math">\begin{eqnarray}
+\therefore\int\int_D(x-y)e^{x+y}dxdy&amp;=&amp;\int^2_0\int^2_0ve^u\dfrac{1}{2}dudv \\\
+&amp;=&amp;\dfrac{1}{2}\int^2_0\left[ve^u\right]^2_0dv \\\
+&amp;=&amp;\dfrac{1}{2}\int^2_0\left(ve^2-v\right)dv \\\
+&amp;=&amp;\dfrac{1}{2}\left[\dfrac{e^2}{2}v^2-\dfrac{1}{2}v^2\right]^2_0 \\\
+&amp;=&amp;e^2-1
+\end{eqnarray}</div>
+<h3>参考文献</h3>
+<ul>
+<li><span class="dquo">&#8220;</span><a href="http://mathforum.org/library/drmath/view/74707.html">Why Does dxdy = rdrd(theta)? Why Not Just drd(theta)?</a>&#8221; 2018 年 10 月 4&nbsp;日アクセス.</li>
+<li>「<a href="http://simanezumi1989.hatenablog.com/entry/2015/06/22/133411">GeoGebraを使ってε-δ論法を可視化してみた</a>」 2018 年 10 月 4&nbsp;日アクセス.</li>
+<li>「<a href="https://jsciencer.com/unimath/bisekibun/3611/" name="ref1">微分の順序</a>」 2018 年 10 月 4 日アクセス.
+<li>「<a href="http://eman-physics.net/analytic/total_dif.html">全微分</a>」 2018 年 10 月 4 日アクセス.
+<li><span class="dquo">&#8220;</span><a href="https://euler.genepeer.com/determinants">The Jacobian <span class="amp">&amp;</span> Determinants - Euler, Erdős</a>&#8221; 2018 年 10 月 4 日アクセス.
+</ul>
+
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn-1">
+<p>図は matplotlib 等で<a href="https://gist.github.com/falgon/e867c610ebdf957a827e2d26bd2ea451">生成</a>.&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn-2">
+<p>図は <a href="https://www.draw.io/">draw.io</a> で作成.&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn-3">
+<p>完全に蛇足であるが, 連続性の定義は, 他の様々な前提のための重要な要素となりうる. 例えば, いま, \(f_x:=\dfrac{\partial f}{\partial x}, f_y:=\dfrac{\partial f}{\partial y}\) という記法を導入すると, 関数 \(f(x,y)\) の偏導関数 \(f_{x}(x,y), f_{y}(x,y)\) がそれぞれ偏微分可能であるとき, 4 つの 2 次偏導関数, <div class="math">\begin{eqnarray} f_{xx}&amp;=&amp;\dfrac{\partial^2f}{\partial x^2}&amp;=&amp;\dfrac{\partial}{\partial x}\dfrac{\partial f}{\partial x} \\\ f_{xy}&amp;=&amp;\dfrac{\partial^2f}{\partial y\partial x}&amp;=&amp;\dfrac{\partial}{\partial y}\dfrac{\partial f}{\partial x} \\\ f_{yx}&amp;=&amp;\dfrac{\partial^2f}{\partial x\partial y}&amp;=&amp;\dfrac{\partial}{\partial x}\dfrac{\partial f}{\partial y} \\\ f_{yy}&amp;=&amp;\dfrac{\partial^2f}{\partial y^2}&amp;=&amp;\dfrac{\partial}{\partial y}\dfrac{\partial f}{\partial y} \\\ \end{eqnarray}</div> を考えることができるが,  \(f\) にこの \(f_{xy}, f_{yx}\) が存在して, ともに連続であるといえれば, 偏微分の順序交換法則(\(f_{xy}=f_{yx}\)) が成り立つことを示せる. この証明は, <a href="https://ja.wikipedia.org/wiki/%E5%B9%B3%E5%9D%87%E5%80%A4%E3%81%AE%E5%AE%9A%E7%90%86">平均値の定理</a>を補題として証明した上で行わなければならなく大変だが, <a href="#ref1">参考文献</a>にわかりやすい証明がされている.&#160;<a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn-4">
+<p>正しい解答は末尾にて.&#160;<a class="footnote-backref" href="#fnref-4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn-5">
+<p>補足: 2 つの二次元ベクトル \(a_1, a_2\) から成る 2 次正方行列の行列式の絶対値は, \(a_1,a_2\) が定める平行四辺形の面積に等しいのであった.&#160;<a class="footnote-backref" href="#fnref-5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js','color.js','enclose.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: false," +
+        "    messageStyle: 'None'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+      </div>
+<!-- /.entry-content -->
+      <footer class="post-info text-muted">
+        <button type="button" class="btn btn-default">          
+          <a href="../../../../../category/math.html"><div class="fa fa-lg fa-folder-open"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/math.html"><div class="fa fa-lg fa-tag"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/python.html"><div class="fa fa-lg fa-tag"></div> Python</a>
+        </button>
+      </footer>
+      <!-- /.post-info -->
+    <!-- Comment BEGIN -->
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'roki-log';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <!-- Comment END -->
+    </section>
+    </div>
+<footer class="footer">
+      <div class="container">
+          <p class="footer-text">&copy; <a href="../../../../..">roki.log</a> powered by 
+          <a href="https://getpelican.com/">pelican</a> and 
+          <a href="https://github.com/falgon/nikhil-theme">nikhil-theme (forked)</a><br>
+              <small>  <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>, except where indicated otherwise.
+</small>
+            </p>
+   </div>
+</footer>    <script src="../../../../../theme/js/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-116653080-1', 'auto');
+      ga('send', 'pageview');
+       $('#myModal').modal({show: true});
+
+    </script>
+  </body>
+</html>

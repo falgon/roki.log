@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <title>ブール代数 - roki.log</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../../../theme/style.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="../../../../../favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/solid.css" integrity="sha384-TbilV5Lbhlwdyc4RuIV/JhD8NR+BfMrvz4BL5QFa2we1hQu6wvREr3v6XSRfCTRp" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/brands.css" integrity="sha384-7xAnn7Zm3QC1jFjVc1A6v/toepoG3JXboQYzbM0jrPzou9OFXm/fY6Z/XiIebl/k" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/fontawesome.css" integrity="sha384-ozJwkrqb90Oa3ZNb+yKFW2lToAWYdTiF1vt8JiH5ptTGHTGcN7qdoR1F95e0kYyG" crossorigin="anonymous">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../../../../theme/js/css_browser_selector.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="roki" />
+        <link href="../../../../../theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+        <link href="../../../../../theme/typogrify.css" rel="stylesheet">
+    <link href="https://falgon.github.io/roki.log/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="roki.log Full Atom Feed" />
+    <link href="https://falgon.github.io/roki.log/feeds/math.rss.xml" type="application/atom+xml" rel="alternate" title="roki.log Categories Atom Feed" />
+
+  </head>
+  <body id="index" class="archive" style="font-family: '游明朝', 'Yu Mincho' , '游明朝体' , 'YuMincho' , 'ヒラギノ明朝 Pro W3' , 'Hiragino Mincho Pro' , 'HiraMinProN-W3', 'HGS明朝E' , 'ＭＳ Ｐ明朝' , 'MS PMincho', serif;">
+    <!--[if lt IE 7]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">👋New blog information / ブログ移転のお知らせ</h4>
+      </div>
+      <div class="modal-body">
+      This blog has been moved to <a href="https://roki.dev/roki.log">new one (roki.dev/roki.log)</a> for 
+      serving you better view. This blog is no longer updated.
+      Thank you for migrating and re-registering your bookmarks.
+      <hr >
+      このブログは, 
+      <a href="https://roki.dev/roki.log">新ブログ (roki.dev/roki.log)</a> 
+      に移転しました。このページの今後の更新はありませんが,
+      移行用, 記録用に残されています。
+      もし宜しければ, 移行, またはブックマークの再登録をよろしくお願いいたします。
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">閉じる</button>
+       </div>
+    </div>
+  </div>
+</div>
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../../..">roki.log</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li>
+                    <a href="../../../../../pages/about"><i class="fas fa-info-circle" style="margin-right: 4px;"></i>About</a>
+            </li>
+            <li>
+            </li>
+            
+            <li><a href="../../../../../tags.html"><i class="fas fa-tags" style="margin-right: 4px;"></i>Tags</a></li>
+            <li><span>
+                <form class="navbar-search" action="https://falgon.github.io/roki.log/search.html">
+                    <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+            </li>
+          </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+      </div>
+    </nav>
+    <div class="container">
+    <section id="content" class="article content">
+      <header>
+        <h2 class="entry-title">
+          ブール代数
+        </h2>
+        
+        <div class="text-muted">水 29 5月 2019</div>
+      </header>
+<!-- .entry-content -->
+      <div class="entry-content">
+        <p>ブール代数は古典論理における命題論理と密接に関連している.
+結論からいえば, 両者の違いは歴史的な背景ぐらいであり, 殆どの場合は同等の理論であるということができる<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup>.
+ブール代数はその応用として論理回路の構築に直接役立つことから, 計算機科学, とくにハードウェアの分野において重宝される代数系の 1&nbsp;つである.</p>
+<h3>ブール代数の公理とその定理</h3>
+<p>次に示すのはブール代数の公理系である. 公理系に関する詳細は証明理論 (<span class="caps">TODO</span>)&nbsp;の冒頭を参照のこと.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="boolean_algebra" class="disabled">ブール代数</a></div>
+  <div class="panel-body">
+半順序集合 &#92;(\left(B,\lor,\land,&#8217;,0,1\right)&#92;) が可補分配<a href="https://falgon.github.io/roki.log/posts/2019/%203%E6%9C%88/15/Relation/#lattice_def">束</a>ならば, 
+&#92;(\left(B,\lor,\land,&#8217;,0,1\right)&#92;) はブール代数である.
+すなわち, &#92;(x,y,z\in B&#92;) に対して, 次のすべての公理を満たした &#92;(\left(B,\lor,\land,&#8217;,0,1\right)&#92;) はブール代数である.
+
+<ol>
+<li><a name="boolean_algebra1" class="disabled">可換律</a>: &#92;(x\land y=y\land x,x\lor y=y\lor&nbsp;x&#92;)</li>
+<li><a name="boolean_algebra2" class="disabled">分配律</a>: &#92;(\left(x\lor y\right)\land z=\left(x\land z\right)\lor\left(y\land z\right),\left(x\land y\right)\lor z=\left(x\lor z\right)\land\left(y\lor&nbsp;z\right)&#92;)</li>
+<li><a name="boolean_algebra3" class="disabled">同一律</a>: &#92;(^\forall x\in L&#92;) に対して &#92;(x\land 1=x,x\lor 0=x&#92;). ここで &#92;(1&#92;) は最大限, 単位元である. &#92;(0&#92;) は最小限,&nbsp;零元である.</li>
+<li><a name="boolean_algebra4" class="disabled">補元律</a>: &#92;(^\exists x&#8217;\in L\ {\rm s.t.}\ ^\forall x\in L, x\lor x&#8217;=1, x\land&nbsp;x&#8217;=0&#92;)</li>
+</ol>
+</div>
+</div>
+
+<p>また, この \(1,0\) からのみ成る集合をブール領域, ブール代数の下に書かれた式をブール式,
+\(n\in\mathbb{N}\) 個のブール領域の引数をとり, 1 個のブール領域の値となる関数 \(f:B^n\to B\) をブール関数という.
+例えば, 2 変数ブール関数 \(f\left(x_1,x_2\right)\) では \(x_1,x_2\) がそれぞれ \(1,0\) のいずれかとなるので, 
+\(2^4=16\) 通りの 2 変数ブール式が存在することとなる.
+以下, 演算の優先順序は左結合性で \(&#8216;,\land,\lor\) の順とする. ただし,&nbsp;括弧内の演算はより優先される.</p>
+<p>さてブール代数の公理における乗法 \(\land\) と加法 \(\lor \), および \(1, 0\) をそれぞれ入れ替えると, 再びブール代数の公理である. 
+これは<a href="#dual_def">双対</a>の原理という公理である.
+<div class="panel panel-default">
+  <div class="panel-heading theo"><a name="dual_principle" class="disabled">双対の原理</a></div>
+  <div class="panel-body">
+  ブール代数で成立する文/式は, そこに現れるすべての \(\lor ,\land,0,1\) をそれぞれ \(\land,\lor ,1,0\) で置き換えても成立する.
+  </div>
+</div></p>
+<p>これらの公理から<a href="#complement_unique">補元の一意性</a>, <a href="#idempotence">べき等律</a>, 
+<a href="#bounded">有界律</a>, <a href="#absorption">吸収律</a>, <a href="#associative">結合律</a>, <a href="#involution">対合律</a>, <a href="#de_morgan">ド・モルガンの法則</a>, <a href="#chanon_theorem">シャノンの展開定理</a>が導出可能である. 
+\(x,y,z\in B\)&nbsp;のとき</p>
+<p><a name="complement_unique" class="disabled"><h4>補元の一意性</h4></a></p>
+<p>2 つの \(x\) の補元 \(x&#8217;_1,x&#8217;_2\)&nbsp;を仮定する.</p>
+<div class="math">\begin{eqnarray}
+x'_1&amp;=&amp;x'_1\land1&amp;\left(\because {\rm \href{#boolean_algebra3}{公理 3}:同一律}\right)\\
+&amp;=&amp;x'_1\land\left(x\lor x'_2\right)&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}:補元律}\right)\\
+&amp;=&amp;\left(x'_1\land x\right)\lor \left(x'_1\land x'_2\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理 2}:分配律}\right)\\
+&amp;=&amp;0\lor \left(x'_1\land x'_2\right)&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}:補元律}\right)\\
+&amp;=&amp;\left(x\land x'_2\right)\lor \left(x'_1\land x'_2\right)&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}:補元律}\right)\\
+&amp;=&amp;x'_2\land\left(x\lor x'_1\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理 2}:分配律}\right)\\
+&amp;=&amp;x'_2\land1&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}:補元律}\right)\\
+&amp;=&amp;x'_2&amp;\left(\because {\rm \href{#boolean_algebra3}{公理 3}:同一律}\right)
+\end{eqnarray}</div>
+<p>より \(x\) の補元が一意であることは明らか.&nbsp;\(\square\)</p>
+<p><a name="idempotence" class="disabled"><h4>べき等律</h4></a></p>
+<p><a href="https://falgon.github.io/roki.log/posts/2019/%203%E6%9C%88/15/Relation/#proof1">束の定理</a>より自明.&nbsp;\(\square\)</p>
+<p><a name="bounded" class="disabled"><h4>有界律</h4></a>
+</p>
+<div class="math">\begin{eqnarray}
+x\lor 1&amp;=&amp;\left(x\lor 1\right)\land1&amp;\left(\because {\rm \href{#boolean_algebra3}{公理 3}:同一律}\right)\\
+&amp;=&amp;\left(x\lor 1\right)\left(x\lor x'\right)&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}:補元律}\right)\\
+&amp;=&amp;x\lor \left(1\land x'\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理 2}:分配律}\right)\\
+&amp;=&amp;x\lor x'&amp;\left(\because {\rm \href{#boolean_algebra1}{公理1}, \href{#boolean_algebra3}{公理3}:可換律, 同一律}\right)\\
+&amp;=&amp;1\\
+x\land0&amp;=&amp;x\land x\land x'&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}:補元律}\right)\\
+&amp;=&amp;x\land x'&amp;\left(\because {\rm 定理:\href{#idempotence}{べき等律}}\right)\\
+&amp;=&amp;0&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}:補元律}\right)
+\end{eqnarray}</div>
+<p>
+\(\square\)</p>
+<p><a name="absorption" class="disabled"><h4>吸収律</h4></a></p>
+<div class="math">\begin{eqnarray}
+x\lor x\land y&amp;=&amp;\left(x\land1\right)\lor \left(x\land y\right)&amp;\left(\because {\rm \href{#boolean_algebra3}{公理3}: 同一律}\right)\\
+&amp;=&amp;x\land\left(1\lor y\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理2}:分配律}\right)\\
+&amp;=&amp;x\land1&amp;\left(\because {\rm \href{#boolean_algebra1}{公理 1}: 可換律, 定理: \href{#bounded}{有界律}} \right)\\
+&amp;=&amp;x&amp;\left(\because {\rm\href{#boolean_algebra3}{公理 3}: 同一律}\right)\\
+x\land\left(x\lor y\right)&amp;=&amp;\left(x\lor 0\right)\left(x\lor y\right)&amp;\left(\because {\rm \href{#boolean_algebra3}{公理3}: 同一律}\right)\\
+&amp;=&amp;\left(0\land y\right)\lor x&amp;\left(\because {\rm \href{#boolean_algebra2}{公理2}: 分配律}\right)\\
+&amp;=&amp;x\lor 0&amp;\left(\because \rm{\href{#boolean_algebra1}{公理1}: 可換律,定理: \href{#bounded}{有界律}}\right)\\
+&amp;=&amp;x&amp;\left(\because \rm{\href{#boolean_algebra3}{公理3}: 同一律}\right)
+\end{eqnarray}</div>
+<p>
+\(\square\)</p>
+<p><a name="associative" class="disabled"><h4>結合律</h4></a></p>
+<p>\(A=x\lor \left(y\lor z\right), B=\left(x\lor y\right)\lor z\) とおく.&nbsp;このとき,</p>
+<div class="math">\begin{eqnarray}
+x\land A&amp;=&amp;x\land\left(x\lor \left(y\lor z\right)\right)\\
+&amp;=&amp;x&amp;\left(\because {\rm 定理: \href{#absorption}{吸収律}}\right)\\
+x\land B&amp;=&amp;x\land\left(\left(x\lor y\right)\lor z\right)\\
+&amp;=&amp;x\land\left(x\lor y\right)\lor x\land z&amp;\left(\because {\rm \href{#boolean_algebra2}{公理2}: 分配律}\right)\\
+&amp;=&amp;x\lor x\land z&amp;\left(\because {\rm 定理: \href{#absorption}{吸収律}}\right)\\
+&amp;=&amp;x&amp;\left(\because {\rm 定理: \href{#absorption}{吸収律}}\right)
+\end{eqnarray}</div>
+<p>ゆえに \[x\land A=x\land B=x\label{eq:assl1}\tag{L1}\]&nbsp;また,</p>
+<div class="math">\begin{eqnarray}
+x'\land A&amp;=&amp;x'\land\left(x\lor \left(y\lor z\right)\right)\\
+&amp;=&amp;x'\land x\lor x'\land\left(y\lor z\right)&amp;\left(\because  {\rm \href{#boolean_algebra2}{公理2}: 分配律}\right)\\
+&amp;=&amp;x'\land\left(y\lor z\right)\lor 0&amp;\left(\because {\rm \href{#boolean_algebra1}{公理1}, \href{#boolean_algebra4}{公理 4}: 可換律, 補元律}\right)\\
+&amp;=&amp;x'\land\left(y\lor z\right)&amp;\left(\because {\rm \href{#boolean_algebra3}{公理3}: 同一律}\right)\\
+x'\land B&amp;=&amp;x'\land\left(\left(x\lor y\right)\lor z\right)\\
+&amp;=&amp;x'\land\left(x\lor y\right)\lor x'\land z&amp;\left(\because {\rm \href{#boolean_algebra2}{公理2}: 分配律}\right)\\
+&amp;=&amp;\left(x'\land x\lor x'\land y\right)\lor x'\land z&amp;\left(\because {\rm \href{#boolean_algebra2}{公理2}: 分配律}\right)\\
+&amp;=&amp;\left(0\lor x'\land y\right)\lor x'\land z&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}:補元律}\right)\\
+&amp;=&amp;x'\land y\lor x'\land z&amp;\left(\because {\rm \href{#boolean_algebra3}{公理3}: 同一律}\right)\\
+&amp;=&amp;x'\land\left(y\lor z\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理2}: 分配律}\right)
+\end{eqnarray}</div>
+<p>ゆえに \[x&#8217;\land A=x&#8217;\land B=x&#8217;\land\left(y\lor z\right)\label{eq:assl2}\tag{L2}\]&nbsp;従って,</p>
+<div class="math">\begin{eqnarray}
+A&amp;=&amp;A\land1&amp;\left(\because {\rm \href{#boolean_algebra3}{公理3}: 同一律}\right)\\
+&amp;=&amp;A\land\left(x\lor x'\right)&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}:補元律}\right)\\
+&amp;=&amp;A\land x\lor A\land x'&amp;\left(\because {\rm \href{#boolean_algebra2}{公理2}: 分配律}\right)\\
+&amp;=&amp;x\land A\lor x'\land A&amp;\left(\because {\rm \href{#boolean_algebra1}{公理1}: 可換律}\right)\\
+&amp;=&amp;x\land B\lor x'\land B&amp;\left(\because\eqref{eq:assl1},\eqref{eq:assl2}\ {\rm より}\right)\\
+&amp;=&amp;B\left(x\lor x'\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理2}: 分配律}\right)\\
+&amp;=&amp;B\land1&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}:補元律}\right)\\
+&amp;=&amp;B&amp;\left(\because {\rm \href{#boolean_algebra3}{公理3}: 同一律}\right)
+\end{eqnarray}</div>
+<p>また, 双対の原理より \(x\left(y\land z\right)=\left(x\land y\right)\land&nbsp;z\).</p>
+<p>\(\square\)</p>
+<p><a name="involution" class="disabled"><h4>対合律</h4></a></p>
+<div class="math">\begin{eqnarray}
+\left(x'\right)'&amp;=&amp;\left(x'\right)'\lor 0&amp;\left(\because \rm{\href{#boolean_algebra3}{公理3}: 同一律}\right)\\
+&amp;=&amp;\left(x'\right)'\lor x\land x'&amp;\left(\because {\href{#boolean_algebra4}{公理 4}:補元律}\right)\\
+&amp;=&amp;\left(\left(x'\right)'\lor x\right)\left(\left(x'\right)'\lor x'\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理 2}:分配律}\right)\\
+&amp;=&amp;\left(x\lor \left(x'\right)'\right)\land1&amp;\left(\because {\rm \href{#boolean_algebra1}{公理1}, \href{#boolean_algebra4}{公理 4}:可換律, 補元律}\right)\\
+&amp;=&amp;\left(x\lor \left(x'\right)'\right)\left(x\lor x'\right)&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}: 補元律}\right)\\
+&amp;=&amp;x\lor \left(\left(x'\right)'\land x'\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理2}:分配律}\right)\\
+&amp;=&amp;x\lor 0&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}:補元律}\right)\\
+&amp;=&amp;x&amp;\left(\because {\rm \href{#boolean_algebra3}{公理3}: 同一律}\right)
+\end{eqnarray}</div>
+<p>
+\(\square\)</p>
+<p><a name="de_morgan" class="disabled"><h4>ド・モルガンの法則</h4></a></p>
+<p>\(\left(x\lor y\right)&#8217;=x&#8217;\land y&#8217;\) を示す.
+これが成り立つためには, 式の通り, \(x&#8217;\land y&#8217;\) が \(\left(x\lor y\right)\) の補元でなければならない.
+すなわち, <a href="#boolean_algebra4">公理4</a>: 補元律より \(\left(x\lor y\right)\lor \left(x&#8217;\land y&#8217;\right)=1\) および \(\left(x\lor y\right)\land\left(x&#8217;\land y&#8217;\right)=0\)&nbsp;が同時に成り立つことを示せばよい.</p>
+<div class="math">\begin{eqnarray}
+\left(x\lor y\right)\lor \left(x'\land y'\right)&amp;=&amp;\left(\left(x\lor y\right)\lor x'\right)\left(\left(x\lor y\right)\lor y'\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理2}:分配律}\right)\\
+&amp;=&amp;\left(y\lor \left(x\lor x'\right)\right)\left(x\lor \left(y\lor y'\right)\right)&amp;\left(\because {\rm \href{#boolean_algebra1}{公理1}: 可換律, 定理: \href{#associative}{結合律}}\right)\\
+&amp;=&amp;\left(y\lor 1\right)\left(x\lor 1\right)&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}:補元律}\right)\\
+&amp;=&amp;1\land1&amp;\left(\because {\rm 定理: \href{#bounded}{有界律}} \right)\\
+&amp;=&amp;1&amp;\left(\because {\rm 定理:\href{#idempotence}{べき等律}}\right)\\
+\left(x\lor y\right)\land\left(x'\land y'\right)&amp;=&amp;\left(x'\land y'\right)\land\left(x\lor y\right)&amp;\left(\because {\rm \href{#boolean_algebra1}{公理1}: 可換律}\right)\\
+&amp;=&amp;\left(\left(x'\land y'\right)\land x\right)\lor \left(\left(x'\land y'\right)\land y\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理 2}:分配律}\right)\\
+&amp;=&amp;\left(y'\land\left(x\land x'\right)\right)\lor \left(x'\land\left(y\land y'\right)\right)&amp;\left(\because {\rm \href{#boolean_algebra1}{公理1}: 可換律, 定理: \href{#associative}{結合律}}\right)\\
+&amp;=&amp;\left(y'\lor 0\right)\lor \left(x'\land1\right)&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}: 補元律}\right)\\
+&amp;=&amp;0\lor 0&amp;\left(\because {\rm 定理: \href{#bounded}{有界律}} \right)\\
+&amp;=&amp;0&amp;\left(\because {\rm 定理:\href{#idempotence}{べき等律}}\right)
+\end{eqnarray}</div>
+<p>また, <a href="#dual_def">双対の原理</a>より \(\left(x\land y\right)&#8217;=x&#8217;\lor y&#8217;\).&nbsp;\(\square\)</p>
+<p><a name="chanon_theorem" class="disabled"><h4>シャノンの展開定理</h4></a></p>
+<p>任意の \(n\) 変数ブール関数 \(f\left(x_1,x_2,\cdots,x_n\right)\) を \(x_1\) について,&nbsp;次のように展開できる.
+</p>
+<div class="math">\begin{eqnarray}
+f\left(x_1,x_2,\cdots,x_n\right)&amp;=&amp;\left(x'_1\lor x_1\right)\land f\left(x_1,x_2,\cdots,x_n\right)&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}, \href{#boolean_algebra3}{公理 3} :補元律, 同一律}\right)\\
+&amp;=&amp;x'_1\land f\left(x_1,x_2,\cdots,x_n\right)\lor x_1\land f\left(x_1,x_2,\cdots,x_n\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理 2}:分配律}\right)\\
+&amp;=&amp;x'_1\land f\left(0,x_2,\cdots,x_n\right)\lor x_1\land f\left(1,x_2,\cdots,x_n\right)&amp;\left(\because \href{#chanon_theorem_proof}{以下に証明}\right)
+\end{eqnarray}</div>
+<p>この展開をシャノン展開という.</p>
+<p><a name="chanon_theorem_proof" class="disabled"><strong>証明</strong></a>:<br>
+\(x_1=0\) のとき, \[f\left(0,x_2,\cdots,x_n\right)=1\land f\left(0,x_2,\cdots,x_n\right)\lor 0\land f\left(1,x_2,\cdots,x_n\right)=f\left(0,x_2,\cdots,x_n\right)\]
+\(x_1=1\) のとき, \[f\left(1,x_2,\cdots,x_n\right)=0\land f\left(0,x_2,\cdots,x_n\right)\lor 1\land f\left(1,x_2,\cdots,x_n\right)=f\left(1,x_2,\cdots,x_n\right)\]&nbsp;\(\square\)</p>
+<p>例として, \(f\left(x_1,x_2,x_3\right)=x_1\land x_2\lor x_2\land x_3\lor x_1\land x_3\) を \(x_1\)&nbsp;について展開すると,</p>
+<div class="math">\begin{eqnarray}
+f\left(x_1,x_2,x_3\right)&amp;=&amp;x_1\land x_2\lor x_2\land x_3\lor x_1\land x_3\\
+&amp;=&amp;\left(x'_1\lor x_1\right)\land f\left(x_1,x_2,x_3\right)&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}, \href{#boolean_algebra3}{公理 3} :補元律, 同一律}\right)\\
+&amp;=&amp;x'_1\land f\left(x_1,x_2,x_3\right)\lor x_1\land f\left(x_1,x_2,x_3\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理 2}:分配律}\right)\\
+&amp;=&amp;x'_1\land f\left(0,x_2,x_3\right)\lor x_1\land f\left(1,x_2,x_3\right)&amp;\left(\because {\rm 定理: \href{#chanon_theorem}{シャノンの展開定理}}\right)\\
+&amp;=&amp;x'_1\land x_2\land x_3\lor x_1\land x_2\lor x_2\land x_3\lor x_3&amp;\left(\because {\rm \href{#boolean_algebra3}{公理 3}:同一律}\right)\\
+&amp;=&amp;x'_1\land x_2\land x_3\lor x_1\land x_2\lor x_3&amp;\left(\because {\rm \href{#boolean_algebra1}{公理1}: 可換律, 定理: \href{#absorption}{吸収律}}\right)\\
+\end{eqnarray}</div>
+<p>となる. また<a href="dual_def">双対の原理</a>より, </p>
+<div class="math">\begin{eqnarray}
+f\left(x_1,x_2,\cdots,x_n\right)&amp;=&amp;\left(x_1\land x'_1\right)\lor f\left(x_1,x_2,\cdots,x_n\right)&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}, \href{#boolean_algebra3}{公理 3} :補元律, 同一律}\right)\\
+&amp;=&amp;\left(x_1\lor f\left(x_1,x_2,\cdots,x_n\right)\right)\land\left(x'_1\lor f\left(x_1,x_2,\cdots,x_n\right)\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理 2}:分配律}\right)\\
+&amp;=&amp;\left(x_1\lor f\left(0,x_2,\cdots,x_n\right)\right)\land\left(x'_1\lor f\left(1,x_2,\cdots,x_n\right)\right)&amp;\left(\because {\rm \href{#chanon_theorem_proof}{上記証明}の\href{#dual_def}{双対}}\right)
+\end{eqnarray}</div>
+<p>この展開をシャノン双対展開という.</p>
+<h3>標準形</h3>
+<p>異なる表現のなされたブール式が同値であるかを即座に断定することは, 一般的に困難であることが多い<sup id="fnref-2"><a class="footnote-ref" href="#fn-2">2</a></sup>.
+ここで, ブール式を一意に表す方法が決まっていれば, 即座に同値であるか判断がしやすく, 便利である. 
+ブール代数では主に 2 つの形式が決められており, その形式への変形を標準化, また正規化という.
+以下, \(n\) 変数ブール関数 \(f\left(x_1,x_2,\cdots,x_n\right)\) において, \(x_1,x_2,\cdots,x_n\) を入力変数, また入力変数およびその否定をリテラルという.
+さらに \(n\) 個の入力変数に対し, \(k\) 番目のリテラル \(x_k^{e_k}\ \left(1\leq k\leq n\right)\)&nbsp;を次のように表す.</p>
+<div class="math">\begin{eqnarray}
+x^{e_k}_k=\begin{cases}
+x_k&amp;\left(=x^1_k\right)&amp;e_k=1{\rm\ のとき}\\
+x'_k&amp;\left(=x^0_k\right)&amp;e_k=0{\rm\ のとき}
+\end{cases}
+\end{eqnarray}</div>
+<h4>加法標準形,&nbsp;主加法標準形</h4>
+<p>\(f\left(x_1,x_2,\cdots,x_n\right)\) を \(x_1,x_2\) について<a href="#chanon_theorem">シャノン展開</a>すると,</p>
+<div class="math">\begin{eqnarray}
+f\left(x_1,x_2,\cdots,x_n\right)&amp;=&amp;x'_1\land x'_2\land f\left(0,0,\cdots,x_n\right)\\
+&amp;&amp;\lor x'_1\land x_2\land f\left(0,1,\cdots,x_n\right)\\
+&amp;&amp;\lor x_1\land x'_2\land f\left(1,0,\cdots,x_n\right)\\
+&amp;&amp;\lor x_1\land x_2\land f\left(1,1,\cdots,x_n\right)
+\end{eqnarray}</div>
+<p>となる. 従って, 全入力変数 \(x_1,x_2,\cdots,x_n\) について<a href="#chanon_theorem">シャノン展開</a>すると,</p>
+<div class="math">\begin{eqnarray}
+f\left(x_1,x_2,\cdots,x_n\right)&amp;=&amp;x'_1\land x'_2\land\cdots\land x'_n\land f\left(0,0,\cdots,0\right)\\
+&amp;&amp;\lor x'_1\land x'_2\land\cdots\land x_n\land f\left(0,0,\cdots, 1\right)\\
+&amp;&amp;\lor\cdots\\ 
+&amp;&amp;\lor x_1\land x_2\land\cdots\land x'_n\land f\left(1,1,\cdots,0\right)\\
+&amp;&amp;\lor x_1\land x_2\land\cdots\land x_n\land f\left(1,1,\cdots,1\right)
+\end{eqnarray}</div>
+<p>となる (<a href="#chanon_theorem">シャノンの定理</a>より数学的帰納法により証明できるが, 省略). 
+形式的に書けば,&nbsp;すなわち</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="minimum_term_expansion" class="disabled">最小項展開</a></div>
+  <div class="panel-body">
+  &#92;(n&#92;) 変数ブール関数 &#92;(f\left(x_1,x_2,\cdots,x_n\right)&#92;) のすべての入力変数 &#92;(x_1,x_2,\cdots,x_n&#92;) について, <a href="#chanon_theorem">シャノン展開</a>した形式
+&#92;[f\left(x_1,x_2,\cdots,x_n\right)=\bigvee_{\left(e_1,e_2,\cdots,e_n\right)\in B^n}f\left(e_1,e_2,\cdots,e_n\right)\land\bigwedge_{i=1}^{n}x_i^{e_i}\label{eq:first}\tag{1}&#92;]
+は &#92;(f\left(x_1,x_2,\cdots,x_n\right)&#92;) の最小項展開である<sup id="fnref-3"><a class="footnote-ref" href="#fn-3">3</a></sup>. なお, このときの項数は &#92;(2^n&#92;) となる.
+</div>
+</div>
+
+<p>これを踏まえ,&nbsp;加法標準形および主加法標準形を導入する.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="DNF_PDNF" class="disabled">加法標準形, 主加法標準形</a></div>
+  <div class="panel-body">
+加法標準形 (以下 <span class="caps">DNF</span>) は, ブール式のリテラル, または 2 つ以上のリテラルの積の和のことをいう.
+ここで, 2 つ以上のリテラルの積で同じ入力変数を 2 度以上含まない論理式を基本積, また標準項という. 
+基本積のうち, すべての入力変数を含むブール式を最小項という. すなわち, 式 &#92;(\eqref{eq:first}&#92;) における &#92;(\displaystyle\bigwedge_{i=1}^nx^{e_i}_i&#92;) は最小項である.
+<hr />
+主加法標準形 (principal disjunctive normal form: <span class="caps">PDNF</span>) は, ブール関数を<a href="#minimum_term_expansion">最小項展開</a>した形式, すなわち式 &#92;(\eqref{eq:first}&#92;) の形式である.
+</div>
+</div>
+
+<p>例えば, 否定論理積 \(\mid\) を <span class="caps">PDNF</span> で表すとしよう.
+否定論理和は 2 項演算子なので, その <span class="caps">PDNF</span> は 2&nbsp;変数ブール関数を最小項展開した形となる.</p>
+<p>\[f\left(x_1,x_2\right)=f\left(0,0\right)\land x&#8217;_1\land x&#8217;_2\lor f\left(0,1\right)x&#8217;_1\land x_2\lor f\left(1,0\right)\land x_1\land x&#8217;_2\lor f\left(1,1\right)\land x_1\land&nbsp;x_2\]</p>
+<p>便宜上, 2 項演算子 \(\mid\) を最小項展開した形を \(f_\mid\left(x_1,x_2\right)\) で表すこととする.
+あとは<a href="#truthtable2">真理値表 2</a> の \(\mid\) の列のとおりに \(f_\mid\left(x_1,x_2\right)\)&nbsp;の値を決めてやればよいので</p>
+<div class="math">\begin{eqnarray}
+f_\mid\left(x_1,x_2\right)&amp;=&amp;1\land x'_1\land x'_2\lor 1\land x'_1\land x_2\lor 1\land x_1\land x'_2\lor 0\land x_1\land x_2\\
+&amp;=&amp;x'_1\land x'_2\lor x'_1\land x_2\lor x_1\land x'_2
+\end{eqnarray}</div>
+<p>従って, 否定論理積の <span class="caps">PDNF</span> は \(x&#8217;_1\land x&#8217;_2\lor x&#8217;_1\land x_2\lor x_1\land x&#8217;_2\) となる.
+この操作を振り返ると, 真理値表から <span class="caps">PDNF</span> を書くためには, 結果が \(1\) となっている入力変数の全パターンに対して, 元の入力変数の値が \(1\) ならそのまま, \(0\) ならその補元をとり,
+それらすべての和を取ればよいことがわかる. 
+何故ならば, 結果が \(0\) となる部分は, <a href="#chanon_theorem_proof">シャノンの展開定理の証明</a>でも示したように消えてしまうからである.
+同じようにして, 否定論理和, 排他的論理和も<a href="#truthtable2">真理値表 2</a> の \(\downarrow,\oplus\) の列をみると, \(1\)&nbsp;となる入力のパターンから
+</p>
+<div class="math">\begin{eqnarray}
+f_{\downarrow}\left(x_1,x_2\right)&amp;=&amp;x'_1\land x'_2\\
+f_{\oplus}\left(x_1,x_2\right)&amp;=&amp;x_1\land x'_2\lor x'_1\land x_2\\
+\end{eqnarray}</div>
+<p> 
+となる.
+すなわち, 真理値表で表現できるブール式は <span class="caps">PDNF</span> で表せるということである<sup id="fnref-5"><a class="footnote-ref" href="#fn-5">5</a></sup>.</p>
+<p>次に, 任意の論理式から <span class="caps">PDNF</span> に変換することを考える.
+結論からいうと, 次の手順に従えば <span class="caps">PDNF</span>&nbsp;へ機械的に変換できることが知られている.</p>
+<ol>
+<li>ブール式全体を基本項による積の和の形にする&nbsp;(分配律等を利用)</li>
+<li>最小項でない基本項に対し, その基本項に含まれないすべてのリテラル \(x_i\) について \(\left(x_i\land x&#8217;_i\right)\)&nbsp;を乗ずる</li>
+<li>分配律等に従い展開して,&nbsp;冗長な項を除去する</li>
+</ol>
+<p>以下, <span class="caps">PDNF</span> で表されたブール式を \(f\left(x_1,x_2,\cdots,x_n\right)_{\rm P D N F}\) と書くこととする.
+例えば, ブール式 \(f\left(x_1,x_2\right)=x_1\land x_2\land x_1\lor x_2\) を <span class="caps">PDNF</span>&nbsp;で表すとすると,</p>
+<div class="math">\begin{eqnarray}
+f\left(x_1,x_2\right)&amp;=&amp;x_1\land x_2\land x_1\lor x_2\\
+&amp;=&amp;x_1\land x_1\land x_2\lor x_2&amp;\left(\because {\rm\href{#boolean_algebra1}{公理1}: 可換律}\right)\\
+&amp;=&amp;x_1\land x_2\lor x_2&amp;\left(\because {\rm 定理:\href{#idempotence}{べき等律}}\right)\\
+&amp;=&amp;x_1\land x_2\lor 1\land x_2&amp;\left(\because {\rm \href{#boolean_algebra3}{公理 3}:同一律}\right)\\
+&amp;=&amp;x_1\land x_2\lor \left(x_1\lor x_1'\right)\land x_2&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}:補元律}\right)\\
+&amp;=&amp;x_1\land x_2\lor x_1\land x_2\lor x_1'\land x_2&amp;\left(\because {\rm \href{#boolean_algebra2}{公理 2}:分配律}\right)\\ 
+&amp;=&amp;x_1\land x_2\lor x_1'\land x_2&amp;\left(\because {\rm 定理:\href{#idempotence}{べき等律}}\right)
+\end{eqnarray}</div>
+<p>従って \[f\left(x_1,x_2\right)_{\rm P D N F}=x_1\land x_2\lor x_1&#8217;\land x_2\] となる.
+例としてもう 1 つ, \(f\left(x_1,x_2,x_3\right)=x_1\land x_2&#8217;\land x_3\lor x_1\land x&#8217;_3\lor x_2\land x&#8217;_3\) としたときの <span class="caps">PDNF</span>&nbsp;は</p>
+<div class="math">\begin{eqnarray}
+f\left(x_1,x_2,x_3\right)&amp;=&amp;x_1\land x'_2\land x_3\lor x\land x'_3\lor x_2\land x'_3\\
+&amp;=&amp;x_1\land x'_2\land x_3\lor x_1\land\left(x_2\lor x'_2\right)\land x'_3\lor \left(x_1\lor x_1'\right)\land x_2\land x'_3&amp;\left(\because {\rm \href{#boolean_algebra3}{公理 3}, \href{#boolean_algebra4}{公理 4}: 同一律, 補元律} \right)\\
+&amp;=&amp;x_1\land x'_2\land x_3\lor x_1\land x_2\land x'_3\lor x_1\land x'_2\land x'_3\lor x_1\land x_2\land x'_3\lor x'_1\land x_2\land x'_3&amp;\left(\because {\rm \href{#boolean_algebra2}{公理 2}:分配律}\right)\\
+&amp;=&amp;x_1\land x'_2\land x_3\lor x_1\land x_2\land x'_3\lor x_1\land x'_2\land x'_3\lor x'_1\land x_2\land x'_3&amp;\left(\because {\rm 定理: \href{#idempotence}{べき等律}}\right)
+\end{eqnarray}</div>
+<p>従って \[f\left(x_1,x_2,x_3\right)_{\rm P D N F}=x_1\land x&#8217;_2\land x_3\lor x_1\land x_2\land x&#8217;_3\lor x_1\land x&#8217;_2\land x&#8217;_3\lor x&#8217;_1\land x_2\land x&#8217;_3\]&nbsp;となる.</p>
+<h4>乗法標準形,&nbsp;主乗法標準形</h4>
+<p>\(f\left(x_1,x_2,\cdots,x_n\right)\) を \(x_1,x_2\) について<a href="#chanon_theorem">シャノン双対展開</a>すると,</p>
+<div class="math">\begin{eqnarray}
+f\left(x_1,x_2,\cdots,x_n\right)&amp;=&amp;\left(x_1\lor x_2\lor f\left(0,0,\cdots,x_n\right)\right)\\
+&amp;&amp;\land \left(x_1\lor x'_2\lor f\left(0,1,\cdots,x_n\right)\right)\\
+&amp;&amp;\land \left(x'_1\lor x_2\lor f\left(1,0,\cdots,x_n\right)\right)\\
+&amp;&amp;\land \left(x'_1\lor x'_2\lor f\left(1,1,\cdots,x_n\right)\right)
+\end{eqnarray}</div>
+<p>となる. 従って, 全入力変数 \(x_1,x_2,\cdots,x_n\) について<a href="#chanon_theorem">シャノン双対展開</a>すると,</p>
+<div class="math">\begin{eqnarray}
+f\left(x_1,x_2,\cdots,x_n\right)&amp;=&amp;\left(x_1\lor x_2\lor\cdots\lor x_n\lor f\left(0,0,\cdots,0\right)\right)\\
+&amp;&amp;\land\left(x_1\lor x_2\lor\cdots\lor x'_n\lor f\left(1,0,\cdots,0\right)\right)\\
+&amp;&amp;\land\cdots\\
+&amp;&amp;\land\left(x'_1\lor x'_2\lor\cdots x_n\lor f\left(1,1,\cdots,0\right)\right)\\
+&amp;&amp;\land\left(x'_1\lor x'_2\lor\cdots x'_n\lor f\left(1,1,\cdots,1\right)\right)
+\end{eqnarray}</div>
+<p>となる (<a href="#chanon_theorem">シャノンの定理</a>より数学的帰納法により証明できるが, 省略).
+形式的に書けば,&nbsp;すなわち</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="maximum_term_expansion" class="disabled">最大項展開</a></div>
+  <div class="panel-body">
+&#92;(n&#92;) 変数ブール関数 &#92;(f\left(x_1,x_2,\cdots,x_n\right)&#92;) のすべての入力変数 &#92;(x_1,x_2,\cdots,x_n&#92;) について, <a href="#chanon_theorem">シャノン双対展開</a>した形式
+&#92;[f\left(x_1,x_2,\cdots,x_n\right)=\bigwedge_{\left(e_1,e_2,\cdots,e_n\right)\in B^n}\left(f\left(e_1,e_2,\cdots,e_n\right)\lor\bigvee_{i=1}^{n}x_i^{e&#8217;_i}\right)\label{eq:second}\tag{2}&#92;]
+は &#92;(f\left(x_1,x_2,\cdots,x_n\right)&#92;) の最大項展開である.  なお, このときの項数は &#92;(2^n&#92;) となる.
+</div>
+</div>
+
+<p>これを踏まえ, 乗法標準形,&nbsp;主乗法標準形を導入する.</p>
+<div class="panel panel-default">
+  <div class="panel-heading def"><a name="CNF_PCNF" class="disabled">乗法標準形, 主乗法標準形</a></div>
+  <div class="panel-body">
+乗法標準形 (以下 <span class="caps">CNF</span>) は, ブール式のリテラル, または 2 つ以上のリテラルの和の積のことをいう.
+ここで, 2 つ以上のリテラルの和で同じ入力変数を 2 度以上含まないブール式を基本和, また標準項という.
+基本和のうち, すべての入力変数を含むブール式を最大項という. すなわち, 式 &#92;(\eqref{eq:second}&#92;) における &#92;(\displaystyle\bigvee_{i=1}^{n}x_i^{e&#8217;_i}&#92;) は最大項である.
+<hr />
+主乗法標準形 (principal conjunctive normal form: <span class="caps">PCNF</span>) は, ブール関数を<a href="#maximum_term_expansion">最大項展開</a>した形式, すなわち式 &#92;(\eqref{eq:second}&#92;) の形式である.
+</div>
+</div>
+
+<p>例えば, 否定論理積 \(\mid\) を <span class="caps">PCNF</span> で表すとしよう. 否定論理積は 2 項演算子なので, その <span class="caps">PCNF</span> は 2&nbsp;変数ブール関数を最大項展開した形となる.</p>
+<p>\[f\left(x_1,x_2\right)=\left(x_1\lor x_2\lor f\left(0,0\right)\right)\land \left(x_1\lor x&#8217;_2\lor f\left(0,1\right)\right)\land\left(x&#8217;_1\lor x_2\lor f\left(1,0\right)\right)\land\left(x&#8217;_1\lor x&#8217;_2\lor&nbsp;f\left(1,1\right)\right)\]</p>
+<p>2 項演算子 \(\mid\) を最大項展開した式 \(f_{\mid}\left(x_1,x_2\right)\) は,
+<a href="#truthtable2">真理値表 2</a> の \(\mid\) の列のとおりに \(f_{\mid}\left(x_1,x_2\right)\)&nbsp;の値を決めてやればよいので</p>
+<div class="math">\begin{eqnarray}
+f_{\mid}\left(x_1,x_2\right)&amp;=&amp;\left(x_1\lor x_2\lor 1\right)\land \left(x_1\lor x'_2\lor 1\right)\land\left(x'_1\lor x_2\lor 1\right)\land\left(x'_1\lor x'_2\lor 0\right)\\
+&amp;=&amp;x'_1\lor x'_2
+\end{eqnarray}</div>
+<p>従って, 否定論理積の <span class="caps">PCNF</span> は \(x&#8217;_1\lor x&#8217;_2\) となる. この操作を振り返ると, 真理値表から <span class="caps">PCNF</span> を書くためには,
+結果が \(0\) となっている入力変数の全パターンに対して, 元の入力変数の値が \(1\) なら補元をとり, \(0\) ならそのままで和を取り, それらすべての積を取ればよいことがわかる.
+何故ならば, 結果が \(1\) となる部分は, 和の性質, すなわち<a href="#boolean_algebra3">公理 2: 同一律</a>より消えてしまうからである.
+同じようにして, 否定論理和, 排他的論理和も<a href="#truthtable2">真理値表 2</a> の \(\downarrow,\oplus\) の列をみると, \(0\)&nbsp;となる入力のパターンから</p>
+<div class="math">\begin{eqnarray}
+f_{\downarrow}\left(x_1,x_2\right)&amp;=&amp;\left(x'_1\lor x'_2\right)\land\left(x'_1\lor x_2\right)\land\left(x_1\lor x'_2\right)\\
+f_{\oplus}\left(x_1,x_2\right)&amp;=&amp;\left(x'_1\lor x'_2\right)\land\left(x_1\lor y_1\right)
+\end{eqnarray}</div>
+<p>となる. すなわち, 真理値表で表現できるブール式は, <span class="caps">PCNF</span> で表せるということである<sup><a class="footnote-ref" href="#fn-5">5</a></sup>.
+次に, 任意の論理式から <span class="caps">PCNF</span> に変換することを考える. 結論からいうと, 次の手順に従えば <span class="caps">PCNF</span>&nbsp;へ機械的に変換できることが知られている.</p>
+<ol>
+<li>ブール式全体を基本項による和の積の形にする&nbsp;(分配律等を利用)</li>
+<li>最大項でない基本項に対し, その基本項に含まれないすべてのリテラル \(x_i\) について \(x_i\land x&#8217;_i\)&nbsp;を乗ずる</li>
+<li>分配律等に従い展開して,&nbsp;冗長な項を除去する</li>
+</ol>
+<p>以下, <span class="caps">PCNF</span> で表されたブール式を \(f\left(x_1,x_2,\cdots,x_n\right)_{\rm P C N F}\) と書くこととする. 例えば, ブール式
+\(f\left(x_1,x_2,x_3\right)=x_1\land\left(x&#8217;_2\land x_3\right)&#8217;\) を <span class="caps">PCNF</span>&nbsp;で表すとすると,</p>
+<div class="math">\begin{eqnarray}
+f\left(x_1,x_2,x_3\right)&amp;=&amp;x_1\land\left(x'_2\land x_3\right)'\\
+&amp;=&amp;x_1\land\left(x_2\lor x'_3\right)&amp;\left(\because {\rm 定理: \href{#de_morgan}{ド・モルガンの法則}}\right)\\
+&amp;=&amp;\left(x_1\lor x_2\land x'_2\right)\land\left(x_2\lor x'_3\right)&amp;\left(\because {\rm \href{#boolean_algebra3}{公理 3}:同一律}\right)\\
+&amp;=&amp;\left(x_1\lor x_2\right)\land\left(x_1\lor x'_2\right)\land\left(x_2\lor x'_3\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理 2}:分配律}\right)\\
+&amp;=&amp;\left(x_1\lor x_2\lor x_3\land x'_3\right)\land\left(x_1\lor x'_2\lor x_3\land x'_3\right)\land\left(x_1\land x'_1\lor x_2\land x'_3\right)&amp;\left(\because {\rm \href{#boolean_algebra3}{公理 3}:同一律}\right)\\
+&amp;=&amp;\left(x_1\lor x_2\lor x_3\right)\land\left(x_1\lor x_2\lor x'_3\right)\land\left(x_1\lor x'_2\lor x_3\right)\\
+&amp;&amp;\land\left(x_1\lor x'_2\lor x'_3\right)\land\left(x_1\lor x_2\lor x'_3\right)\land\left(x'_1\lor x_2\lor x'_3\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理 2}:分配律}\right)\\
+&amp;=&amp;\left(x_1\lor x_2\lor x_3\right)\land\left(x_1\lor x_2\lor x'_3\right)\land\left(x_1\lor x'_2\lor x_3\right)\\
+&amp;&amp;\land\left(x_1\lor x'_2\lor x'_3\right)\land\left(x'_1\lor x_2\lor x'_3\right)&amp;\left(\because {\rm 定理:\href{#idempotence}{べき等律}}\right)
+\end{eqnarray}</div>
+<p>従って \[f\left(x_1,x_2,x_3\right)_{\rm P C N F}=\left(x_1\lor x_2\lor x_3\right)\land\left(x_1\lor x_2\lor x&#8217;_3\right)\land\left(x_1\lor x&#8217;_2\lor x_3\right)\land\left(x_1\lor x&#8217;_2\lor x&#8217;_3\right)\land\left(x&#8217;_1\lor x_2\lor&nbsp;x&#8217;_3\right)\]</p>
+<p>となる. 例としてもう 1 つ, \(f\left(x_1,x_2,x_3\right)=x_1\land x&#8217;_2\lor x_2\land x_3\) としたときの <span class="caps">PCNF</span>&nbsp;は</p>
+<div class="math">\begin{eqnarray}
+f\left(x_1,x_2,x_3\right)&amp;=&amp;x_1\land x'_2\lor x_2\land x_3\\
+&amp;=&amp;\left(x_1\land x'_2\lor x_2\right)\land\left(x_1\land x'_2\lor x_3\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理 2}:分配律}\right)\\
+&amp;=&amp;\left(x_1\lor x_2\right)\land\left(x_1\lor x_3\right)\land\left(x'_2\lor x_3\right)&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}:補元律}\right)\\
+&amp;=&amp;\left(x_1\lor x_2\lor x_3\land x'_3\right)\land\left(x_1\lor x_2\land x'_2\lor x_3\right)\land\left(x_1\land x'_1\lor x'_2\lor x_3\right)&amp;\left(\because {\rm \href{#boolean_algebra4}{公理 4}:補元律}\right)\\
+&amp;=&amp;\left(x_1\lor x_2\lor x_3\right)\land\left(x_1\lor x_2\lor x'_3\right)\land\left(x_1\lor x'_2\lor x_3\right)\land\left(x'_1\lor x'_2\lor x_3\right)&amp;\left(\because {\rm \href{#boolean_algebra2}{公理 2}:分配律}\right)
+\end{eqnarray}</div>
+<p>従って
+\[f\left(x_1,x_2,x_3\right)_{\rm P C N F}=\left(x_1\lor x_2\lor x_3\right)\land\left(x_1\lor x_2\lor x&#8217;_3\right)\land\left(x_1\lor x&#8217;_2\lor x_3\right)\land\left(x&#8217;_1\lor x&#8217;_2\lor x_3\right)\]&nbsp;となる.</p>
+<h3>簡単化</h3>
+<p>ブール式を簡単化する方法について見ていく.</p>
+<h4>カルノー図</h4>
+<p>例えばブール関数が \[f\left(x_1,x_2\right)=x_1\land x&#8217;_2\lor x&#8217;_1\land x&#8217;_2\lor x_1\land x&#8217;_2\lor x_1\land x_2 \label{eq:third}\tag{3}\] と与えられたとき,
+式変形をしていくと簡単化できることがわかる.
+事実, \(\eqref{eq:third}=\left(x_1\lor x&#8217;_1\right)\land x&#8217;_2\lor x_1\land\left(x&#8217;_2\lor x_2\right)=x&#8217;_2\lor x_1\) である.
+このような,  <a href="#boolean_algebra4">公理4: 補元律</a>を用いた式変形は, カルノー図という図式を用いることで視覚的に捉えることができる.
+カルノー図は, 真理値表を 2 次元的に並べる形をしており,
+例えば式 \(\eqref{eq:third}\)&nbsp;をカルノー図で表すと次のようになる.</p>
+<div class="table-responsive">
+<table class="table table-bordered table-hover"><thead><th>&#92;(x_1\backslash x_2&#92;)</th><th>&#92;(0&#92;)</th><th>&#92;(1&#92;)</th></thead>
+<caption id="karnaugh1" style="caption-side: bottom">カルノー図 1</caption>
+<tbody>
+<tr><td>&#92;(0&#92;)</td><td class="success">&#92;(1&#92;)</td><td class="success">&#92;(0&#92;)</td></tr>
+<tr><td>&#92;(1&#92;)</td><td class="success">&#92;(1&#92;)</td><td class="success">&#92;(1&#92;)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>緑色の表示となっているセルの部分それぞれが最小項を表しており, 
+元の論理関数に含まれる最小項のセルには \(1\), 含まれないセルには \(0\) を記述する<sup id="fnref-6"><a class="footnote-ref" href="#fn-6">6</a></sup>ことで<a href="#karnaugh1">上図</a>のようになる.
+このとき, 緑色の表示となっているセルの部分の個数は \(2^n\) である. これらをまとめることが, 冗長な変数の削除に対応するのである. 
+カルノー図をみて \(1\) となるセルの和を書き下すことは, <span class="caps">PDNF</span> を書くことと同値である (\(\eqref{eq:third}\) のブール式は元から <span class="caps">PDNF</span> である.
+<a href="#karnaugh1">カルノー図 1</a> から結果として,&nbsp;これが導出できる).</p>
+<p>カルノー図の隣接するセルの間では, 全ての変数のうちのどれか 1 つの \(1\) か \(0\) が変わった結果となっているので,
+<a href="#boolean_algebra4">公理4: 補元律</a>を利用してまとめることができるのである.
+従って, 隣接する \(1\) のセルをグループ化し, <a href="#boolean_algebra4">公理4: 補元律</a>を利用することで簡単化が実現できる.</p>
+<p>以下, \(i\) 行目 \(j\) 列目のセルを \(i:j\) と示すこととする.
+例えば, <a href="#karnaugh1">カルノー図 1</a> で \(1\) となるセルは \(1:1,2:1,2:2\) で, これらはそれぞれ \(x&#8217;_1\land x&#8217;_2,x_1\land x&#8217;_2,x_1\land x_2\) である.
+ここで, 任意の隣接するセル \(c_i\) をグループ化したことを \(\left\{c_1,c_2,\cdots,c_n\right\}\) と書くとき, 
+\(g_1=\left\{1:1,2:1\right\}, g_2=\left\{2:1,2:2\right\}\) とグループ化できることがわかる.
+従って,&nbsp;それぞれを論理式で基本積の形に表すと, </p>
+<div class="math">\begin{eqnarray}
+g_1&amp;=&amp;x'_1\land x'_2\lor x_1\land x'_2&amp;=&amp;\left(x'_1\lor x_1\right)\land x'_2&amp;=&amp;x'_2\\
+g_2&amp;=&amp;x_1\land x'_2\lor x_1\land x_2&amp;=&amp;x_1\land\left(x'_2\lor x_2\right)&amp;=&amp;x_1
+\end{eqnarray}</div>
+<p>よって, \(\eqref{eq:third}=x&#8217;_2\lor x_1\) とわかる.&nbsp;別のカルノー図についてもやってみよう.</p>
+<div class="table-responsive">
+<table class="table table-bordered table-hover"><thead><th>&#92;(x_1x_2\backslash x_3x_4&#92;)</th><th>&#92;(00&#92;)</th><th>&#92;(01&#92;)</th><th>&#92;(11&#92;)</th><th>&#92;(10&#92;)</th></thead>
+<caption id="karnaugh2" style="caption-side: bottom">カルノー図 2</caption>
+<tbody>
+<tr><td>&#92;(00&#92;)</td><td class="success">&#92;(0&#92;)</td><td class="success">&#92;(1&#92;)</td><td class="success">&#92;(1&#92;)</td><td class="success">&#92;(0&#92;)</td></tr>
+<tr><td>&#92;(01&#92;)</td><td class="success">&#92;(0&#92;)</td><td class="success">&#92;(1&#92;)</td><td class="success">&#92;(0&#92;)</td><td class="success">&#92;(0&#92;)</td></tr>
+<tr><td>&#92;(11&#92;)</td><td class="success">&#92;(0&#92;)</td><td class="success">&#92;(0&#92;)</td><td class="success">&#92;(0&#92;)</td><td class="success">&#92;(0&#92;)</td></tr>
+<tr><td>&#92;(10&#92;)</td><td class="success">&#92;(1&#92;)</td><td class="success">&#92;(0&#92;)</td><td class="success">&#92;(1&#92;)</td><td class="success">&#92;(1&#92;)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>これは, 4 つの引数をもったブール関数のカルノー図である.
+カルノー図では, 最上, 最下また最左, 最右のセルは隣接していると考える. 
+従って, <a href="#karnaugh2">カルノー図 2</a> におけるグループ化の一つの例として
+\(g_1=\left\{1:2,2:2\right\},g_2=\left\{1:3,4:3\right\},g_3=\left\{4:1,4:4\right\}\) と構成できる.&nbsp;よって,</p>
+<div class="math">\begin{eqnarray}
+g_1&amp;=&amp;x'_1\land x'_2\land x'_3\land x_4\lor x'_1\land x_2\land x'_3\land x_4&amp;=&amp;x'_1\land x'_3\land x_4\\
+g_2&amp;=&amp;x'_1\land x'_2\land x_3\land x_4\lor x_1\land x'_2\land x_3\land x_4&amp;=&amp;x'_2\land x_3\land x_4\\
+g_3&amp;=&amp;x_1\land x'_2\land x'_3\land x'_4\lor x_1\land x'_2\land x_3\land x'_4&amp;=&amp;x_1\land x'_2\land x'_4
+\end{eqnarray}</div>
+<p>ゆえに<a href="#karnaugh2">カルノー図 2</a>&nbsp;で示される論理関数の簡単な表現は</p>
+<p>\[x&#8217;_1\land x&#8217;_3\land x_4\lor x&#8217;_2\land x_3\land x_4\lor x_1\land x&#8217;_2\land&nbsp;x&#8217;_4\]</p>
+<p>となる. このグループ化という操作が一意ではないことからわかるように, 簡単化したブール式も一意でないことがわかる.
+例えば, \(g_1=\left\{1:2,2:2\right\},g_2=\left\{1:2,1:3\right\},g_3=\left\{4:1,4:4\right\},g_4=\left\{4:3,4:4\right\}\)&nbsp;とグループ化すると,</p>
+<div class="math">\begin{eqnarray}
+g_1&amp;=&amp;x'_1\land x'_2\land x'_3\land x_4\lor x'_1\land x_2\land x'_3\land x_4&amp;=&amp;x'_1\land x'_3\land x_4\\
+g_2&amp;=&amp;x'_1\land x'_2\land x'_3\land x_4\lor x'_1\land x'_2\land x_3\land x_4&amp;=&amp;x'_1\land x'_2\land x_4\\
+g_3&amp;=&amp;x_1\land x'_2\land x'_3\land x'_4\lor x_1\land x'_2\land x_3\land x'_4&amp;=&amp;x_1\land x'_2\land x'_4\\
+g_4&amp;=&amp;x_1\land x'_2\land x_3\land x_4\lor x_1\land x'_2\land x_3\land x'_4&amp;=&amp;x_1\land x'_2\land x_3
+\end{eqnarray}</div>
+<p>ゆえに,</p>
+<p>\[x&#8217;_1\land x&#8217;_3\land x_4\lor x&#8217;_1\land x&#8217;_2\land x_4\lor x_1\land x&#8217;_2\land x&#8217;_4\lor x_1\land x&#8217;_2\land&nbsp;x_3\]</p>
+<p>となる. 1 つの例を見ただけなので, 厳密に言えたことではないが, 一般的にグループの数が少なく, かつグループ内のセルの数を(\(2n\)&nbsp;個で)なるべく多く取る方がより簡単な論理式を構成できることがわかる.</p>
+<p>さて, ある論理変数の組み合わせが予め起こりえないことがわかっていたとき, その場合もカルノー図を用いて簡単化を進めることができる.
+このような組み合わせに対する最小項を禁止項, または don&#8217;t care 項という.&nbsp;例えば, 
+</p>
+<div class="math">\begin{eqnarray}
+f\left(x_1,x_2,x_3,x_4\right)&amp;=&amp;x'_1\land x'_2\land x'_3\land x_4 \\ 
+&amp;&amp;\lor x'_1\land x_2\land x'_3\land x_4 \\ 
+&amp;&amp;\lor x'_1\land x_2\land x_3\land x_4\\
+&amp;&amp;\lor x'_1\land x_2\land x_3\land x'_4\\
+&amp;&amp;\lor x_1\land x'_2\land x_3\land x_4\\
+&amp;&amp;\lor x_1\land x'_2\land x_3\land x'_4\label{eq:fourth}\tag{4}
+\end{eqnarray}</div>
+<p>というブール関数を簡単化することを考える. このとき, \(x_1\land x_2\), また \(x_1\land x&#8217;_2\land x&#8217;_3\land x&#8217;_4\) は禁止項とする.
+禁止行の対応するセルには \(\phi\) を記述する. すると, 式 \(\eqref{eq:fourth}\)&nbsp;のカルノー図は次のとおりとなる.</p>
+<div class="table-responsive">
+<table class="table table-bordered table-hover"><thead><th>&#92;(x_1x_2\backslash x_3x_4&#92;)</th><th>&#92;(00&#92;)</th><th>&#92;(01&#92;)</th><th>&#92;(11&#92;)</th><th>&#92;(10&#92;)</th></thead>
+<caption id="karnaugh3" style="caption-side: bottom">カルノー図 3</caption>
+<tbody>
+<tr><td>&#92;(00&#92;)</td><td class="success">&#92;(0&#92;)</td><td class="success">&#92;(1&#92;)</td><td class="success">&#92;(0&#92;)</td><td class="success">&#92;(0&#92;)</td></tr>
+<tr><td>&#92;(01&#92;)</td><td class="success">&#92;(0&#92;)</td><td class="success">&#92;(1&#92;)</td><td class="success">&#92;(1&#92;)</td><td class="success">&#92;(1&#92;)</td></tr>
+<tr><td>&#92;(11&#92;)</td><td class="success">&#92;(\phi&#92;)</td><td class="success">&#92;(\phi&#92;)</td><td class="success">&#92;(\phi&#92;)</td><td class="success">&#92;(\phi&#92;)</td></tr>
+<tr><td>&#92;(10&#92;)</td><td class="success">&#92;(\phi&#92;)</td><td class="success">&#92;(0&#92;)</td><td class="success">&#92;(1&#92;)</td><td class="success">&#92;(1&#92;)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>禁止項は, \(1\) でも \(0\) でもよいということになるので, グループを構成するにあたって自分で都合よく \(1\) か \(0\) に解釈してしまって良い.
+できる限り多くのセルと少ないグループの数で構成するために, いま \(3:3,3:4\) を \(1\) と解釈すれば, 
+\(g_1=\left\{1:2,2:2\right\},g_2=\left\{2:3,2:4,3:3,3:4\right\},g_3=\left\{3:3,3:4,4:3,4:4\right\}\) とグループ化できる.&nbsp;従って,</p>
+<div class="math">\begin{eqnarray}
+g_1&amp;=&amp;x'_1\land x'_2\land x'_3\land x_4\lor x'_1\land x_2\land x'_3\land x_4&amp;=&amp;x'_1\land x'_3\land x_4\\
+g_2&amp;=&amp;x'_1\land x_2\land x_3\land x_4\lor x'_1\land x_2\land x_3\land x'_4\lor x_1\land x_2 \land x_3\land x_4\lor x_1\land x_2\land x_3\land x'_4&amp;=&amp;x_2\land x_3\\
+g_3&amp;=&amp;x_1\land x_2\land x_3\land x_4\lor x_1\land x_2\land x_3\land x'_4\lor x_1\land x'_2\land x_3\land x_4\lor x_1\land x'_2\land x_3\land x'_4&amp;=&amp;x_1\land x_3
+\end{eqnarray}</div>
+<p>ゆえに, \(\eqref{eq:fourth}\)&nbsp;は</p>
+<p>\[f\left(x_1,x_2,x_3,x_4\right)=x&#8217;_1\land x&#8217;_3\land x_4\lor x_2\land x_3\lor x_1\land&nbsp;x_3\]</p>
+<p>と簡単化できた.
+カルノー図は, 1 次元につき 2 つまでの引数を扱えると考えると, 人間の次元認識能力の見地から実質 6 つの引数にまで対応できることとなるわけだが,
+実際は平面的に考えることが多いので, 大抵, 最大 4&nbsp;個の引数までしか扱うことができない.</p>
+<h4>クワイン・マクラスキー法</h4>
+<p>主にクワイン・マクラスキー法は \[x\land y\lor x\land y&#8217;=x\land\left(y\lor y&#8217;\right)=x\label{eq:fifth}\tag{5}\] を繰り返し利用し, ブール関数を機械的に簡単化していく方法であり,&nbsp;その手順は次のとおりである.</p>
+<ol>
+<li>ブール式を <span class="caps">PDNF</span>&nbsp;にする</li>
+<li>式 \(\eqref{eq:fifth}\) を利用して圧縮し, 主項を求める<ol>
+<li>ブール式を 2 進値に割り当てる<sup id="fnref-7"><a class="footnote-ref" href="#fn-7">7</a></sup></li>
+<li>ハミング距離 1&nbsp;のビット列同士を可能な限り繰り返し組み合わせる</li>
+</ol>
+</li>
+<li>求めた主項からただ 1&nbsp;つの最小項を包含する主項(必須項)を求める.</li>
+<li>ブール関数を作成する<ol>
+<li>必須項の和をとる</li>
+<li>必須項により包含されていない最小項があるとき,&nbsp;最も簡単な主項を選択し和を取る.</li>
+</ol>
+</li>
+</ol>
+<p>いま, 式 \(\eqref{eq:fourth}\) を簡単化することを考えるとしよう.
+このとき, まず式を <span class="caps">PDNF</span> にする. \(\eqref{eq:fourth}\) はすでに <span class="caps">PDNF</span> の形式となっているので, 今回は必要ない.
+次に, <a href="#karnaugh3">カルノー図 3</a> の各セル \(i:j\) を \(m_0=1:1,m_1=2:1,m_2=3:1,m_3=4:1,m_4=1:2,\cdots,m_{15}=4:4\)
+とおき, <span class="caps">PDNF</span>&nbsp;を構成する各最小項について次のようにビット列と対応させる.</p>
+<div class="math">\begin{eqnarray}
+m_4&amp;=&amp;x'_1\land x'_2\land x'_3\land x_4=0001\\
+m_5&amp;=&amp;x'_1\land x_2\land x'_3\land x_4=0101\\
+m_9&amp;=&amp;x'_1\land x_2\land x_3\land x_4=0111\\
+m_{11}&amp;=&amp;x_1\land x'_2\land x_3\land x_4=1011\\
+m_{13}&amp;=&amp;x'_1\land x_2\land x_3\land x'_4=0110\\
+m_{15}&amp;=&amp;x_1\land x'_2\land x_3\land x'_4=1010
+\end{eqnarray}</div>
+<p>ここで, 先と同様, \(x_1\land x_2\) と \(x_1\land x&#8217;_2\land x&#8217;_3\land x&#8217;_4\) を禁止項としたときは,&nbsp;それについてもビット列と対応させておく.</p>
+<div class="math">\begin{eqnarray}
+m_2&amp;=&amp;x_1\land x_2\land x'_3\land x'_4=1100\\
+m_3&amp;=&amp;x_1\land x'_2\land x'_3\land x'_4=1000\\
+m_6&amp;=&amp;x_1\land x_2\land x'_3\land x_4=1101\\
+m_{10}&amp;=&amp;x_1\land x_2\land x_3\land x_4=1111\\
+m_{14}&amp;=&amp;x_1\land x_2\land x_3\land x'_4=1110
+\end{eqnarray}</div>
+<p>これは \(\displaystyle\bigvee {\rm m}\left(4,5,9,11,13,15\right)+{\rm dc}\left(2,3,6,10,14\right)=\eqref{eq:fourth}\) と書かれる.
+このとき, 例えば \(m_4\lor m_5\) は式 \(\eqref{eq:fifth}\) を利用して簡単化できることがわかる.
+事実, \[x&#8217;_1\land x&#8217;_2\land x&#8217;_3\land x_4\lor x&#8217;_1\land x_2\land x&#8217;_3\land x_4=x&#8217;_1\land x&#8217;_3\land x_4\land\left(x&#8217;_2\lor x_2\right)=x&#8217;_1\land x&#8217;_3\land x_4\] である.
+このような簡単化をすべての可能な組み合わせについて繰り返し実行する. この作業を圧縮ということとする. 
+先にブール式をビット列と対応させたので, 圧縮とはハミング距離 1 のビット列同士を繰り返し組み合わせることと同値である.
+次の表に, 圧縮を 1 度行った結果を示す.
+組み合わせられたビット部分は \(-\), それ以上圧縮できないものを主項といい, \(\ast\) で示すものとする<sup id="fnref-8"><a class="footnote-ref" href="#fn-8">8</a></sup>.&nbsp;これを圧縮表ということとする.</p>
+<div class="table-responsive">
+<table class="table table-hover"><thead><th>1 の数</th><th>最小項</th><th>ビット列表現</th></thead>
+<caption id="compress_table1" style="caption-side: bottom">圧縮表 (1 回目)</caption>
+<tbody>
+<tr><td rowspan="3">&#92;(1&#92;)</td><td>&#92;(m_{4,5}&#92;)</td><td>&#92;(0-01\ast&#92;)</td></tr>
+<tr><td>&#92;(m_{3,15}&#92;)</td><td>&#92;(10-0&#92;)</td></tr>
+<tr><td>&#92;(m_{2,3}&#92;)</td><td>&#92;(1-00&#92;)</td></tr> 
+<tr><td rowspan="8">&#92;(2&#92;)</td><td>&#92;(m_{5,9}&#92;)</td><td>&#92;(01-1&#92;)</td></tr>
+<tr><td>&#92;(m_{5,6}&#92;)</td><td>&#92;(-101&#92;)</td></tr>
+<tr><td>&#92;(m_{9,13}&#92;)</td><td>&#92;(011-&#92;)</td></tr>
+<tr><td>&#92;(m_{13,14}&#92;)</td><td>&#92;(-110&#92;)</td></tr>
+<tr><td>&#92;(m_{14,15}&#92;)</td><td>&#92;(1-10&#92;)</td></tr>
+<tr><td>&#92;(m_{11,15}&#92;)</td><td>&#92;(101-&#92;)</td></tr>
+<tr><td>&#92;(m_{2,6}&#92;)</td><td>&#92;(110-&#92;)</td></tr>
+<tr><td>&#92;(m_{2,14}&#92;)</td><td>&#92;(11-0&#92;)</td></tr>
+<tr><td rowspan="5">&#92;(3&#92;)</td><td>&#92;(m_{9,10}&#92;)</td><td>&#92;(-111&#92;)</td></tr>
+<tr><td>&#92;(m_{10,11}&#92;)</td><td>&#92;(1-11&#92;)</td></tr>
+<tr><td>&#92;(m_{6,10}&#92;)</td><td>&#92;(11-1&#92;)</td></tr>
+<tr><td>&#92;(m_{10,14}&#92;)</td><td>&#92;(111-&#92;)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>残りのすべての最小項について \(\ast\)&nbsp;がつくまで繰り返す.</p>
+<div class="table-responsive">
+<table class="table table-hover"><thead><th>1 の数</th><th>最小項</th><th>ビット列表現</th></thead>
+<caption id="compress_table2" style="caption-side: bottom">圧縮表 (2 回目)</caption>
+<tbody>
+<tr><td>&#92;(1&#92;)</td><td>&#92;(m_{2,3,14,15}&#92;)</td><td>&#92;(1&#8212;0\ast&#92;)</td></tr>
+<tr><td rowspan="4">&#92;(2&#92;)</td><td>&#92;(m_{5,6,9,10}&#92;)</td><td>&#92;(-1-1\ast&#92;)</td></tr>
+<tr><td>&#92;(m_{9,10,13,14}&#92;)</td><td>&#92;(-11-\ast&#92;)</td></tr>
+<tr><td>&#92;(m_{10,11,14,15}&#92;)</td><td>&#92;(1-1-\ast&#92;)</td></tr>
+<tr><td>&#92;(m_{2,6,10,14}&#92;)</td><td>&#92;(11&#8212;\ast&#92;)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>従って, 主項は \(m_{4,5},m_{2,3,14,15},m_{5,6,9,10},m_{9,10,13,14},m_{10,11,14,15},m_{2,6,10,14}\) であるから, 
+<a href="#compress_table1">圧縮表 1</a> および <a href="#compress_table2">2</a> より, 式 \(\eqref{eq:fourth}\)&nbsp;は次のように表現できることがわかる.</p>
+<p>\[\underbrace{x&#8217;_1\land x&#8217;_3\land x_4}_{m_{4,5}}\lor
+\underbrace{x_1\land x&#8217;_4}_{m_{2,3,14,15}}\lor\underbrace{x_2\land x_4}_{m_{5,6,9,10}}\lor\underbrace{x_2\land x_3}_{m_{9,10,13,14}}\lor\underbrace{x_1\land x_3}_{m_{10,11,14,15}}\lor
+\underbrace{x_1\land&nbsp;x_2}_{m_{2,6,10,14}}\]</p>
+<p>しかしこれはまだ冗長である. この主項から必須項を調べる. 縦軸に主項, 横軸に最小項を並べ, 最小項を包含する主項のセルに印 \(\bigcirc\) を, 
+包含する最小項が 1 つしかない主項のセルに印 \(\circledcirc\) をつける.&nbsp;これを主項表という.</p>
+<div class="table-responsive">
+<table class="table table-hover"><thead><th>主項 &#92;(\backslash&#92;) 最小項</th><th>&#92;(m_4&#92;)</th><th>&#92;(m_5&#92;)</th><th>&#92;(m_9&#92;)</th><th>&#92;(m_{13}&#92;)</th><th>&#92;(m_{11}&#92;)</th><th>&#92;(m_{15}&#92;)</th><th>ビット表現</th></thead>
+<caption id="prime_implicant_table1" style="caption-side: bottom">主項表 1</caption>
+<tbody>
+<tr><td>&#92;(m_{4,5}&#92;)</td><td>&#92;(\require{color}\textcolor{blue}{\circledcirc}&#92;)</td><td>&#92;(\require{color}\textcolor{blue}{\bigcirc}&#92;)</td><td></td><td></td><td></td><td></td><td>&#92;(0-01&#92;)</td></tr>
+<tr><td>&#92;(m_{5,6,9,10}&#92;)</td><td></td><td>&#92;(\bigcirc&#92;)</td><td>&#92;(\bigcirc&#92;)</td><td></td><td></td><td></td><td>&#92;(-1-1&#92;)</td></tr>
+<tr><td>&#92;(m_{9,10,13,14}&#92;)</td><td></td><td></td><td>&#92;(\require{color}\textcolor{blue}{\bigcirc}&#92;)</td><td>&#92;(\require{color}\textcolor{blue}{\circledcirc}&#92;)</td><td></td><td></td><td>&#92;(-11-&#92;)</td></tr>
+<tr><td>&#92;(m_{10,11,14,15}&#92;)</td><td></td><td></td><td></td><td></td><td>&#92;(\require{color}\textcolor{blue}{\circledcirc}&#92;)</td><td>&#92;(\require{color}\textcolor{blue}{\bigcirc}&#92;)</td><td>&#92;(1-1-&#92;)</td></tr>
+<tr><td>&#92;(m_{2,3,14,15}&#92;)</td><td></td><td></td><td></td><td></td><td></td><td>&#92;(\bigcirc&#92;)</td><td>&#92;(1&#8212;0&#92;)</td></tr>
+<tr><td>&#92;(m_{2,6,10,14}&#92;)</td><td></td><td></td><td></td><td></td><td></td><td></td><td>&#92;(11&#8212;&#92;)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>従って, 必須項は \(\circledcirc\) のつく \(m_{4,5},m_{9,10,13,14},m_{10,11,14,15}\) である. 
+あとはそれらを書き出し, 残りの主項で最小項を全て含む最も簡単な組み合わせを探すこととなる(ここで現れる必須項が全ての最小項を包含するとは限らない).
+ここで, もし \(\circledcirc\) が 1 つも含まれない最小項があれば, すなわち必須項にすべての最小項が含まれていなければ,
+最も簡単となりかつ, 全ての最小項を含むブール式となるよう適当な主項を選択する.
+今回の場合では, 必須項のみで全ての最小項を包含することができている(印を青の表示としておいた)から
+\(m_{4,5},m_{9,10,13,14},m_{10,11,14,15}\) の和, すなわち
+\[x&#8217;_1\land x&#8217;_3\land x_4\lor x_2\land x_3\lor x_1\land x_3\] が式 \(\eqref{eq:fourth}\) の最簡形である.
+先に示したカルノー図による簡単化で得られたブール式と同等の結果が得られたことがわかる.
+なお, クワイン・マクラスキー法は <span class="caps">NP</span> 完全である<sup id="fnref-9"><a class="footnote-ref" href="#fn-9">9</a></sup>ため,&nbsp;使用範囲が限られる.</p>
+<h4>ペトリック法</h4>
+<p>先のクワイン・マクラスキー法の最後では,
+「最も簡単となりかつ, 全ての最小項を含むブール式となるよう適当な主項を選択」することによって最簡形を得るとのことであったが,
+この部分をペトリック法で置き換えることにより, 機械的に最簡形のブール式を決定することができる.
+ここでも, \(\eqref{eq:fourth}\) を例に方法を示すこととする.
+クワイン・マクラスキー法の手順のうち 3 まで実行したものとし, <a href="#prime_implicant_table1">主項表 1</a> が得られたとしよう.
+まず<a href="#prime_implicant_table1">主項表 1</a> の列を見て, 印のある主項らで和を取り,&nbsp;それらの積をとった次の式を得る.</p>
+<p>\[m_{4,5}\land \left(m_{4,5}\lor m_{5,6,9,10}\right)\land\left(m_{5,6,9,10}\lor m_{9,10,13,14}\right)\land m_{9,10,13,14}\land m_{10,11,14,15}\land\left(m_{10,11,14,15}\lor&nbsp;m_{2,3,14,15}\right)\label{eq:sixth}\tag{6}\]</p>
+<p>式 \(\eqref{eq:sixth}\) を<a href="#boolean_algebra2">公理2</a>: 分配律および<a href="#absorption">吸収律</a>を用いて変形していくと,</p>
+<div class="math">\begin{eqnarray}
+\eqref{eq:sixth}&amp;=&amp;\left(m_{4,5}\lor m_{4,5}\land m_{5,6,9,10}\right)\land\left(m_{5,6,9,10}\land m_{9,10,13,14}\lor m_{9,10,13,14}\right)\land\left(m_{10,11,14,15}\lor m_{10,11,14,15}\land m_{2,3,14,15}\right)\\
+&amp;=&amp;m_{4,5}\land m_{9,10,13,14}\land m_{10,11,14,15}
+\end{eqnarray}</div>
+<p>この主項の積となっている部分を主項の和とすることで, ブール関数の最簡形が求まる.
+従って,&nbsp;先と同様の結果が機械的に得られたことがわかる.</p>
+<h4>クワイン・マクラスキー法,&nbsp;ペトリック法の実装</h4>
+<p>これらは一度プログラムで実装することが割と学習の定番となっているので, Haskell で実装した.&nbsp;次のリポジトリにて管理している.</p>
+<p style="text-align: center;">
+<i class="fab fa-github" style="font-size: large; margin-right: 5px;"></i>
+<a href="https://github.com/falgon/bsimplified">falgon/bsimplified - The simple and pure implementation of Quine-McCluskey method, Petrick&#8217;s method and parsing of Boolean&nbsp;formula</a>
+</p>
+
+<p>まず, いま解いた簡単化を再度実行してみる. 
+よくある実装法だと思うが, クワイン・マクラスキー法の圧縮過程は二分木のデータ構造として表現する.
+従って, まずはじめに各最小項に対応するノードを作成することで <span class="caps">PDNF</span>&nbsp;を表現することとした.</p>
+<div class="highlight"><pre><span></span><span class="kt">Prelude</span><span class="o">&gt;</span> <span class="kt">:</span><span class="n">m</span> <span class="o">+</span><span class="kt">BSimplified</span><span class="o">.</span><span class="kt">QMM</span> <span class="kt">Data</span><span class="o">.</span><span class="kt">Maybe</span>
+<span class="kt">Prelude</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">QMM</span> <span class="kt">Data</span><span class="o">.</span><span class="kt">Maybe</span><span class="o">&gt;</span> <span class="kr">let</span> <span class="n">tr</span> <span class="ow">=</span> <span class="n">fromJust</span> <span class="o">$</span> <span class="n">pdnfForest</span> <span class="p">(</span><span class="n">fromJust</span> <span class="o">$</span> <span class="n">strBitsList</span> <span class="p">[</span><span class="s">&quot;0001&quot;</span><span class="p">,</span><span class="s">&quot;0101&quot;</span><span class="p">,</span><span class="s">&quot;0111&quot;</span><span class="p">,</span><span class="s">&quot;1011&quot;</span><span class="p">,</span><span class="s">&quot;0110&quot;</span><span class="p">,</span><span class="s">&quot;1010&quot;</span><span class="p">,</span><span class="s">&quot;1100&quot;</span><span class="p">,</span><span class="s">&quot;1000&quot;</span><span class="p">,</span><span class="s">&quot;1101&quot;</span><span class="p">,</span><span class="s">&quot;1111&quot;</span><span class="p">,</span><span class="s">&quot;1110&quot;</span><span class="p">])</span> <span class="p">(</span><span class="n">replicate</span> <span class="mi">6</span> <span class="kt">False</span> <span class="o">++</span> <span class="n">replicate</span> <span class="mi">5</span> <span class="kt">True</span><span class="p">)</span>
+<span class="kt">Prelude</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">QMM</span> <span class="kt">Data</span><span class="o">.</span><span class="kt">Maybe</span><span class="o">&gt;</span> <span class="n">tr</span>
+<span class="p">[</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">18370878410602274422</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">101</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">17795521015237778886</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">9505003458451781531</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1011</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">5344459161969259783</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">110</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">2509103263232437805</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1010</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">9465362842462816922</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1100</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">5080631804786515567</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1000</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">8905849755465195471</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1101</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">7582384624143865392</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">4819471800686604738</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1110</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">8582731269452337816</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}]</span>
+</pre></div>
+
+
+<p><code>pdnfForest</code> には <code>QMyBits</code> のインスタンス (<code>DigitListBits</code>, <code>StrBits</code>, <code>RawBits</code>) 
+のリストと Don&#8217;t care か否かを制御するフラグのリストを渡す.
+このとき, 2 つのリストの要素数は同一でなければならない (もしそうでなければ <code>Nothing</code> が返る).
+ここで, <code>DigitListBits</code>, <code>StrBits</code>, <code>RawBits</code> はそれぞれビット列の表現を包括的に捉えるための型である.</p>
+<div class="highlight"><pre><span></span><span class="kt">Prelude</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">QMM</span> <span class="kt">Data</span><span class="o">.</span><span class="kt">Maybe</span><span class="o">&gt;</span> <span class="kt">:</span><span class="n">m</span> <span class="o">+</span><span class="kt">BSimplified</span><span class="o">.</span><span class="kt">Bits</span>
+<span class="kt">Prelude</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">QMM</span> <span class="kt">Data</span><span class="o">.</span><span class="kt">Maybe</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">Bits</span><span class="o">&gt;</span> <span class="n">toRawBits</span> <span class="p">(</span><span class="kt">StrBits</span> <span class="s">&quot;1010&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">toRawBits</span> <span class="p">(</span><span class="kt">RawBits</span> <span class="mi">10</span><span class="p">)</span>
+<span class="kt">True</span>
+<span class="kt">Prelude</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">QMM</span> <span class="kt">Data</span><span class="o">.</span><span class="kt">Maybe</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">Bits</span><span class="o">&gt;</span> <span class="n">toRawBits</span> <span class="p">(</span><span class="kt">StrBits</span> <span class="s">&quot;1010&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">toRawBits</span> <span class="p">(</span><span class="kt">DigitListBits</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="kt">True</span>
+</pre></div>
+
+
+<p>クワイン・マクラスキー法によって圧縮を実行する.</p>
+<div class="highlight"><pre><span></span><span class="kt">Prelude</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">QMM</span> <span class="kt">Data</span><span class="o">.</span><span class="kt">Maybe</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">Bits</span><span class="o">&gt;</span> <span class="n">quineMcCluskey</span> <span class="n">tr</span>
+<span class="kt">PrimeImplicants</span> <span class="p">[</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">577617992350188464</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">18370878410602274422</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">101</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">17795521015237778886</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">11</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">6829379978376433071</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">11</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">8439440437090953821</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">101</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">17795521015237778886</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">9505003458451781531</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">3159344086055741426</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1101</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">7582384624143865392</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">4819471800686604738</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}}},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">11</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">10719524625750522604</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">11</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">11617789877111658934</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">9505003458451781531</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">110</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">2509103263232437805</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">3889360259696288602</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">4819471800686604738</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1110</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">8582731269452337816</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}}},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">11</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">18197116026168548551</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">101</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">14515361159708671901</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1011</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">5344459161969259783</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1010</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">9465362842462816922</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">3889360259696288602</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">4819471800686604738</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1110</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">8582731269452337816</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}}},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">10</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">14507692373987760546</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">100</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">17927799263722280277</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1010</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">9465362842462816922</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1000</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">8905849755465195471</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">110</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">3574163930668469495</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1100</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">5080631804786515567</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1110</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">8582731269452337816</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}}},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">11</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">1892010599057419013</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">110</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">3438512683213686879</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1100</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">5080631804786515567</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1101</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">7582384624143865392</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">3889360259696288602</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">4819471800686604738</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1110</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">8582731269452337816</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}}}]</span>
+</pre></div>
+
+
+<p>実際の計算ではこれで十分なのだが, 一応人間にとってより分かりやすい <code>traceQuineMcCluskey</code> を用意してある.
+引数には, <code>pdnfForest</code> で作成したノードのリストと, それに対応する変数名のリストを渡す.
+両者の要素数は同一でなければならない (もしそうでない場合 <code>Nothing</code> が返る).
+ここでは, 先に扱った例題に対応した変数名を渡しているので,&nbsp;得られた主項が先と同一であることが確認できる.</p>
+<div class="highlight"><pre><span></span><span class="kt">Prelude</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">QMM</span> <span class="kt">Data</span><span class="o">.</span><span class="kt">Maybe</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">Bits</span><span class="o">&gt;</span> <span class="kt">:</span><span class="n">m</span> <span class="o">+</span><span class="kt">Control</span><span class="o">.</span><span class="kt">Monad</span>
+<span class="kt">Prelude</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">QMM</span> <span class="kt">Data</span><span class="o">.</span><span class="kt">Maybe</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">Bits</span> <span class="kt">Control</span><span class="o">.</span><span class="kt">Monad</span><span class="o">&gt;</span> <span class="n">void</span> <span class="o">$</span> <span class="n">traceQuineMcCluskey</span> <span class="n">tr</span> <span class="p">[</span><span class="s">&quot;m_4&quot;</span><span class="p">,</span><span class="s">&quot;m_5&quot;</span><span class="p">,</span><span class="s">&quot;m_9&quot;</span><span class="p">,</span><span class="s">&quot;m_11&quot;</span><span class="p">,</span><span class="s">&quot;m_13&quot;</span><span class="p">,</span><span class="s">&quot;m_15&quot;</span><span class="p">,</span><span class="s">&quot;m_2&quot;</span><span class="p">,</span><span class="s">&quot;m_3&quot;</span><span class="p">,</span><span class="s">&quot;m_6&quot;</span><span class="p">,</span><span class="s">&quot;m_10&quot;</span><span class="p">,</span><span class="s">&quot;m_14&quot;</span><span class="p">]</span>
+<span class="kt">The</span> <span class="n">state</span> <span class="kr">of</span> <span class="n">compression</span> <span class="o">#</span><span class="mi">1</span><span class="kt">:</span> <span class="p">[</span><span class="s">&quot;m_4 m_5&quot;</span><span class="p">,</span><span class="s">&quot;m_5 m_9&quot;</span><span class="p">,</span><span class="s">&quot;m_5 m_6&quot;</span><span class="p">,</span><span class="s">&quot;m_9 m_13&quot;</span><span class="p">,</span><span class="s">&quot;m_9 m_10&quot;</span><span class="p">,</span><span class="s">&quot;m_11 m_15&quot;</span><span class="p">,</span><span class="s">&quot;m_11 m_10&quot;</span><span class="p">,</span><span class="s">&quot;m_13 m_14&quot;</span><span class="p">,</span><span class="s">&quot;m_15 m_3&quot;</span><span class="p">,</span><span class="s">&quot;m_15 m_14&quot;</span><span class="p">,</span><span class="s">&quot;m_2 m_3&quot;</span><span class="p">,</span><span class="s">&quot;m_2 m_6&quot;</span><span class="p">,</span><span class="s">&quot;m_2 m_14&quot;</span><span class="p">,</span><span class="s">&quot;m_6 m_10&quot;</span><span class="p">,</span><span class="s">&quot;m_10 m_14&quot;</span><span class="p">]</span>
+<span class="kt">Found</span> <span class="n">prime</span> <span class="n">implicants</span><span class="kt">:</span> <span class="p">[</span><span class="s">&quot;m_4 m_5&quot;</span><span class="p">]</span>
+<span class="kt">The</span> <span class="n">state</span> <span class="kr">of</span> <span class="n">compression</span> <span class="o">#</span><span class="mi">2</span><span class="kt">:</span> <span class="p">[</span><span class="s">&quot;m_5 m_9 m_6 m_10&quot;</span><span class="p">,</span><span class="s">&quot;m_9 m_13 m_10 m_14&quot;</span><span class="p">,</span><span class="s">&quot;m_11 m_15 m_10 m_14&quot;</span><span class="p">,</span><span class="s">&quot;m_15 m_3 m_2 m_14&quot;</span><span class="p">,</span><span class="s">&quot;m_2 m_6 m_10 m_14&quot;</span><span class="p">]</span>
+<span class="kt">Found</span> <span class="n">prime</span> <span class="n">implicants</span><span class="kt">:</span> <span class="p">[</span><span class="s">&quot;m_5 m_9 m_6 m_10&quot;</span><span class="p">,</span><span class="s">&quot;m_9 m_13 m_10 m_14&quot;</span><span class="p">,</span><span class="s">&quot;m_11 m_15 m_10 m_14&quot;</span><span class="p">,</span><span class="s">&quot;m_15 m_3 m_2 m_14&quot;</span><span class="p">,</span><span class="s">&quot;m_2 m_6 m_10 m_14&quot;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>簡単化された最低限の項を得るには <code>minTerms</code> 等を用いる.
+これも, 変数名と対応した結果を得ることのできる <code>minTermsStr</code> を用意してある.</p>
+<div class="highlight"><pre><span></span><span class="kt">Prelude</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">QMM</span> <span class="kt">Data</span><span class="o">.</span><span class="kt">Maybe</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">Bits</span> <span class="kt">Control</span><span class="o">.</span><span class="kt">Monad</span><span class="o">&gt;</span> <span class="n">minTerms</span> <span class="n">tr</span>
+<span class="p">[</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">577617992350188464</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">18370878410602274422</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">101</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">17795521015237778886</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">11</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">10719524625750522604</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">11</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">11617789877111658934</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">9505003458451781531</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">110</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">2509103263232437805</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">3889360259696288602</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">4819471800686604738</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1110</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">8582731269452337816</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}}},</span><span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">11</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">18197116026168548551</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">101</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">14515361159708671901</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1011</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">5344459161969259783</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1010</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">9465362842462816922</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">False</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">3889360259696288602</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1111</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">4819471800686604738</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">},</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTNode</span> <span class="p">{</span><span class="n">row</span> <span class="ow">=</span> <span class="kt">TruthTableRow</span> <span class="p">{</span> <span class="n">var</span> <span class="ow">=</span> <span class="mi">1110</span> <span class="p">(</span><span class="n">binary</span><span class="p">),</span> <span class="n">dontcare</span> <span class="ow">=</span> <span class="kt">True</span> <span class="p">},</span> <span class="n">mergedFlag</span> <span class="ow">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">identifier</span> <span class="ow">=</span> <span class="mi">8582731269452337816</span><span class="p">,</span> <span class="n">prevLeft</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">,</span> <span class="n">prevRight</span> <span class="ow">=</span> <span class="kt">CTEmpty</span><span class="p">}}}]</span>
+<span class="kt">Prelude</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">QMM</span> <span class="kt">Data</span><span class="o">.</span><span class="kt">Maybe</span> <span class="kt">BSimplified</span><span class="o">.</span><span class="kt">Bits</span> <span class="kt">Control</span><span class="o">.</span><span class="kt">Monad</span><span class="o">&gt;</span> <span class="n">minTermsStr</span> <span class="n">tr</span> <span class="p">[</span><span class="s">&quot;m_4&quot;</span><span class="p">,</span><span class="s">&quot;m_5&quot;</span><span class="p">,</span><span class="s">&quot;m_9&quot;</span><span class="p">,</span><span class="s">&quot;m_11&quot;</span><span class="p">,</span><span class="s">&quot;m_13&quot;</span><span class="p">,</span><span class="s">&quot;m_15&quot;</span><span class="p">,</span><span class="s">&quot;m_2&quot;</span><span class="p">,</span><span class="s">&quot;m_3&quot;</span><span class="p">,</span><span class="s">&quot;m</span>
+<span class="s">_6&quot;</span><span class="p">,</span><span class="s">&quot;m_10&quot;</span><span class="p">,</span><span class="s">&quot;m_14&quot;</span><span class="p">]</span>
+<span class="kt">Just</span> <span class="p">[[</span><span class="s">&quot;m_4&quot;</span><span class="p">,</span><span class="s">&quot;m_5&quot;</span><span class="p">],[</span><span class="s">&quot;m_9&quot;</span><span class="p">,</span><span class="s">&quot;m_13&quot;</span><span class="p">,</span><span class="s">&quot;m_10&quot;</span><span class="p">,</span><span class="s">&quot;m_14&quot;</span><span class="p">],[</span><span class="s">&quot;m_11&quot;</span><span class="p">,</span><span class="s">&quot;m_15&quot;</span><span class="p">,</span><span class="s">&quot;m_10&quot;</span><span class="p">,</span><span class="s">&quot;m_14&quot;</span><span class="p">]]</span>
+</pre></div>
+
+
+<p>また, ブール式を入力して, 最も簡単な式となる項を見つけられるようにもしてある.
+ブール式の表記としては, 後述の記号 (否定: <code>~</code>, 積: <code>*</code>, 和: <code>+</code>, 括弧: <code>(</code>,<code>)</code>) を用いることができる.
+アルファベット 1 文字は変数名として捉える.
+ここでは, 例として式 \(\eqref{eq:third}\)&nbsp;を入力として与える.</p>
+<div class="highlight"><pre><span></span>$ stack build
+$ stack <span class="nb">exec</span> bsimplified -- <span class="s2">&quot;A*~B+~A*~B+A*~B+A*B&quot;</span>
+Minterms <span class="o">(</span>Truth patterns<span class="o">)</span>:
+        <span class="nv">m_0</span> <span class="o">=</span> <span class="o">{</span> <span class="nv">A</span> <span class="o">=</span> True, <span class="nv">B</span> <span class="o">=</span> True <span class="o">}</span>
+        <span class="nv">m_1</span> <span class="o">=</span> <span class="o">{</span> <span class="nv">A</span> <span class="o">=</span> True, <span class="nv">B</span> <span class="o">=</span> False <span class="o">}</span>
+        <span class="nv">m_3</span> <span class="o">=</span> <span class="o">{</span> <span class="nv">A</span> <span class="o">=</span> False, <span class="nv">B</span> <span class="o">=</span> False <span class="o">}</span>
+The state of compression <span class="c1">#1: [&quot;m_0 m_1&quot;,&quot;m_1 m_3&quot;]</span>
+Found prime implicants: <span class="o">[</span><span class="s2">&quot;m_0 m_1&quot;</span>,<span class="s2">&quot;m_1 m_3&quot;</span><span class="o">]</span>
+Simplified terms: <span class="o">(</span>m_0 m_1<span class="o">)</span>, <span class="o">(</span>m_1 m_3<span class="o">)</span>
+</pre></div>
+
+
+<p>\(m_{0,1},m_{1,3}\) が結果として得られた. 
+それぞれ, ビット列上の圧縮された部分を \(-\) で表記すると, \(m_{0,1}=1-, m_{1,3}=-0\) である.
+これはつまり \(A B&#8217;\) なので, 従って最簡形は \(A\lor B&#8217;\) である.
+当然ながら, 先に求めた解と同じ結果が得られたことが確認できる.
+実装については普通に字句解析, 再起下降で計算, 真理値表を構成して <span class="caps">PDNF</span> をつくっている.
+ところで, この最簡形を得るという問題は充足可能性問題であり <span class="caps">NP</span> 困難<sup id="fnref-10"><a class="footnote-ref" href="#fn-10">10</a></sup>なので, 変数の多いブール関数に対する最簡形を得ることは難しい.
+その場合,&nbsp;現実的な時間で比較的良質な解が得られるヒューリスティックを含む方法で求めることとなる.</p>
+<h3>ブール代数の例</h3>
+<p>ここではブール代数の一例として, 計算機科学で一般的に用いられるブール代数を挙げる.
+集合 \(L=\left\{0,1\right\}\) に対して \(\land\) を積 \(\cdot:L\times L\to L\), 
+\(\lor\) を和 \(+:L\times L\to L\), 補元 \(x&#8217;\) を否定 \(\overline{x}\) とおく. 
+各演算子は, 次の<a href="#truthtable1">真理値表 1</a> に従う (\(\overline{y}\) は \(\overline{x}\)&nbsp;と同様なので省略).</p>
+<div class="table-responsive">
+<table class="table table-hover"><thead><th>&#92;(x&#92;)</th><th>&#92;(y&#92;)</th><th>&#92;(\overline{x}&#92;)</th><th>&#92;(x\cdot y&#92;)</th><th>&#92;(x+y&#92;)</th></thead>
+<caption id="truthtable1" style="caption-side: bottom">真理値表 1</caption>
+<tbody>
+<tr><td>&#92;(1&#92;)</td><td>&#92;(1&#92;)</td><td>&#92;(0&#92;)</td><td>&#92;(1&#92;)</td><td>&#92;(1&#92;)</td></tr>
+<tr><td>&#92;(1&#92;)</td><td>&#92;(0&#92;)</td><td>&#92;(0&#92;)</td><td>&#92;(0&#92;)</td><td>&#92;(1&#92;)</td></tr>
+<tr><td>&#92;(0&#92;)</td><td>&#92;(1&#92;)</td><td>&#92;(1&#92;)</td><td>&#92;(0&#92;)</td><td>&#92;(1&#92;)</td></tr>
+<tr><td>&#92;(0&#92;)</td><td>&#92;(0&#92;)</td><td>&#92;(1&#92;)</td><td>&#92;(0&#92;)</td><td>&#92;(0&#92;)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>これは紛れもなくブール代数である.
+この形式の下で書かれる式は一般に論理式, 演算子は論理記号といわれる.
+計算機科学の分野において,
+ブール代数は排他的論理和: \(\oplus\), 否定論理積: \(\mid\), 否定論理和: \(\downarrow\) といった記号らをも含めて論理記号として扱うことが多い.
+これらの真理値表は \(x,y\in L\)&nbsp;に対して次の通りである.</p>
+<div class="table-responsive">
+<table class="table table-hover"><thead><th>&#92;(x&#92;)</th><th>&#92;(y&#92;)</th><th>&#92;(x\mid y&#92;)</th><th>&#92;(x\downarrow y&#92;)</th><th>&#92;(x\oplus y&#92;)</th></thead>
+<caption id="truthtable2" style="caption-side: bottom">真理値表 2</caption>
+<tbody>
+<tr><td>&#92;(1&#92;)</td><td>&#92;(1&#92;)</td><td>&#92;(0&#92;)</td><td>&#92;(0&#92;)</td><td>&#92;(0&#92;)</td></tr>
+<tr><td>&#92;(1&#92;)</td><td>&#92;(0&#92;)</td><td>&#92;(1&#92;)</td><td>&#92;(0&#92;)</td><td>&#92;(1&#92;)</td></tr>
+<tr><td>&#92;(0&#92;)</td><td>&#92;(1&#92;)</td><td>&#92;(1&#92;)</td><td>&#92;(0&#92;)</td><td>&#92;(1&#92;)</td></tr>
+<tr><td>&#92;(0&#92;)</td><td>&#92;(0&#92;)</td><td>&#92;(1&#92;)</td><td>&#92;(1&#92;)</td><td>&#92;(0&#92;)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>とくに, 否定論理積 \(\mid\) はそれ一つで積, 和, 否定が定義できるため, 他の論理記号よりも特別視されるような場合のある結合子である. 
+これは, シェファーの棒記号といわれ, 真理値表をみるとわかるように \(\overline{\left(x\land y\right)}\), また \(\overline{x}\lor \overline{y}\) と同値である. 
+この否定論理積を使って, \(\overline{x}:=x\mid x\) と否定が定義できる. 
+この否定を使って, \(x\land y:=\overline{\left(x\mid y\right)}\) と積が定義できるし, 
+\(x\lor y:=\overline{x}\mid \overline{y}\) と和も定義できる. 
+どちらかをも定義せずとも, 否定に加えて積があれば和が定義できるし,&nbsp;和があれば積が定義できる.</p>
+<h3>参考文献</h3>
+<ol>
+<li><span class="dquo">&#8220;</span><a name="ref1" href="https://math.stackexchange.com/questions/1210458/what-is-the-difference-between-boolean-logic-and-propositional-logic">What is the difference between Boolean logic and propositional logic?</a>&#8221; 2019 年 4 月 13&nbsp;日アクセス.</li>
+<li><span class="dquo">&#8220;</span><a name="ref2" href="https://www.quora.com/What-is-the-difference-between-Boolean-Algebra-and-propositional-logic-If-either-they-are-same-or-one-is-a-subset-of-another-why-should-we-study-those-separately">What is the difference between Boolean Algebra and propositional logic? If either they are same or one is a subset of another why should we study those separately?</a>&#8221; 2019 年 4 月 13&nbsp;日アクセス.</li>
+<li>J. Donald Monk (1976) &#8220;Mathematical Logic (Graduate Texts in Mathematics)&#8221; Springer; Softcover reprint of the original 1st ed. 1976版 (1976/9/7). <span class="caps">ISBN</span>-13:&nbsp;978-1468494549</li>
+<li>赤間世紀, 長田康敬, 玉城史朗 (2006)『<a id="ref4" class="disabled">情報数学入門</a>』共立出版. <span class="caps">ISBN</span>-13:&nbsp;978-4320018143</li>
+<li><span class="caps">W. V.</span> Quine (1952) &#8220;The Problem of Simplifying Truth Functions&#8221; The American Mathematical Monthly Vol. 59, No. 8 (Oct., 1952), pp.&nbsp;521-531</li>
+<li><span class="caps">W. V.</span> Quine (1955) &#8220;A Way to Simplify Truth Functions&#8221; The American Mathematical Monthly Vol. 62, No. 9 (Nov., 1955), pp.&nbsp;627-631</li>
+<li>[動画] Phalanetra. H.S &#8220;<a href="https://www.youtube.com/watch?v=97KpndF8-So">Quine McCluskey minimisation and Petrick&#8217;s method for obtaining simplified Boolean expressions</a>&#8220;, 2019 年 4 月 30&nbsp;日アクセス.</li>
+<li><a href="http://www.mrc.uidaho.edu/mrc/people/jff/349/lect.10">Lecture #10: Petrick&#8217;s&nbsp;Method</a></li>
+<li>Czort, S. (1999) &#8220;<a name="ref9" class="disabled">The complexity of minimizing disjunctive normal form formulas (Master&#8217;s thesis)</a>&#8220;. University of&nbsp;Aarhus.</li>
+</ol>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn-1">
+<p>イギリスの数学者ジョージ・ブール (英: George Boole) は 19 世紀半ばに人間の思考を代数計算で行うための研究を行い, ブール代数を形式化した. 命題論理はそれよりも昔にフレーゲにより構築された論理体型であるが, これは哲学的投機から派生したものである. 19 世紀後半になると, 哲学者たちは殆どブールの象徴主義を採用し, その後の 20 世紀ではこれらの学問間における明確な区別はなかったとのこと(<a href="#ref2">参考文献2</a> より引用: <i>The main difference is historical. George Boole was a mathematician interested in efficient practical solutions of complicated logical questions in the middle 19th century. His main innovation was symbolic logic, a system of notation for clear specification of propositions and relations among propositions. [..] Propositional logic goes back to ancient times and derives from philosophical speculation. In the late 19th century philosophers mostly adopted Boole’s symbolism. Therefore in the 20th century there’s no clear distinction between the two fields, </i>). しかしながら, ブール代数に還元できないいくつかの命題論理が残っているとのこと(<a href="#ref2">参考文献2</a> より引用: <i>although there remains some propositional logic that cannot be reduced to Boolean symbols. </i>). これが事実ならば, ブール代数は命題論理のサブセット的な論理であることがいえるが, <a href="#ref3">参考文献3</a> p.158 では, &#8220;<i>the correspondence between Boolean algebras and sentential logics [&#8230;] We shall see that there is a full correspondence between these two kinds of mathematical objects.</i> とあり, さらに同著書 p.160 で &#8220;<i>the following theorem, which is another kind of completeness theorem for Boolean algebras. [&#8230;] Hence we may say that the theories of Boolean algebras and of sentential logics are equivalent, in some sense.</i>&#8221; とも言われていることから, 大まかに言い切ってしまえば, 殆ど差はないということであろう.&#160;<a class="footnote-backref" href="#fnref-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn-2">
+<p>ブール式は 1 つのブール関数を定めるが, ブール関数はブール式を一意には定めない.&#160;<a class="footnote-backref" href="#fnref-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn-3">
+<p><span class="math">\(\displaystyle\bigwedge^{n}_{i=1} A_i = A_1\land\cdots\land A_n, \bigvee^{n}_{i=1} A_i=A_1\lor\cdots\lor A_n\)</span>&#160;<a class="footnote-backref" href="#fnref-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn-4">
+<p>真理値表とは, 簡単にいえばここでは \(x,y\in B\) に対してそれぞれ \(1\) または \(0\) を実際に代入したときに取りうるすべての値を書き下したものである. より厳密な取り扱いについては命題論理のエントリ(<span class="caps">TODO</span>)を参照.&#160;<a class="footnote-backref" href="#fnref-4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn-5">
+<p>このあたりは自明とする.&#160;<a class="footnote-backref" href="#fnref-5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn-6">
+<p>すなわち, ブール関数の値を記述する. \(0\) は記述せずに省略される場合もある.&#160;<a class="footnote-backref" href="#fnref-6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn-7">
+<p>2 進値を用いず, 変数を用いて圧縮表を作成する方法はクワイン法といわれる. ウィラード・ヴァン・オーマン・クワイン (英: Willard van Orman Quine) によって提案されたクワイン法がエドワード・J・マクラスキーによって発展されたため, このように言われている.&#160;<a class="footnote-backref" href="#fnref-7" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+<li id="fn-8">
+<p>この表記の仕方は <a href="https://ja.wikipedia.org/wiki/%E3%82%AF%E3%83%AF%E3%82%A4%E3%83%B3%E3%83%BB%E3%83%9E%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%AD%E3%83%BC%E6%B3%95">Wikipedia の記事</a>を参考とした.&#160;<a class="footnote-backref" href="#fnref-8" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+</li>
+<li id="fn-9">
+<p><a href="#ref9">参考文献 9</a> より&#160;<a class="footnote-backref" href="#fnref-9" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+</li>
+<li id="fn-10">
+<p>これについては, 命題論理のエントリ(<span class="caps">TODO</span>)内のトートロジー判定器のセクションにおいて取り上げている.&#160;<a class="footnote-backref" href="#fnref-10" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (true) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js','color.js','enclose.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: false," +
+        "    messageStyle: 'None'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+      </div>
+<!-- /.entry-content -->
+      <footer class="post-info text-muted">
+        <button type="button" class="btn btn-default">          
+          <a href="../../../../../category/math.html"><div class="fa fa-lg fa-folder-open"></div> math</a>
+        </button>
+        <button type="button" class="btn btn-default">
+          <a href="../../../../../tag/math.html"><div class="fa fa-lg fa-tag"></div> math</a>
+        </button>
+      </footer>
+      <!-- /.post-info -->
+    <!-- Comment BEGIN -->
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_shortname = 'roki-log';
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <!-- Comment END -->
+    </section>
+    </div>
+<footer class="footer">
+      <div class="container">
+          <p class="footer-text">&copy; <a href="../../../../..">roki.log</a> powered by 
+          <a href="https://getpelican.com/">pelican</a> and 
+          <a href="https://github.com/falgon/nikhil-theme">nikhil-theme (forked)</a><br>
+              <small>  <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+    Content
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.ja">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>, except where indicated otherwise.
+</small>
+            </p>
+   </div>
+</footer>    <script src="../../../../../theme/js/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-116653080-1', 'auto');
+      ga('send', 'pageview');
+       $('#myModal').modal({show: true});
+
+    </script>
+  </body>
+</html>
